@@ -12,16 +12,33 @@ find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
+        Xml
         REQUIRED)
 
 add_executable(Retoccilus main.cpp
         Sources/MainWindow/rmainwindow.h
         Sources/MainWindow/rmainwindow.cpp
+        Sources/RCodeEditor/LineNumberArea.h
+        Sources/RCodeEditor/RCodeEditor.h
+        utils/RXmlReader.h
+        utils/RetoErrors.h
+        utils/RetoCodeEditor.h
+        utils/RetoCodeEditor.h
+        Sources/RCodeEditor/RCodeEditor.cpp
+        Sources/RCodeEditor/RCodeEditorSidebar.h
+        Sources/RCodeEditor/RCodeEditorSidebar.cpp
 )
+
+include_directories(
+        utils/
+        Sources/RCodeEditor/
+)
+
 target_link_libraries(Retoccilus
         Qt::Core
         Qt::Gui
         Qt::Widgets
+        Qt::Xml
 )
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)

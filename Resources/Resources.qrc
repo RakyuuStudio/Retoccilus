@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix = "/configuration">
+        <file>Configuration/RCodeEditor/KeywordLists/cppKeywords.xml</file>
+    </qresource>
+</RCC>

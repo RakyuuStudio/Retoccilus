@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<RetoCodeEditor>
+    <KeywordList>
+        <attributes>
+            <Language>C++</Language>
+            <LatestVersion>C++23</LatestVersion>
+            <SupportVersion>C++09, C++11, C++14, C++17, C++20, C++23</SupportVersion>
+        </attributes>
+        <KContent>
+            <!-- These are Standard C++ Keywords :D -->
+            <!-- Alphabet Index: A -->
+            <keyword name = "alignas">
+                <name>alignas</name>
+            </keyword>
+            <keyword name="alignof">
+                <name>alignof</name>
+            </keyword>
+            <keyword name="and">
+                <name>and</name>
+            </keyword>
+            <keyword name="and_eq">
+                <name>and_eq</name>
+            </keyword>
+            <keyword name="asm">
+                <name>asm</name>
+            </keyword>
+            <keyword name="auto">
+                <name>auto</name>
+            </keyword>
+            <!-- Alphabet Index: B -->
+            <keyword name="bitand">
+                <name>bitand</name>
+            </keyword>
+            <keyword name="bitor">
+                <name>bitor</name>
+            </keyword>
+            <keyword name="bool">
+                <name>bool</name>
+            </keyword>
+            <keyword name="break">
+                <name>break</name>
+            </keyword>
+            <!-- Alphabet Index: C -->
+            <keyword name="case">
+                <name>case</name>
+            </keyword>
+            <keyword name="catch">
+                <name>catch</name>
+            </keyword>
+            <keyword name="char">
+                <name>char</name>
+            </keyword>
+            <keyword name="class">
+                <name>class</name>
+            </keyword>
+            <keyword name="compl">
+                <name>compl</name>
+            </keyword>
+            <keyword name="concept">
+                <name>concept</name>
+            </keyword>
+            <keyword name="const">
+                <name>const</name>
+            </keyword>
+            <keyword name="const_cast">
+                <name>const_cast</name>
+            </keyword>
+            <keyword name="consteval">
+                <name>consteval</name>
+            </keyword>
+            <keyword name="constexpr">
+                <name>constexpr</name>
+            </keyword>
+            <keyword name="constinit">
+                <name>constinit</name>
+            </keyword>
+            <keyword name="continue">
+                <name>continue</name>
+            </keyword>
+            <keyword name="co_await">
+                <name>co_await</name>
+            </keyword>
+            <keyword name="co_return">
+                <name>co_return</name>
+            </keyword>
+            <keyword name="co_yield">
+                <name>co_yield</name>
+            </keyword>
+            <!-- Alphabet Index: D -->
+            <keyword name="decltype">
+                <name>decltype</name>
+            </keyword>
+            <keyword name="default">
+                <name>default</name>
+            </keyword>
+            <keyword name="delete">
+                <name>delete</name>
+            </keyword>
+            <keyword name="do">
+                <name>do</name>
+            </keyword>
+            <keyword name="double">
+                <name>double</name>
+            </keyword>
+            <keyword name="dynamic_cast">
+                <name>dynamic_cast</name>
+            </keyword>
+            <!-- Alphabet Index: E -->
+            <keyword name="else">
+                <name>else</name>
+            </keyword>
+            <keyword name="enum">
+                <name>enum</name>
+            </keyword>
+            <keyword name="explicit">
+                <name>explicit</name>
+            </keyword>
+            <keyword name="export">
+                <name>export</name>
+            </keyword>
+            <keyword name="extern">
+                <name>extern</name>
+            </keyword>
+            <!-- Alphabet Index: F -->
+            <keyword name="false">
+                <name>false</name>
+            </keyword>
+            <keyword name="float">
+                <name>float</name>
+            </keyword>
+            <keyword name="for">
+                <name>for</name>
+            </keyword>
+            <keyword name="friend">
+                <name>friend</name>
+            </keyword>
+            <!-- Alphabet Index: G -->
+            <keyword name="goto">
+                <name>goto</name>
+            </keyword>
+            <!-- Alphabet Index: I -->
+            <keyword name="if">
+                <name>if</name>
+            </keyword>
+            <keyword name="inline">
+                <name>inline</name>
+            </keyword>
+            <keyword name="int">
+                <name>int</name>
+            </keyword>
+            <!-- Alphabet Index: L -->
+            <keyword name="long">
+                <name>long</name>
+            </keyword>
+            <!-- Alphabet Index: M -->
+            <keyword name="mutable">
+                <name>mutable</name>
+            </keyword>
+            <!-- Alphabet Index: N -->
+            <keyword name="namespace">
+                <name>namespace</name>
+            </keyword>
+            <keyword name="new">
+                <name>new</name>
+            </keyword>
+            <keyword name="noexcept">
+                <name>noexcept</name>
+            </keyword>
+            <keyword name="not">
+                <name>not</name>
+            </keyword>
+            <keyword name="not_eq">
+                <name>not_eq</name>
+            </keyword>
+            <keyword name="nullptr">
+                <name>nullptr</name>
+            </keyword>
+            <!-- Alphabet Index: O -->
+            <keyword name="operator">
+                <name>operator</name>
+            </keyword>
+            <keyword name="or">
+                <name>or</name>
+            </keyword>
+            <keyword name="or_eq">
+                <name>or_eq</name>
+            </keyword>
+            <!-- Alphabet Index: P -->
+            <keyword name="private">
+                <name>private</name>
+            </keyword>
+            <keyword name="protected">
+                <name>protected</name>
+            </keyword>
+            <keyword name="public">
+                <name>public</name>
+            </keyword>
+            <!-- Alphabet Index: R -->
+            <keyword name="register">
+                <name>register</name>
+            </keyword>
+            <keyword name="reinterpret_cast">
+                <name>reinterpret_cast</name>
+            </keyword>
+            <keyword name="requires">
+                <name>requires</name>
+            </keyword>
+            <keyword name="return">
+                <name>return</name>
+            </keyword>
+            <!-- Alphabet Index: S -->
+            <keyword name="short">
+                <name>short</name>
+            </keyword>
+            <keyword name="signed">
+                <name>signed</name>
+            </keyword>
+            <keyword name="sizeof">
+                <name>sizeof</name>
+            </keyword>
+            <keyword name="static">
+                <name>static</name>
+            </keyword>
+            <keyword name="static_assert">
+                <name>static_assert</name>
+            </keyword>
+            <keyword name="static_cast">
+                <name>static_cast</name>
+            </keyword>
+            <keyword name="struct">
+                <name>struct</name>
+            </keyword>
+            <keyword name="switch">
+                <name>switch</name>
+            </keyword>
+            <!-- Alphabet Index: T -->
+            <keyword name="template">
+                <name>template</name>
+            </keyword>
+            <keyword name="this">
+                <name>this</name>
+            </keyword>
+            <keyword name="thread_local">
+                <name>thread_local</name>
+            </keyword>
+            <keyword name="throw">
+                <name>throw</name>
+            </keyword>
+            <keyword name="true">
+                <name>true</name>
+            </keyword>
+            <keyword name="try">
+                <name>try</name>
+            </keyword>
+            <keyword name="typedef">
+                <name>typedef</name>
+            </keyword>
+            <keyword name="typeid">
+                <name>typeid</name>
+            </keyword>
+            <keyword name="typename">
+                <name>typename</name>
+            </keyword>
+            <keyword name="union">
+                <name>union</name>
+            </keyword>
+            <keyword name="unsigned">
+                <name>unsigned</name>
+            </keyword>
+            <keyword name="using">
+                <name>using</name>
+            </keyword>
+            <keyword name="virtual">
+                <name>virtual</name>
+            </keyword>
+            <keyword name="void">
+                <name>void</name>
+            </keyword>
+            <keyword name="volatile">
+                <name>volatile</name>
+            </keyword>
+            <keyword name="wchar_t">
+                <name>wchar_t</name>
+            </keyword>
+            <keyword name="while">
+                <name>while</name>
+            </keyword>
+            <keyword name="xor">
+                <name>xor</name>
+            </keyword>
+            <keyword name="xor_eq">
+                <name>xor_eq</name>
+            </keyword>
+        </KContent>
+    </KeywordList>
+</RetoCodeEditor>
