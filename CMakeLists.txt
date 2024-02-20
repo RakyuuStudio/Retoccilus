@@ -14,7 +14,10 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(Retoccilus main.cpp)
+add_executable(Retoccilus main.cpp
+        Sources/MainWindow/rmainwindow.h
+        Sources/MainWindow/rmainwindow.cpp
+)
 target_link_libraries(Retoccilus
         Qt::Core
         Qt::Gui
