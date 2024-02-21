@@ -15,8 +15,6 @@ RCodeEditor::RCodeEditor(QWidget *widget) : QPlainTextEdit(widget) {
 
     updateSideBarAreaWidth(0);
     highlightCurrentLine();
-
-
 }
 
 RCodeEditor::~RCodeEditor() = default;
@@ -74,7 +72,7 @@ void RCodeEditor::sideBarAreaPaintEvent(QPaintEvent *event) {
     while (block.isValid() && top <= event->rect().bottom()) {
         if (block.isVisible() && bottom >= event->rect().top()) {
             QString number = QString::number(blockNumber + 1);
-            painter.setPen(Qt::black);
+            painter.setPen(Qt::white);
             painter.setFont(lineNumberFont);
             painter.drawText(0, top, sideBarArea->width(), fontMetrics().height(),
                              Qt::AlignRight, number);

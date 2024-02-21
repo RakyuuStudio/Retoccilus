@@ -29,9 +29,21 @@ public:
         keywordFormat.setFontItalic(true);
         keywordFormat.setFontWeight(QFont::Bold);
 
-        commentFormat.setFontItalic(true);
-        commentFormat.setForeground(QColor(138, 174, 255));
+        singleLineCommentFormat.setFontItalic(true);
+        singleLineCommentFormat.setForeground(QColor(138, 174, 255));
+        multilineCommentFormat.setForeground(QColor(138, 174, 255).darker(100));
+        multilineCommentFormat.setFontItalic(true);
 
+        preprocessorFormat.setForeground(QColor(124, 130, 248));
+        preprocessorFormat.setFontWeight(QFont::Bold);
+
+        parentheseFormat.setForeground(QColor("#fff906"));
+        bracketFormat.setForeground(QColor("#33ffab"));
+        braceFormat.setForeground(QColor("#5b7eff"));
+
+        quotationFormat.setForeground(QColor("#eaf36f"));
+        apostropheFormat.setForeground(QColor("#d7f98b"));
+        rawStrLitFormat.setForeground(QColor(146, 146, 248));
         QStringList keywordsL;
         keywordsL = xmlr.readKeywords(":/config/Configuration/RCodeEditor/KeywordList/cppKeywords.xml");
 
@@ -39,7 +51,19 @@ public:
             highlightingRules.append({QRegularExpression("\\b" + pattern + "\\b"), keywordFormat});
         }
 
-        commentStartExp.setPattern("//[^\n]*");
+        singleLineCommentExp.setPattern("//[^\n]*");
+        commentStartExp.setPattern("/\\*");
+        commentEndExp.setPattern("\\*/");
+        preprocessExp.setPattern("#[^\\s]*");
+
+        highlightingRules.append({QRegularExpression("\\("), parentheseFormat});
+        highlightingRules.append({QRegularExpression("\\)"), parentheseFormat});
+        highlightingRules.append({QRegularExpression("\\["), bracketFormat});
+        highlightingRules.append({QRegularExpression("\\]"), bracketFormat});
+        highlightingRules.append({QRegularExpression("\\{"), braceFormat});
+        highlightingRules.append({QRegularExpression("'[^']*'"), apostropheFormat});
+        highlightingRules.append({QRegularExpression(R"("[^"]*")"), quotationFormat});
+        highlightingRules.append({QRegularExpression("R\"(.*?\\n?)\""), rawStrLitFormat});
     }
 protected:
     void highlightBlock(const QString &text) override {
@@ -51,10 +75,36 @@ protected:
             }
         }
 
-        int commentStart = text.indexOf(commentStartExp);
-        if (commentStart >= 0) {
-            int commentEnd = text.indexOf('\n', commentStart);
-            setFormat(commentStart, commentEnd - commentStart, commentFormat);
+        QRegularExpressionMatch preprocessorMatch = preprocessExp.match(text);
+        if (preprocessorMatch.hasMatch()) {
+            setFormat(preprocessorMatch.capturedStart(), preprocessorMatch.capturedEnd(), preprocessorFormat);
+        }
+
+        QRegularExpressionMatch singleLineCommentMatch = singleLineCommentExp.match(text);
+        if (singleLineCommentMatch.hasMatch()) {
+            setFormat(singleLineCommentMatch.capturedStart(), singleLineCommentMatch.capturedLength(), singleLineCommentFormat);
+        }
+        setCurrentBlockState(0);
+
+        int startIndex = 0;
+        if (previousBlockState() != 1) {
+            startIndex = text.indexOf(commentStartExp);
+        }
+
+        while (startIndex >= 0) {
+            QRegularExpressionMatch match = commentEndExp.match(text, startIndex);
+            int endIndex = match.capturedStart();
+            int commentLength = 0;
+
+            if (endIndex == -1) {
+                setCurrentBlockState(1);
+                commentLength = text.length() - startIndex;
+            } else {
+                commentLength = endIndex - startIndex + match.capturedLength();
+            }
+
+            setFormat(startIndex, commentLength, multilineCommentFormat);
+            startIndex = text.indexOf(commentStartExp, startIndex + commentLength);
         }
     }
 private:
@@ -66,9 +116,17 @@ private:
     QVector<HighlightingRule> highlightingRules;
     QRegularExpression commentStartExp;
     QRegularExpression commentEndExp;
+    QRegularExpression singleLineCommentExp;
+    QRegularExpression preprocessExp;
+    QRegularExpression braceExp, bracketExp, parentheseExp;
+    QRegularExpression apostropheExp, quotationExp;
 
     QTextCharFormat keywordFormat;
-    QTextCharFormat commentFormat;
+    QTextCharFormat singleLineCommentFormat;
+    QTextCharFormat multilineCommentFormat;
+    QTextCharFormat preprocessorFormat;
+    QTextCharFormat braceFormat, bracketFormat, parentheseFormat;
+    QTextCharFormat apostropheFormat, quotationFormat, rawStrLitFormat;
 
     XmlReader xmlr;
 };
