@@ -199,37 +199,36 @@ void RCodeEditor::keyPressEvent(QKeyEvent *event) {
             insertPlainText("}");
         }
     }
-    else if (event->text() == "'") {
-        insertPlainText("'");
-        moveCursor(QTextCursor::MoveOperation::Left);
-    }
-    else if (event->text() == "'") {
+    else if (autoParenthese && event->text().length() == 1) {
+        for (const auto &pair : RetoUtils::parentheses) {
+            if (pair.first == event->text()) {
+                QString rightChar = charUnderCursor(0);
+                if (rightChar == pair.second) {
+                    moveCursor(QTextCursor::MoveOperation::Right);
+                } else {
+                    insertPlainText(event->text() + pair.second);
+                    moveCursor(QTextCursor::MoveOperation::Left);
+                }
+                return;
+            } else if (pair.second == event->text()) {
+                QString rightChar = charUnderCursor(0);
+                if (rightChar == pair.second) {
+                    moveCursor(QTextCursor::MoveOperation::Right);
+                } else if (charUnderCursor(-1) == pair.first) {
+                    insertPlainText(pair.second);
+                }
+            }
+        }
+    } else if (event->text() == "'" || event->text() == "\"") {
         QString lc;
         moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
         lc = textCursor().selectedText();
         moveCursor(QTextCursor::Right, QTextCursor::MoveAnchor);
-        if (lc == "'") {
+        if (lc == event->text()) {
             moveCursor(QTextCursor::MoveOperation::Right);
-            return;
-        }
-        else {
-            insertPlainText("'");
-        }
-    }else if (event->text() == "\"") {
-        insertPlainText("\"");
-        moveCursor(QTextCursor::MoveOperation::Left);
-    }
-    else if (event->text() == "\"") {
-        QString lc;
-        moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
-        lc = textCursor().selectedText();
-        moveCursor(QTextCursor::Right, QTextCursor::MoveAnchor);
-        if (lc == "\"") {
-            moveCursor(QTextCursor::MoveOperation::Right);
-            return;
-        }
-        else {
-            insertPlainText("\"");
+        } else {
+            insertPlainText(event->text());
+            moveCursor(QTextCursor::MoveOperation::Left);
         }
     }
     QPlainTextEdit::keyPressEvent(event);
