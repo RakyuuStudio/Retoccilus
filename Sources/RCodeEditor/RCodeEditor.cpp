@@ -6,7 +6,8 @@
 
 using namespace RetoUtils;
 
-RCodeEditor::RCodeEditor(QWidget *widget) : QPlainTextEdit(widget) {
+RCodeEditor::RCodeEditor(QWidget *widget) :
+        QPlainTextEdit(widget), autoIndentation(true), replaceTab(true), autoParenthese(true) {
     sideBarArea = new SidebarArea(this);
 
     connect(this, &RCodeEditor::blockCountChanged, this, &RCodeEditor::updateSideBarAreaWidth);
@@ -21,6 +22,18 @@ RCodeEditor::~RCodeEditor() = default;
 
 int RCodeEditor::getFirstVisibleBlock() {
     return 0;
+}
+
+bool RCodeEditor::autoIndent() const {
+    return autoIndentation;
+}
+
+void RCodeEditor::setIndentation(bool i) {
+    if (i) {
+        autoIndentation = true;
+    } else {
+        autoIndentation = false;
+    }
 }
 
 void RCodeEditor::resizeEvent(QResizeEvent *event) {
@@ -41,8 +54,7 @@ void RCodeEditor::wheelEvent(QWheelEvent *event) {
             QFont lineNumberFont = sideBarArea->font();
             lineNumberFont.setPointSizeF(lineNumberFont.pointSizeF() + 1.0);
             sideBarArea->setFont(lineNumberFont);
-        }
-        else if (delta < 0) {
+        } else if (delta < 0) {
             font.setPointSizeF(font.pointSizeF() - 1.0);
 
             QFont lineNumberFont = sideBarArea->font();
@@ -52,11 +64,11 @@ void RCodeEditor::wheelEvent(QWheelEvent *event) {
 
         this->setFont(font);
         event->accept();
-    }
-    else {
+    } else {
         QPlainTextEdit::wheelEvent(event);
     }
 }
+
 
 void RCodeEditor::sideBarAreaPaintEvent(QPaintEvent *event) {
     QPainter painter(sideBarArea);
@@ -92,7 +104,7 @@ int RCodeEditor::sideBarAreaWidth() {
         max /= 10;
         digit++;
     }
-    int space = 3 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digit;
+    int space = 9 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digit * 2;
     return space;
 }
 
@@ -125,11 +137,134 @@ void RCodeEditor::updateSideBarArea(const QRect &rect, int dy) {
     if (dy) {
         //If dy exists (means it is not zero)
         sideBarArea->scroll(0, dy);
-    }
-    else {
+    } else {
         sideBarArea->update(0, rect.y(), sideBarArea->width(), rect.height());
     }
     if (rect.contains(viewport()->rect())) {
         updateSideBarAreaWidth(0);
     }
+}
+
+
+void RCodeEditor::keyPressEvent(QKeyEvent *event) {
+    //==Process Auto Pair==
+    if (event->text() == "(") {
+        insertPlainText(")");
+        moveCursor(QTextCursor::MoveOperation::Left);
+    }
+    else if (event->text() == ")") {
+        QString lc;
+        moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
+        lc = textCursor().selectedText();
+        moveCursor(QTextCursor::Right, QTextCursor::MoveAnchor);
+        if (lc == "(") {
+            moveCursor(QTextCursor::MoveOperation::Right);
+            return;
+        }
+        else {
+            insertPlainText(")");
+        }
+    }
+    else if (event->text() == "[") {
+        insertPlainText("]");
+        moveCursor(QTextCursor::MoveOperation::Left);
+    }
+    else if (event->text() == "]") {
+        QString lc;
+        moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
+        lc = textCursor().selectedText();
+        moveCursor(QTextCursor::Right, QTextCursor::MoveAnchor);
+        if (lc == "[") {
+            moveCursor(QTextCursor::MoveOperation::Right);
+            return;
+        }
+        else {
+            insertPlainText("]");
+        }
+    }
+    else if (event->text() == "{") {
+        insertPlainText("}");
+        moveCursor(QTextCursor::MoveOperation::Left);
+    }
+    else if (event->text() == "}") {
+        QString lc;
+        moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
+        lc = textCursor().selectedText();
+        moveCursor(QTextCursor::Right, QTextCursor::MoveAnchor);
+        if (lc == "{") {
+            moveCursor(QTextCursor::MoveOperation::Right);
+            return;
+        }
+        else {
+            insertPlainText("}");
+        }
+    }
+    else if (event->text() == "'") {
+        insertPlainText("'");
+        moveCursor(QTextCursor::MoveOperation::Left);
+    }
+    else if (event->text() == "'") {
+        QString lc;
+        moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
+        lc = textCursor().selectedText();
+        moveCursor(QTextCursor::Right, QTextCursor::MoveAnchor);
+        if (lc == "'") {
+            moveCursor(QTextCursor::MoveOperation::Right);
+            return;
+        }
+        else {
+            insertPlainText("'");
+        }
+    }else if (event->text() == "\"") {
+        insertPlainText("\"");
+        moveCursor(QTextCursor::MoveOperation::Left);
+    }
+    else if (event->text() == "\"") {
+        QString lc;
+        moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
+        lc = textCursor().selectedText();
+        moveCursor(QTextCursor::Right, QTextCursor::MoveAnchor);
+        if (lc == "\"") {
+            moveCursor(QTextCursor::MoveOperation::Right);
+            return;
+        }
+        else {
+            insertPlainText("\"");
+        }
+    }
+    QPlainTextEdit::keyPressEvent(event);
+}
+
+QChar RCodeEditor::charUnderCursor(int offset) const {
+    int block = textCursor().blockNumber();
+    auto index = textCursor().positionInBlock();
+    auto text = document()->findBlockByNumber(block).text();
+
+    index += offset;
+    if (index < 0 || index >= text.size()) {
+        return {}; //Return an empty set
+    }
+
+    return text[index];
+}
+
+int RCodeEditor::getIndentationSpaces() {
+    auto blockText = textCursor().block().text(); //Clang-Tidy recommend me
+    int indentationLevel = 0;
+
+    for (int i = 0; i < blockText.size() && QString("\t ").contains(blockText[i]); i++) {
+        if (blockText[i] == ' ') {
+            indentationLevel++;
+        }
+        else {
+#if QT_VERSION >= 0x050A00
+            //If Qt major version >= 5 (Qt 5.0.0 above)
+            const int defaultIndent = tabStopDistance() / fontMetrics().averageCharWidth();
+#else
+            const int defaultIndent = tabtStopWidth() / fontMetrics().averageCharWidth();
+#endif
+        }
+    }
+
+    return indentationLevel;
 }

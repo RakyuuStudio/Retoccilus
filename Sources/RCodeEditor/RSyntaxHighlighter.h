@@ -61,6 +61,7 @@ public:
         highlightingRules.append({QRegularExpression("\\["), bracketFormat});
         highlightingRules.append({QRegularExpression("\\]"), bracketFormat});
         highlightingRules.append({QRegularExpression("\\{"), braceFormat});
+        highlightingRules.append({QRegularExpression("\\}"), braceFormat});
         highlightingRules.append({QRegularExpression("'[^']*'"), apostropheFormat});
         highlightingRules.append({QRegularExpression(R"("[^"]*")"), quotationFormat});
         highlightingRules.append({QRegularExpression("R\"(.*?\\n?)\""), rawStrLitFormat});

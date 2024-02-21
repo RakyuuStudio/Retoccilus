@@ -24,18 +24,25 @@ public:
 
     void sideBarAreaPaintEvent(QPaintEvent *event);
     int sideBarAreaWidth();
+    QChar charUnderCursor(int offset = 0) const;
+    int getIndentationSpaces();
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
-
+    void keyPressEvent(QKeyEvent *event) override;
 private slots:
     void updateSideBarAreaWidth(int newBlockCount);
     void highlightCurrentLine();
     void updateSideBarArea(const QRect &rect, int dy);
-
+private:
+    bool autoIndent() const;
+    void setIndentation(bool i);
+private:
+    bool autoIndentation;
+    bool replaceTab;
+    bool autoParenthese;
 private:
     QWidget *sideBarArea;
-
     QStringList keywordList;
     XmlReader xr;
 };
