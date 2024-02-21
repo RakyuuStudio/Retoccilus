@@ -11,6 +11,7 @@
 #include "RXmlReader.h"
 
 #include "RCodeEditorSidebar.h"
+#include "RSyntaxHighlighter.h"
 
 using namespace RetoUtils;
 
@@ -34,6 +35,9 @@ private slots:
 
 private:
     QWidget *sideBarArea;
+
+    QStringList keywordList;
+    XmlReader xr;
 };
 
 #endif

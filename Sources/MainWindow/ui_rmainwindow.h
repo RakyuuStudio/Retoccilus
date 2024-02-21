@@ -16,7 +16,7 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 
-namespace RetoNS {
+QT_BEGIN_NAMESPACE
 
 class Ui_RMainWindow
 {
@@ -25,40 +25,38 @@ public:
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
-    void setupUi(QMainWindow *RetoNS__RMainWindow)
+    void setupUi(QMainWindow *RMainWindow)
     {
-        if (RetoNS__RMainWindow->objectName().isEmpty())
-            RetoNS__RMainWindow->setObjectName("RetoNS__RMainWindow");
-        RetoNS__RMainWindow->resize(400, 300);
-        centralwidget = new QWidget(RetoNS__RMainWindow);
+        if (RMainWindow->objectName().isEmpty())
+            RMainWindow->setObjectName("RMainWindow");
+        RMainWindow->resize(400, 300);
+        centralwidget = new QWidget(RMainWindow);
         centralwidget->setObjectName("centralwidget");
-        RetoNS__RMainWindow->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(RetoNS__RMainWindow);
+        RMainWindow->setCentralWidget(centralwidget);
+        menubar = new QMenuBar(RMainWindow);
         menubar->setObjectName("menubar");
         menubar->setGeometry(QRect(0, 0, 400, 17));
-        RetoNS__RMainWindow->setMenuBar(menubar);
-        statusbar = new QStatusBar(RetoNS__RMainWindow);
+        RMainWindow->setMenuBar(menubar);
+        statusbar = new QStatusBar(RMainWindow);
         statusbar->setObjectName("statusbar");
-        RetoNS__RMainWindow->setStatusBar(statusbar);
+        RMainWindow->setStatusBar(statusbar);
 
-        retranslateUi(RetoNS__RMainWindow);
+        retranslateUi(RMainWindow);
 
-        QMetaObject::connectSlotsByName(RetoNS__RMainWindow);
+        QMetaObject::connectSlotsByName(RMainWindow);
     } // setupUi
 
-    void retranslateUi(QMainWindow *RetoNS__RMainWindow)
+    void retranslateUi(QMainWindow *RMainWindow)
     {
-        RetoNS__RMainWindow->setWindowTitle(QCoreApplication::translate("RetoNS::RMainWindow", "RMainWindow", nullptr));
+        RMainWindow->setWindowTitle(QCoreApplication::translate("RMainWindow", "RMainWindow", nullptr));
     } // retranslateUi
 
 };
 
-} // namespace RetoNS
-
-namespace RetoNS {
 namespace Ui {
     class RMainWindow: public Ui_RMainWindow {};
 } // namespace Ui
-} // namespace RetoNS
+
+QT_END_NAMESPACE
 
 #endif // UI_RMAINWINDOW_H

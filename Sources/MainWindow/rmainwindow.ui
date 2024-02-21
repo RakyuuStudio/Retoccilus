@@ -3,8 +3,8 @@
     <author/>
     <comment/>
     <exportmacro/>
-    <class>RetoNS::RMainWindow</class>
-    <widget class="QMainWindow" name="RetoNS::RMainWindow">
+    <class>RMainWindow</class>
+    <widget class="QMainWindow" name="RMainWindow">
         <property name="geometry">
             <rect>
                 <x>0</x>

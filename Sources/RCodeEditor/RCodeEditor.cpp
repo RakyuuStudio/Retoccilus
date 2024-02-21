@@ -2,6 +2,7 @@
 #include <QTextBlock>
 #include "RCodeEditor.h"
 #include "RetoCodeEditor.h"
+#include "RSyntaxHighlighter.h"
 
 using namespace RetoUtils;
 
@@ -14,6 +15,8 @@ RCodeEditor::RCodeEditor(QWidget *widget) : QPlainTextEdit(widget) {
 
     updateSideBarAreaWidth(0);
     highlightCurrentLine();
+
+
 }
 
 RCodeEditor::~RCodeEditor() = default;

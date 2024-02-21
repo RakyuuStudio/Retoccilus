@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <RetoCodeEditor>
     <KeywordList>
-        <attributes>
-            <Language>C++</Language>
-            <LatestVersion>C++23</LatestVersion>
-            <SupportVersion>C++09, C++11, C++14, C++17, C++20, C++23</SupportVersion>
-        </attributes>
         <KContent>
-            <!-- These are Standard C++ Keywords :D -->
-            <!-- Alphabet Index: A -->
             <keyword name = "alignas">
                 <name>alignas</name>
             </keyword>

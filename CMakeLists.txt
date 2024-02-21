@@ -15,6 +15,8 @@ find_package(Qt6 COMPONENTS
         Xml
         REQUIRED)
 
+qt_add_resources(RESOURCES Resources/Resources.qrc)
+
 add_executable(Retoccilus main.cpp
         Sources/MainWindow/rmainwindow.h
         Sources/MainWindow/rmainwindow.cpp
@@ -27,6 +29,8 @@ add_executable(Retoccilus main.cpp
         Sources/RCodeEditor/RCodeEditor.cpp
         Sources/RCodeEditor/RCodeEditorSidebar.h
         Sources/RCodeEditor/RCodeEditorSidebar.cpp
+        ${RESOURCES}
+        Sources/RCodeEditor/RSyntaxHighlighter.h
 )
 
 include_directories(
