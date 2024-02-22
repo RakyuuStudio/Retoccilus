@@ -26,6 +26,7 @@ public:
     int sideBarAreaWidth();
     QChar charUnderCursor(int offset = 0) const;
     int getIndentationSpaces();
+    int countSpacesAtCurrentLine(int indentationLevel);
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
@@ -41,6 +42,9 @@ private:
     bool autoIndentation;
     bool replaceTab;
     bool autoParenthese;
+
+    int defaultIndent = tabStopDistance() / fontMetrics().averageCharWidth();
+    int indentLayer = 0;
 private:
     QWidget *sideBarArea;
     QStringList keywordList;

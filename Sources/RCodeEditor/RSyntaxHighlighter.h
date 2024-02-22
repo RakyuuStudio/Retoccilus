@@ -44,6 +44,9 @@ public:
         quotationFormat.setForeground(QColor("#eaf36f"));
         apostropheFormat.setForeground(QColor("#d7f98b"));
         rawStrLitFormat.setForeground(QColor(146, 146, 248));
+
+        identifierFormat.setForeground(QColor("#8be9fd"));
+        functionFormat.setForeground(QColor("#4ef579"));
         QStringList keywordsL;
         keywordsL = xmlr.readKeywords(":/config/Configuration/RCodeEditor/KeywordList/cppKeywords.xml");
 
@@ -65,6 +68,8 @@ public:
         highlightingRules.append({QRegularExpression("'[^']*'"), apostropheFormat});
         highlightingRules.append({QRegularExpression(R"("[^"]*")"), quotationFormat});
         highlightingRules.append({QRegularExpression("R\"(.*?\\n?)\""), rawStrLitFormat});
+        highlightingRules.append({QRegularExpression(R"(\\b[A-Za-z_]+[A-Za-z0-9_]*\\b)"), identifierFormat});
+        highlightingRules.append({QRegularExpression("\\b[A-Za-z0-9_]+(?=\\()"), functionFormat});
     }
 protected:
     void highlightBlock(const QString &text) override {
@@ -128,7 +133,7 @@ private:
     QTextCharFormat preprocessorFormat;
     QTextCharFormat braceFormat, bracketFormat, parentheseFormat;
     QTextCharFormat apostropheFormat, quotationFormat, rawStrLitFormat;
-
+    QTextCharFormat identifierFormat, functionFormat;
     XmlReader xmlr;
 };
 

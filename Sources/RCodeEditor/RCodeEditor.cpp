@@ -7,7 +7,7 @@
 using namespace RetoUtils;
 
 RCodeEditor::RCodeEditor(QWidget *widget) :
-        QPlainTextEdit(widget), autoIndentation(true), replaceTab(true), autoParenthese(true) {
+        QPlainTextEdit(widget), autoIndentation(true), replaceTab(true), autoParenthese(true), indentLayer(0) {
     sideBarArea = new SidebarArea(this);
 
     connect(this, &RCodeEditor::blockCountChanged, this, &RCodeEditor::updateSideBarAreaWidth);
@@ -147,6 +147,21 @@ void RCodeEditor::updateSideBarArea(const QRect &rect, int dy) {
 
 
 void RCodeEditor::keyPressEvent(QKeyEvent *event) {
+    int indentation = 0;
+    int indentationLevel = getIndentationSpaces();
+
+#if QT_VERSION >= 0x050A00
+//    int defaultIndent = tabStopDistance() / fontMetrics().averageCharWidth();
+    int tabCounts = indentationLevel * fontMetrics().averageCharWidth() / tabStopDistance();
+#else
+    const int defaultIndent = tabStopWidth() / fontMetrics().averageCharWidth();
+    int tabCounts = indentationLevel * fontMetrics().averageCharWidth() / tabStopWidth();
+#endif
+
+    if (textCursor().atStart()) {
+        indentLayer == 0;
+    }
+
     //==Process Auto Pair==
     if (event->text() == "(") {
         insertPlainText(")");
@@ -219,7 +234,8 @@ void RCodeEditor::keyPressEvent(QKeyEvent *event) {
                 }
             }
         }
-    } else if (event->text() == "'" || event->text() == "\"") {
+    }
+    else if (event->text() == "'" || event->text() == "\"") {
         QString lc;
         moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
         lc = textCursor().selectedText();
@@ -230,6 +246,26 @@ void RCodeEditor::keyPressEvent(QKeyEvent *event) {
             insertPlainText(event->text());
             moveCursor(QTextCursor::MoveOperation::Left);
         }
+    }
+
+    if (autoIndentation && event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
+//        && charUnderCursor() == '}' && charUnderCursor(-1) == '{')
+    {
+        QString indentStr;
+        //Why using this brace style cuz, if using style like me, it is too ugly
+        if (charUnderCursor(-1) == '{' && charUnderCursor(0) == '}') {
+            indentLayer++;
+        }
+        else if (charUnderCursor(-1) == '}') {
+            indentLayer--;
+        }
+
+        for (int i = 0; i < indentLayer; i++) {
+            indentStr += " ";
+        }
+
+        textCursor().movePosition(QTextCursor::StartOfLine);
+        textCursor().insertText(indentStr);
     }
     QPlainTextEdit::keyPressEvent(event);
 }
@@ -266,4 +302,13 @@ int RCodeEditor::getIndentationSpaces() {
     }
 
     return indentationLevel;
+}
+
+int RCodeEditor::countSpacesAtCurrentLine(int indentationLevel) {
+    int spaces = 0;
+    while (textCursor().columnNumber() > 0 && textCursor().block().text()[textCursor().columnNumber() - 1] == ' ') {
+        spaces++;
+        textCursor().movePosition(QTextCursor::PreviousCharacter);
+    }
+    return std::min(spaces, indentationLevel * defaultIndent);
 }
