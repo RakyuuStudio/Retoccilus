@@ -248,25 +248,11 @@ void RCodeEditor::keyPressEvent(QKeyEvent *event) {
         }
     }
 
-    if (autoIndentation && event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
-//        && charUnderCursor() == '}' && charUnderCursor(-1) == '{')
-    {
-        QString indentStr;
-        //Why using this brace style cuz, if using style like me, it is too ugly
-        if (charUnderCursor(-1) == '{' && charUnderCursor(0) == '}') {
-            indentLayer++;
-        }
-        else if (charUnderCursor(-1) == '}') {
-            indentLayer--;
-        }
+    if (autoIndentation && (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)) {
+        textCursor().movePosition(QTextCursor::MoveOperation::StartOfLine); //Maybe unnecessary
 
-        for (int i = 0; i < indentLayer; i++) {
-            indentStr += " ";
-        }
-
-        textCursor().movePosition(QTextCursor::StartOfLine);
-        textCursor().insertText(indentStr);
     }
+
     QPlainTextEdit::keyPressEvent(event);
 }
 

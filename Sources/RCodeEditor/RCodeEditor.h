@@ -6,6 +6,8 @@
 #include <QMimeData>
 #include <QFile>
 
+#include <stack>
+
 #include "RXmlReader.h"
 #include "RetoCodeEditor.h"
 #include "RXmlReader.h"
