@@ -5,7 +5,7 @@
 #include <QDateTime>
 #include <QStandardPaths>
 
-namespace RetoErrors {
+namespace Retoccilus {
     class RetoError {
     public:
         void generateRuntimeError(const QString &error) {

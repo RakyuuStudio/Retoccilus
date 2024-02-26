@@ -31,7 +31,9 @@ add_executable(Retoccilus main.cpp
         Sources/RCodeEditor/RCodeEditorSidebar.cpp
         ${RESOURCES}
         Sources/RCodeEditor/RSyntaxHighlighter.h
-        utils/RetoAST.h
+        utils/RRegex.h
+        utils/RetoGlobal.h
+        Compiler/LexicalAnalyzer/Rtcc_Lex.h
 )
 
 include_directories(

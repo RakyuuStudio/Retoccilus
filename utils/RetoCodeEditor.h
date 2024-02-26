@@ -5,7 +5,7 @@
 #include <QChar>
 #include <QFont>
 
-namespace RetoUtils {
+namespace Retoccilus {
     static QVector<QPair<QString, QString>> parentheses = {
             {"(", ")"},
             {"{", "}"},

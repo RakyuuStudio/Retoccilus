@@ -4,7 +4,7 @@
 #include "RetoCodeEditor.h"
 #include "RSyntaxHighlighter.h"
 
-using namespace RetoUtils;
+using namespace Retoccilus;
 
 RCodeEditor::RCodeEditor(QWidget *widget) :
         QPlainTextEdit(widget), autoIndentation(true), replaceTab(true), autoParenthese(true), indentLayer(0) {
@@ -215,7 +215,7 @@ void RCodeEditor::keyPressEvent(QKeyEvent *event) {
         }
     }
     else if (autoParenthese && event->text().length() == 1) {
-        for (const auto &pair : RetoUtils::parentheses) {
+        for (const auto &pair : Retoccilus::parentheses) {
             if (pair.first == event->text()) {
                 QString rightChar = charUnderCursor(0);
                 if (rightChar == pair.second) {

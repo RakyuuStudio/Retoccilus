@@ -9,17 +9,19 @@
 #include <QStandardPaths>
 #include <QTime>
 
+#include <unordered_set>
+
 #include "RetoErrors.h"
 
-using namespace RetoErrors;
+using namespace Retoccilus;
+using namespace std;
 
-namespace RetoUtils {
+namespace Retoccilus {
     class XmlReader {
     public:
         XmlReader() = default;
 
-        QStringList readKeywords(const QString &filePath)
-        {
+        QStringList readKeywords(const QString &filePath) {
             QStringList names;
 
             QFile file(filePath);
@@ -52,6 +54,18 @@ namespace RetoUtils {
         RetoError re;
     };
 
+    class stdCpp {
+    public:
+        static unordered_set<string> returnKeyWord() {
+            unique_ptr<XmlReader> xrPtr(new XmlReader);
+            QStringList keywordQs = xrPtr->readKeywords(":/config/Configuration/RCodeEditor/KeywordList/cppKeywords.xml");
+            unordered_set<string> nm;
+            for (const auto& keyword : keywordQs) {
+                nm.insert(keyword.toStdString());
+            }
+            return nm;
+        }
+    };
 }
 
 #endif

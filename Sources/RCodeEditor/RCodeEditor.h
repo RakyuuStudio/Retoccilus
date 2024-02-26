@@ -15,7 +15,7 @@
 #include "RCodeEditorSidebar.h"
 #include "RSyntaxHighlighter.h"
 
-using namespace RetoUtils;
+using namespace Retoccilus;
 
 class RCodeEditor : public QPlainTextEdit {
     Q_OBJECT

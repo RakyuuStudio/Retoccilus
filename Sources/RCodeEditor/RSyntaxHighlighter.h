@@ -20,7 +20,7 @@
 
 #include "RXmlReader.h"
 
-using namespace RetoUtils;
+using namespace Retoccilus;
 
 class RSyntaxHighlighter : public QSyntaxHighlighter {
 public:
@@ -34,8 +34,8 @@ public:
         multilineCommentFormat.setForeground(QColor(138, 174, 255).darker(100));
         multilineCommentFormat.setFontItalic(true);
 
-        preprocessorFormat.setForeground(QColor(124, 130, 248));
-        preprocessorFormat.setFontWeight(QFont::Bold);
+        preprocessorFormat.setForeground(QColor(124, 130, 248).lighter(100));
+//        preprocessorFormat.setFontWeight(QFont::Bold);
 
         parentheseFormat.setForeground(QColor("#fff906"));
         bracketFormat.setForeground(QColor("#33ffab"));
@@ -47,6 +47,9 @@ public:
 
         identifierFormat.setForeground(QColor("#8be9fd"));
         functionFormat.setForeground(QColor("#4ef579"));
+
+        numberFormat.setForeground(QColor("#9292f8"));
+
         QStringList keywordsL;
         keywordsL = xmlr.readKeywords(":/config/Configuration/RCodeEditor/KeywordList/cppKeywords.xml");
 
@@ -70,6 +73,7 @@ public:
         highlightingRules.append({QRegularExpression("R\"(.*?\\n?)\""), rawStrLitFormat});
         highlightingRules.append({QRegularExpression(R"(\\b[A-Za-z_]+[A-Za-z0-9_]*\\b)"), identifierFormat});
         highlightingRules.append({QRegularExpression("\\b[A-Za-z0-9_]+(?=\\()"), functionFormat});
+        highlightingRules.append({QRegularExpression("^(-)?(0b[01]+|0[0-7]+|0x[0-9A-Fa-f]+|\\d+)$"), numberFormat});
     }
 protected:
     void highlightBlock(const QString &text) override {
@@ -134,6 +138,7 @@ private:
     QTextCharFormat braceFormat, bracketFormat, parentheseFormat;
     QTextCharFormat apostropheFormat, quotationFormat, rawStrLitFormat;
     QTextCharFormat identifierFormat, functionFormat;
+    QTextCharFormat numberFormat;
     XmlReader xmlr;
 };
 
