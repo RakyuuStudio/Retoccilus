@@ -44,6 +44,11 @@ We welcome contributions from the community to improve Retoccilus. If you would 
 - Ensure your code follows our CoC, and is well-documented.
 - You can add a description on RakyuuStudio's Website
 
+### Special Thanks
+
+Special Thanks for LLVM Open-Source Community! 
+LLVM Project inspires my Compiler idea! Thanks!
+
 ### Issues
 
 Feel free to submit Pull Requests (PRs) and Issues.
