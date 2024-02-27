@@ -131,5 +131,4 @@ private:
     QTextCharFormat numberFormat;
     XmlReader xmlr;
 };
-
 #endif //RSyntaxHighlighter_h
