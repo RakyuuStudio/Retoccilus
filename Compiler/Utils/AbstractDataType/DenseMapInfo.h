@@ -1,0 +1,8 @@
+//
+// Created by A on 2024/2/27.
+//
+
+#ifndef RETOCCILUS_DENSEMAPINFO_H
+#define RETOCCILUS_DENSEMAPINFO_H
+
+#endif //RETOCCILUS_DENSEMAPINFO_H

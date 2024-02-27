@@ -34,11 +34,24 @@ add_executable(Retoccilus main.cpp
         utils/RRegex.h
         utils/RetoGlobal.h
         Compiler/LexicalAnalyzer/Rtcc_Lex.h
+        Compiler/Utils/TokenType.h
+        Compiler/Utils/FileEntry.h
+        Compiler/Utils/Basic/DenseMapInfo.h
+        Compiler/Utils/Basic/Hashing.h
+        Compiler/Utils/Basic/PointerUnionX.h
+        Compiler/Utils/Basic/StringMap.h
+        Compiler/Utils/Basic/StringReference.h
+        Compiler/Utils/SpUtils/ErrorX.h
+        Compiler/Utils/SpUtils/File/UniqueID.h
+        Compiler/Utils/Basic/CustomizableOptional.h
+        Compiler/Utils/Basic/DirectoryEntrance.h
+        Compiler/Utils/Basic/CompilerReference.h
 )
 
 include_directories(
         utils/
         Sources/RCodeEditor/
+        Compiler/
 )
 
 target_link_libraries(Retoccilus
