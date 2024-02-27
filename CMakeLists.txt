@@ -33,25 +33,6 @@ add_executable(Retoccilus main.cpp
         Sources/RCodeEditor/RSyntaxHighlighter.h
         utils/RRegex.h
         utils/RetoGlobal.h
-        Compiler/LexicalAnalyzer/Rtcc_Lex.h
-        Compiler/Utils/TokenType.h
-        Compiler/Utils/FileEntry.h
-        Compiler/Utils/AbstractDataType/DenseMapInfo.h
-        Compiler/Utils/AbstractDataType/Hashing.h
-        Compiler/Utils/AbstractDataType/PointerUnionX.h
-        Compiler/Utils/AbstractDataType/StringMap.h
-        Compiler/Utils/AbstractDataType/StringReference.h
-        Compiler/Utils/SpUtils/ErrorX.h
-        Compiler/Utils/SpUtils/File/UniqueID.h
-        Compiler/Utils/Basic/CustomizableOptional.h
-        Compiler/Utils/Basic/DirectoryEntrance.h
-        Compiler/Utils/Basic/CompilerReference.h
-        Compiler/Utils/SpUtils/AlignOf.h
-        Compiler/Utils/SpUtils/DataTypes.h
-        Compiler/Utils/SpUtils/ErrorHandling.h
-        Compiler/Utils/SpUtils/SwapByteOrder.h
-        Compiler/Utils/SpUtils/type_trait.h
-        Compiler/Utils/SpUtils/Compiler.h
 )
 
 include_directories(
