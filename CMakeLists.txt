@@ -20,7 +20,6 @@ qt_add_resources(RESOURCES Resources/Resources.qrc)
 add_executable(Retoccilus main.cpp
         Sources/MainWindow/rmainwindow.h
         Sources/MainWindow/rmainwindow.cpp
-        Sources/RCodeEditor/LineNumberArea.h
         Sources/RCodeEditor/RCodeEditor.h
         utils/RXmlReader.h
         utils/RetoErrors.h
