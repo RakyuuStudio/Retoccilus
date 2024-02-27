@@ -13,6 +13,8 @@
  * Normal Characters: #ffffff         255, 255, 255
  */
 
+//NOTICE: Dracula Theme Inspired this Color Scheme Idea! Thanks!
+
 #include <QTextDocument>
 #include <QSyntaxHighlighter>
 #include <QRegularExpression>
