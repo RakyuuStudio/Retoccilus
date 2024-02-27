@@ -3,6 +3,7 @@
 
 //NOTICE: Dracula Theme inspired this Color Scheme! Thanks!
 
+
 #include <QTextDocument>
 #include <QSyntaxHighlighter>
 #include <QRegularExpression>
