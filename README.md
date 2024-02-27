@@ -54,7 +54,10 @@ We appreciate your interest in contributing to this project, and we will review 
 
 ### License
 
-Retoccilus is licensed under the [GNU General Public License v3.0 (GPL-3.0)](https://www.gnu.org/licenses/gpl-3.0.en.html). You are free to use, modify, and distribute this software under the terms of the GPL v3 license. Please refer to the LICENSE file for more details regarding the terms and conditions of the GPL v3 license.
+Retoccilus is licensed under the [GNU General Public License v3.0 (GPL-3.0)](https://www.gnu.org/licenses/gpl-3.0.en.html). You are free to use, modify, and distribute this software under the terms of the GPL v3 license. Please refer to the LICENSE file for more details regarding the terms and conditions of the GPL v3 license.  
+
+Retoccilus using some open-source projects in some places.  
+For more information, look at the LICENSES (Remember the S) file for more information.
 
 ### Contact
 

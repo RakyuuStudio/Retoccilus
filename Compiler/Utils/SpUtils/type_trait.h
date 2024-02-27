@@ -1,0 +1,8 @@
+//
+// Created by A on 2024/2/27.
+//
+
+#ifndef RETOCCILUS_TYPE_TRAIT_H
+#define RETOCCILUS_TYPE_TRAIT_H
+
+#endif //RETOCCILUS_TYPE_TRAIT_H

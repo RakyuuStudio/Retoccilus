@@ -86,36 +86,36 @@ namespace RetoCompiler {
             return !(lhs == rhs);
         }
 
-        friend hash_code hash_value(FileEntryReference Ref) {
-            return hash_value(&Ref.getFileEntry());
+        friend hash_code hash_value(FileEntranceReference Ref) {
+            return hash_value(&Ref.getFileEntrance());
         }
 
         struct MapValue;
         using MapEntry = StringMapEntry <ErrorOr<MapValue>>;
 
         struct MapValue {
-            PointerUnion<FileEntry *, const MapEntry *> V;
+            PointerUnion<FileEntrance *, const MapEntry *> V;
             DirectoryEntryRef Dir;
 
             MapValue() = delete;
 
-            MapValue(FileEntry &FE, DirectoryEntryRef Dir) : V(&FE), Dir(Dir) {}
+            MapValue(FileEntrance &FE, DirectoryEntryRef Dir) : V(&FE), Dir(Dir) {}
 
             MapValue(MapEntry &ME, DirectoryEntryRef Dir) : V(&ME), Dir(Dir) {}
         }
 
-        bool isSameRef(const FileEntryReference &rhs) const { return ME == rhs.ME; }
+        bool isSameRef(const FileEntranceReference &rhs) const { return ME == rhs.ME; }
 
-        operator const FileEntry *() const { return &getFileEntry(); }
+        operator const FileEntrance *() const { return &getFileEntrance(); }
 
-        FileEntryReference() = delete;
+        FileEntranceReference() = delete;
 
-        explicit FileEntryReference(const MapEntry &ME) : ME(&ME) {
+        explicit FileEntranceReference(const MapEntry &ME) : ME(&ME) {
             assert(ME.second && "Expected payload");
             assert(ME.second->V && "Expected non-null");
         }
 
-        const clang::FileEntryReference::MapEntry &getMapEntry() const { return *ME; }
+        const clang::FileEntranceReference::MapEntry &getMapEntry() const { return *ME; }
 
         const MapEntry &getBaseMapEntry() const {
             const MapEntry *Base = ME;
@@ -125,48 +125,48 @@ namespace RetoCompiler {
         }
 
     private:
-        friend class FileMgr::MapEntryOptionalStorage<FileEntryReference>;
+        friend class FileMgr::MapEntryOptionalStorage<FileEntranceReference>;
 
         struct optional_none_tag {
         };
 
-        FileEntryReference(optional_none_tag): ME(nullptr) {}
+        FileEntranceReference(optional_none_tag): ME(nullptr) {}
 
         bool hasOptionalValue() const { return ME; }
 
-        friend struct DenseMapInfo<FileEntryReference>;
+        friend struct DenseMapInfo<FileEntranceReference>;
         struct dense_map_empty_tag {
         };
         struct dense_map_tombstone_tag {
         };
 
-        FileEntryReference(dense_map_empty_tag)
+        FileEntranceReference(dense_map_empty_tag)
                 : ME(DenseMapInfo<const MapEntry *>::getEmptyKey()) {}
-        FileEntryReference(dense_map_tombstone_tag)
+        FileEntranceReference(dense_map_tombstone_tag)
                 : ME(DenseMapInfo<const MapEntry *>::getTombstoneKey()) {}
 
         bool isSpecialDenseMapKey() const {
-            return isSameRef(FileEntryReference(dense_map_empty_tag())) ||
-                   isSameRef(FileEntryReference(dense_map_tombstone_tag()));
+            return isSameRef(FileEntranceReference(dense_map_empty_tag())) ||
+                   isSameRef(FileEntranceReference(dense_map_tombstone_tag()));
         }
 
         const MapEntry *ME;
     };
 
-    static_assert(sizeof(FileEntryReference) == sizeof(const FileEntry *),
-                  "FileEntryReference must avoid size overhead");
+    static_assert(sizeof(FileEntranceReference) == sizeof(const FileEntrance *),
+                  "FileEntranceReference must avoid size overhead");
 
-    static_assert(is_trivially_copyable<FileEntryReference>::value,
-                  "FileEntryReference must be trivially copyable");
+    static_assert(is_trivially_copyable<FileEntranceReference>::value,
+                  "FileEntranceReference must be trivially copyable");
 
-    using OptionalFileEntryReference = CustomizableOptional<FileEntryReference>;
+    using OptionalFileEntranceReference = CustomizableOptional<FileEntranceReference>;
 
     namespace optionalDetailReference {
         template<>
-        class OptionalStorage<clang::FileEntryReference>
-                : public clang::FileMgr::MapEntryOptionalStorage<clang::FileEntryReference> {
+        class OptionalStorage<clang::FileEntranceReference>
+                : public clang::FileMgr::MapEntryOptionalStorage<clang::FileEntranceReference> {
             using StorageImpl =
-                    clang::FileMgr::MapEntryOptionalStorage<clang::FileEntryReference>;
+                    clang::FileMgr::MapEntryOptionalStorage<clang::FileEntranceReference>;
 
         public:
             OptionalStorage() = default;
@@ -175,37 +175,37 @@ namespace RetoCompiler {
             explicit OptionalStorage(in_place_t, ArgTypes &&...Args)
                     : StorageImpl(in_place_t{}, forward<ArgTypes>(Args)...) {}
 
-            OptionalStorage &operator=(clang::FileEntryReference Ref) {
+            OptionalStorage &operator=(clang::FileEntranceReference Ref) {
                 StorageImpl::operator=(Ref);
                 return *this;
             }
         };
 
-        static_assert(sizeof(OptionalFileEntryReference) == sizeof(FileEntryReference),
-                      "OptionalFileEntryReference must avoid size overhead");
+        static_assert(sizeof(OptionalFileEntranceReference) == sizeof(FileEntranceReference),
+                      "OptionalFileEntranceReference must avoid size overhead");
 
-        static_assert(is_trivially_copyable<OptionalFileEntryReference>::value,
-                      "OptionalFileEntryReference should be trivially copyable");
+        static_assert(is_trivially_copyable<OptionalFileEntranceReference>::value,
+                      "OptionalFileEntranceReference should be trivially copyable");
 
     } //namespace end optionalDetailReference
 } //namespace end RetoCompiler
 
 namespace retccUtils {
     template<>
-    struct DenseMapInfo<clang::FileEntryReference> {
-        static inline clang::FileEntryReference getEmptyKey() {
-            return clang::FileEntryReference(clang::FileEntryReference::dense_map_empty_tag());
+    struct DenseMapInfo<clang::FileEntranceReference> {
+        static inline clang::FileEntranceReference getEmptyKey() {
+            return clang::FileEntranceReference(clang::FileEntranceReference::dense_map_empty_tag());
         }
 
-        static inline clang::FileEntryReference getTombstoneKey() {
-            return clang::FileEntryReference(clang::FileEntryReference::dense_map_tombstone_tag());
+        static inline clang::FileEntranceReference getTombstoneKey() {
+            return clang::FileEntranceReference(clang::FileEntranceReference::dense_map_tombstone_tag());
         }
 
-        static unsigned getHashValue(clang::FileEntryReference Val) {
+        [[maybe_unused]] static unsigned getHashValue(clang::FileEntranceReference Val) {
             return hash_value(Val);
         }
 
-        static bool isEqual(clang::FileEntryReference lhs, clang::FileEntryReference rhs) {
+        [[maybe_unused]] static bool isEqual(clang::FileEntranceReference lhs, clang::FileEntranceReference rhs) {
             if (lhs.isSameRef(rhs))
                 return true;
 
@@ -215,22 +215,22 @@ namespace retccUtils {
             return lhs == rhs;
         }
 
-        static unsigned getHashValue(const clang::FileEntry *Val) {
+        [[maybe_unused]] static unsigned getHashValue(const clang::FileEntrance *Val) {
             return hash_value(Val);
         }
 
-        static bool isEqual(const clang::FileEntry *lhs, clang::FileEntryReference rhs) {
+        [[maybe_unused]] static bool isEqual(const clang::FileEntrance *lhs, clang::FileEntranceReference rhs) {
             if (rhs.isSpecialDenseMapKey())
                 return false;
             return lhs == rhs;
         }
     };
 
-    static unsigned getHashValue(const clang::FileEntry *Val) {
+    static unsigned getHashValue(const clang::FileEntrance *Val) {
         return hash_value(Val);
     }
 
-    static bool isEqual(const clang::FileEntry *lhs, clang::FileEntryReference rhs) {
+    static bool isEqual(const clang::FileEntrance *lhs, clang::FileEntranceReference rhs) {
         if (rhs.isSpecialDenseMapKey())
             return false;
         return lhs == rhs;
@@ -239,32 +239,32 @@ namespace retccUtils {
 } //namespace end retccUtils
 
 namespace RetoCompiler {
-    inline bool operator==(const FileEntry *lhs, const OptionalFileEntryReference &rhs) {
-        return lhs == (rhs ? &rhs->getFileEntry() : nullptr);
+    inline bool operator==(const FileEntrance *lhs, const OptionalFileEntranceReference &rhs) {
+        return lhs == (rhs ? &rhs->getFileEntrance() : nullptr);
     }
 
-    inline bool operator==(const OptionalFileEntryReference &lhs, const FileEntry *rhs) {
-        return (lhs ? &lhs->getFileEntry() : nullptr) == rhs;
+    inline bool operator==(const OptionalFileEntranceReference &lhs, const FileEntrance *rhs) {
+        return (lhs ? &lhs->getFileEntrance() : nullptr) == rhs;
     }
 
-    inline bool operator!=(const FileEntry *lhs, const OptionalFileEntryReference &rhs) {
+    inline bool operator!=(const FileEntrance *lhs, const OptionalFileEntranceReference &rhs) {
         return !(lhs == rhs);
     }
 
-    inline bool operator!=(const OptionalFileEntryReference &lhs, const FileEntry *rhs) {
+    inline bool operator!=(const OptionalFileEntranceReference &lhs, const FileEntrance *rhs) {
         return !(lhs == rhs);
     }
 
-    class FileEntry {
+    class FileEntrance {
         friend class FileManager;
 
-        friend class FileEntryTestHelper;
+        friend class FileEntranceTestHelper;
 
-        FileEntry();
+        FileEntrance();
 
-        FileEntry(const FileEntry &) = delete;
+        FileEntrance(const FileEntrance &) = delete;
 
-        FileEntry &operator=(const FileEntry &) = delete;
+        FileEntrance &operator=(const FileEntrance &) = delete;
 
         string RealPathName;
         off_t Size = 0;
@@ -279,9 +279,9 @@ namespace RetoCompiler {
 
         unique_ptr<MemoryBuffer> Content;
 
-        OptionalFileEntryReference LastRef;
+        OptionalFileEntranceReference LastRef;
     public:
-        ~FileEntry();
+        ~FileEntrance();
 
         StringRef getName() const { return LastRef->getName(); }
 
@@ -302,21 +302,21 @@ namespace RetoCompiler {
         void closeFile() const;
     };
 
-    off_t FileEntryReference::getSize() const { return getFileEntry().getSize(); }
+    off_t FileEntranceReference::getSize() const { return getFileEntrance().getSize(); }
 
-    unsigned FileEntryReference::getUID() const { return getFileEntry().getUID(); }
+    unsigned FileEntranceReference::getUID() const { return getFileEntrance().getUID(); }
 
-    const sys::fs::UniqueID &FileEntryReference::getUniqueID() const {
-        return getFileEntry().getUniqueID();
+    const sys::fs::UniqueID &FileEntranceReference::getUniqueID() const {
+        return getFileEntrance().getUniqueID();
     }
 
-    time_t FileEntryReference::getModificationTime() const {
-        return getFileEntry().getModificationTime();
+    time_t FileEntranceReference::getModificationTime() const {
+        return getFileEntrance().getModificationTime();
     }
 
-    bool FileEntryReference::isNamedPipe() const { return getFileEntry().isNamedPipe(); }
+    bool FileEntranceReference::isNamedPipe() const { return getFileEntrance().isNamedPipe(); }
 
-    void FileEntryReference::closeFile() const { getFileEntry().closeFile(); }
+    void FileEntranceReference::closeFile() const { getFileEntrance().closeFile(); }
 } //namespace end RetoCompiler
 
 #endif //Rtcc_PreprocessorLexer_h
