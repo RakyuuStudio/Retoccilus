@@ -1,8 +1,19 @@
 #ifndef RSyntaxHighlighter_h
 #define RSyntaxHighlighter_h
 
-//NOTICE: Dracula Theme inspired this Color Scheme! Thanks!
+/*
+ * Keyword: #ff6c85                   255, 108, 133
+ * Comment: #8aaeff                   138, 174, 255
+ * Preprocessor: #7c82f8              124, 130, 248
+ * Header File Quotation: #f1fa8c     241, 250, 140
+ * Used Identifier: #4ff966           241, 250, 140
+ * Class: #5ecdfc                     94,  205, 252
+ * Symbols: #fff906                   255, 249, 6
+ * Numbers: #9292f8                   146, 146, 248
+ * Normal Characters: #ffffff         255, 255, 255
+ */
 
+//NOTICE: Dracula Theme Inspired this Color Scheme Idea! Thanks!
 
 #include <QTextDocument>
 #include <QSyntaxHighlighter>
@@ -132,4 +143,5 @@ private:
     QTextCharFormat numberFormat;
     XmlReader xmlr;
 };
+
 #endif //RSyntaxHighlighter_h
