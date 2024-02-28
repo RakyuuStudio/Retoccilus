@@ -51,6 +51,8 @@ private:
     QWidget *sideBarArea;
     QStringList keywordList;
     XmlReader xr;
+
+    int spacesFront();
 };
 
 #endif

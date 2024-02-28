@@ -1,7 +1,8 @@
 #ifndef RSyntaxHighlighter_h
 #define RSyntaxHighlighter_h
 
-//NOTICE: Dracula Theme Inspired this Color Scheme Idea! Thanks!
+//NOTICE: Dracula Theme inspired this Color Scheme! Thanks!
+
 
 #include <QTextDocument>
 #include <QSyntaxHighlighter>
@@ -131,5 +132,4 @@ private:
     QTextCharFormat numberFormat;
     XmlReader xmlr;
 };
-
 #endif //RSyntaxHighlighter_h
