@@ -249,8 +249,7 @@ void RCodeEditor::keyPressEvent(QKeyEvent *event) {
     }
 
     if (autoIndentation && (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)) {
-        textCursor().movePosition(QTextCursor::MoveOperation::StartOfLine); //Maybe unnecessary
-
+        //
     }
 
     QPlainTextEdit::keyPressEvent(event);
@@ -298,3 +297,4 @@ int RCodeEditor::countSpacesAtCurrentLine(int indentationLevel) {
     }
     return std::min(spaces, indentationLevel * defaultIndent);
 }
+
