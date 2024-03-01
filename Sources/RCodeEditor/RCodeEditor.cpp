@@ -14,6 +14,8 @@ RCodeEditor::RCodeEditor(QWidget *widget) :
     connect(this, &RCodeEditor::updateRequest, this, &RCodeEditor::updateSideBarArea);
     connect(this, &RCodeEditor::cursorPositionChanged, this, &RCodeEditor::highlightCurrentLine);
 
+    indentLayer = 0;
+
     updateSideBarAreaWidth(0);
     highlightCurrentLine();
 }
@@ -109,9 +111,7 @@ int RCodeEditor::sideBarAreaWidth() {
 }
 
 void RCodeEditor::updateSideBarAreaWidth(int newBlockCount) {
-    //I DON'T KNOW WHAT THE HECK THE "newBlockCount" VARIABLE EXIST
-    //BECAUSE THIS VARIABLE IS NEED TO MATCH THE PARAMETER LIST IN CONNECT FUNCTION HOLY FUCK
-    Q_UNUSED(newBlockCount); //I DON'T NEED YOU MORE, This is literally unnecessary
+    Q_UNUSED(newBlockCount);
     setViewportMargins(sideBarAreaWidth(), 0, 0, 0);
 }
 
@@ -147,112 +147,109 @@ void RCodeEditor::updateSideBarArea(const QRect &rect, int dy) {
 
 
 void RCodeEditor::keyPressEvent(QKeyEvent *event) {
-    int indentation = 0;
-    int indentationLevel = getIndentationSpaces();
-
-#if QT_VERSION >= 0x050A00
-//    int defaultIndent = tabStopDistance() / fontMetrics().averageCharWidth();
-    int tabCounts = indentationLevel * fontMetrics().averageCharWidth() / tabStopDistance();
-#else
-    const int defaultIndent = tabStopWidth() / fontMetrics().averageCharWidth();
-    int tabCounts = indentationLevel * fontMetrics().averageCharWidth() / tabStopWidth();
-#endif
-
-    if (textCursor().atStart()) {
-        indentLayer == 0;
-    }
-
-    //==Process Auto Pair==
-    if (event->text() == "(") {
-        insertPlainText(")");
-        moveCursor(QTextCursor::MoveOperation::Left);
-    }
-    else if (event->text() == ")") {
-        QString lc;
-        moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
-        lc = textCursor().selectedText();
-        moveCursor(QTextCursor::Right, QTextCursor::MoveAnchor);
-        if (lc == "(") {
-            moveCursor(QTextCursor::MoveOperation::Right);
-            return;
+//    indentLayer = 0;
+    if (event->key() == '(') {
+        insertPlainText("()");
+        moveCursor(QTextCursor::PreviousCharacter);
+    } else if (event->key() == '{') {
+        insertPlainText("{}");
+        moveCursor(QTextCursor::PreviousCharacter);
+    } else if (event->key() == '[') {
+        insertPlainText("[]");
+        moveCursor(QTextCursor::PreviousCharacter);
+    } else if (event->key() == '\'') {
+        if (charUnderCursor(-1) == '\'') {
+            moveCursor(QTextCursor::NextCharacter);
+        } else {
+            insertPlainText("''");
+            moveCursor(QTextCursor::PreviousCharacter);
         }
-        else {
-            insertPlainText(")");
+    } else if (event->key() == '\"') {
+        if (charUnderCursor(-1) == '\"') {
+            moveCursor(QTextCursor::NextCharacter);
+        } else {
+            insertPlainText("\"\"");
+            moveCursor(QTextCursor::PreviousCharacter);
         }
+    } else if (event->key() == ')' && charUnderCursor() == ')') {
+        moveCursor(QTextCursor::NextCharacter);
+    } else if (event->key() == '}' && charUnderCursor() == '}') {
+        moveCursor(QTextCursor::NextCharacter);
+    } else if (event->key() == ']' && charUnderCursor() == ']') {
+        moveCursor(QTextCursor::NextCharacter);
     }
-    else if (event->text() == "[") {
-        insertPlainText("]");
-        moveCursor(QTextCursor::MoveOperation::Left);
-    }
-    else if (event->text() == "]") {
-        QString lc;
-        moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
-        lc = textCursor().selectedText();
-        moveCursor(QTextCursor::Right, QTextCursor::MoveAnchor);
-        if (lc == "[") {
-            moveCursor(QTextCursor::MoveOperation::Right);
-            return;
-        }
-        else {
-            insertPlainText("]");
-        }
-    }
-    else if (event->text() == "{") {
-        insertPlainText("}");
-        moveCursor(QTextCursor::MoveOperation::Left);
-    }
-    else if (event->text() == "}") {
-        QString lc;
-        moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
-        lc = textCursor().selectedText();
-        moveCursor(QTextCursor::Right, QTextCursor::MoveAnchor);
-        if (lc == "{") {
-            moveCursor(QTextCursor::MoveOperation::Right);
-            return;
-        }
-        else {
-            insertPlainText("}");
-        }
-    }
-    else if (autoParenthese && event->text().length() == 1) {
-        for (const auto &pair : Retoccilus::parentheses) {
-            if (pair.first == event->text()) {
-                QString rightChar = charUnderCursor(0);
-                if (rightChar == pair.second) {
-                    moveCursor(QTextCursor::MoveOperation::Right);
+    else if (event->key() == Qt::Key_Return) {
+        if (charUnderCursor(-1) == '{') {
+            qDebug() << indentLayer;
+            insertPlainText("\n");
+            if (autoIndentation) {
+                if (spacesFront() > 0) {
+                    insertPlainText(QString(countSpacesAtCurrentLine(getIndentationSpaces()) * indentLayer, ' '));
                 } else {
-                    insertPlainText(event->text() + pair.second);
-                    moveCursor(QTextCursor::MoveOperation::Left);
-                }
-                return;
-            } else if (pair.second == event->text()) {
-                QString rightChar = charUnderCursor(0);
-                if (rightChar == pair.second) {
-                    moveCursor(QTextCursor::MoveOperation::Right);
-                } else if (charUnderCursor(-1) == pair.first) {
-                    insertPlainText(pair.second);
+                    indentLayer++;
+                    QTextCursor cursor = textCursor();
+                    cursor.movePosition(QTextCursor::StartOfBlock);
+                    cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+                    QString text = cursor.selectedText();
+                    int spaces = countSpacesAtCurrentLine(getIndentationSpaces());
+                    if (text.endsWith('{')) {
+                        spaces += defaultIndent;
+                    }
+                    insertPlainText("\n");
+                    cursor.movePosition(QTextCursor::Up);
+                    setTextCursor(cursor);
+                    update();
+                    if (indentLayer > 1) {
+                        qDebug() << "YES";
+                        qDebug() << indentLayer;
+//                        insertPlainText(QString(4 * indentLayer, ' '));
+                        cursor.movePosition(QTextCursor::Down);
+                        cursor.movePosition(QTextCursor::StartOfLine);
+                        setTextCursor(cursor);
+                        update();
+                        cursor.insertText(QString(4 * (indentLayer - 1), ' '));
+                        cursor.movePosition(QTextCursor::Up);
+                        setTextCursor(cursor);
+                        update();
+                        insertPlainText(QString(4 * indentLayer, ' '));
+                    } else if (indentLayer == 1) {
+                        qDebug() << "NO";
+                        insertPlainText(QString(4 * indentLayer, ' '));
+                    }
+                    setTextCursor(cursor);
+                    update();
                 }
             }
         }
-    }
-    else if (event->text() == "'" || event->text() == "\"") {
-        QString lc;
-        moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
-        lc = textCursor().selectedText();
-        moveCursor(QTextCursor::Right, QTextCursor::MoveAnchor);
-        if (lc == event->text()) {
-            moveCursor(QTextCursor::MoveOperation::Right);
-        } else {
-            insertPlainText(event->text());
-            moveCursor(QTextCursor::MoveOperation::Left);
+        else if (charUnderCursor(-1) == '}') {
+            indentLayer--;
+            insertPlainText("\n");
+            if (autoIndentation) {
+                QTextCursor cursor = textCursor();
+                cursor.movePosition(QTextCursor::StartOfBlock);
+                cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+                QString text = cursor.selectedText();
+                int spaces = countSpacesAtCurrentLine(getIndentationSpaces());
+                if (text.endsWith('{')) {
+                    spaces += defaultIndent;
+                }
+                insertPlainText("\n");
+                cursor.movePosition(QTextCursor::Up);
+                setTextCursor(cursor);
+                update();
+                insertPlainText(QString(4 * indentLayer, ' '));
+            }
+        }
+        else {
+            insertPlainText("\n");
+//            if (autoIndentation) {
+//                insertPlainText(QString(4 * indentLayer, ' '));
+//            }
         }
     }
-
-    if (autoIndentation && (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)) {
-        //
+    else {
+        QPlainTextEdit::keyPressEvent(event);
     }
-
-    QPlainTextEdit::keyPressEvent(event);
 }
 
 QChar RCodeEditor::charUnderCursor(int offset) const {
@@ -269,32 +266,52 @@ QChar RCodeEditor::charUnderCursor(int offset) const {
 }
 
 int RCodeEditor::getIndentationSpaces() {
-    auto blockText = textCursor().block().text(); //Clang-Tidy recommend me
     int indentationLevel = 0;
-
-    for (int i = 0; i < blockText.size() && QString("\t ").contains(blockText[i]); i++) {
-        if (blockText[i] == ' ') {
-            indentationLevel++;
+    QTextBlock block = textCursor().block();
+    while (block.isValid()) {
+        QString text = block.text();
+        for (QChar c : text) {
+            if (c == ' ') {
+                indentationLevel++;
+            } else if (c == '\t') {
+                indentationLevel += defaultIndent;
+            } else {
+                return indentationLevel / defaultIndent;
+            }
         }
-        else {
-#if QT_VERSION >= 0x050A00
-            //If Qt major version >= 5 (Qt 5.0.0 above)
-            const int defaultIndent = tabStopDistance() / fontMetrics().averageCharWidth();
-#else
-            const int defaultIndent = tabtStopWidth() / fontMetrics().averageCharWidth();
-#endif
-        }
+        block = block.previous();
     }
-
-    return indentationLevel;
+    return 0;
 }
 
 int RCodeEditor::countSpacesAtCurrentLine(int indentationLevel) {
+    QTextBlock block = textCursor().block();
+    QString text = block.text();
     int spaces = 0;
-    while (textCursor().columnNumber() > 0 && textCursor().block().text()[textCursor().columnNumber() - 1] == ' ') {
-        spaces++;
-        textCursor().movePosition(QTextCursor::PreviousCharacter);
+    for (QChar c : text) {
+        if (c == ' ') {
+            spaces++;
+        } else if (c == '\t') {
+            spaces += defaultIndent;
+        } else {
+            break;
+        }
     }
-    return std::min(spaces, indentationLevel * defaultIndent);
+    return spaces - indentationLevel * defaultIndent;
 }
 
+int RCodeEditor::spacesFront() {
+    QTextCursor cursor = textCursor();
+    cursor.movePosition(QTextCursor::StartOfLine);
+    int spaces = 0;
+    while (true) {
+        cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor, 1);
+        if (cursor.selectedText() == " ") {
+            spaces++;
+        }
+        else {
+            break;
+        }
+    }
+    return spaces;
+}

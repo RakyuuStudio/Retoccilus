@@ -37,7 +37,6 @@ add_executable(Retoccilus main.cpp
 include_directories(
         utils/
         Sources/RCodeEditor/
-        Compiler/
 )
 
 target_link_libraries(Retoccilus
