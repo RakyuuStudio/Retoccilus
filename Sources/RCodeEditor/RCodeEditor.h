@@ -1,58 +1,75 @@
-#ifndef RCodeEditor_H
-#define RCodeEditor_H
+#ifndef RCodeEditor_Main_h
+#define RCodeEditor_Main_h
 
-#include <QPlainTextEdit>
-#include <QTextCursor>
-#include <QMimeData>
-#include <QFile>
+#pragma once
 
-#include <stack>
+#include <QTextEdit>
 
-#include "RXmlReader.h"
-#include "RetoCodeEditor.h"
-#include "RXmlReader.h"
+class RSideBar;
+class QCompleter;
+class RSyntaxStyle;
+class RStyleSyntaxHighlighter;
+class RBorderTextProperty;
 
-#include "RCodeEditorSidebar.h"
-#include "RSyntaxHighlighter.h"
-
-using namespace Retoccilus;
-
-class RCodeEditor : public QPlainTextEdit {
+class RCodeEditor : public QTextEdit {
     Q_OBJECT
 public:
-    explicit RCodeEditor(QWidget *widget = nullptr); //Constructor
-    ~RCodeEditor(); //Destructor
+    explicit RCodeEditor(QWidget *widget = nullptr);
+
+    RCodeEditor(const RCodeEditor &) = delete;
+    RCodeEditor &operator=(const RCodeEditor &) = delete;
+
     int getFirstVisibleBlock();
-
-    void sideBarAreaPaintEvent(QPaintEvent *event);
-    int sideBarAreaWidth();
-    QChar charUnderCursor(int offset = 0) const;
-    int getIndentationSpaces();
-    int countSpacesAtCurrentLine(int indentationLevel);
+    void setHighlighter(RStyleSyntaxHighlighter *highlighter);
+    void setSyntaxStyle(RSyntaxStyle *style);
+    void setAutoParentheses(bool enabled);
+    bool autoParentheses() const;
+    void setTabReplace(bool enabled);
+    bool tabReplace() const;
+    void setTabReplaceSize(int val);
+    int tabReplaceSize() const;
+    void setAutoIndentation(bool enabled);
+    bool autoIndentation() const;
+    void setCompleter(QCompleter *completer);
+    [[nodiscard]] QCompleter *completer() const;
+public slots:
+    void insertCompletion(QString s);
+    void updateLineNumberAreaWidth(int);
+    void updateLineNumberArea(const QRect &rect);
+    void updateExtraSelection();
+    void updateStyle();
+    void onSelectionChanged();
 protected:
-    void resizeEvent(QResizeEvent *event) override;
-    void wheelEvent(QWheelEvent *event) override;
-    void keyPressEvent(QKeyEvent *event) override;
-private slots:
-    void updateSideBarAreaWidth(int newBlockCount);
-    void highlightCurrentLine();
-    void updateSideBarArea(const QRect &rect, int dy);
+    void insertFromMimeData(const QMimeData *source) override;
+    void paintEvent(QPaintEvent *e) override;
+    void resizeEvent(QResizeEvent *e) override;
+    void keyPressEvent(QKeyEvent *e) override;
+    void focusInEvent(QFocusEvent *e) override;
+    void wheelEvent(QWheelEvent *e) override;
 private:
-    bool autoIndent() const;
-    void setIndentation(bool i);
-private:
-    bool autoIndentation;
-    bool replaceTab;
-    bool autoParenthese;
+    void initDocumentLayoutHandlers();
+    void initFont();
+    void handleSelectionQuery(const QTextCursor& cursor);
+    void updateLineGeometry();
+    bool proceedCompleterBegin(QKeyEvent *e);
+    void proceedCompleterEnd(QKeyEvent *e);
+    QChar charUnderCursor(int offset = 0) const;
+    QString wordUnderCursor() const;
+    void highlightCurrentLine(QList<QTextEdit::ExtraSelection> &extraSelection);
+    void highlightParenthesis(QList<QTextEdit::ExtraSelection> &extraSelection);
+    int getIndentationSpaces();
 
-    int defaultIndent = tabStopDistance() / fontMetrics().averageCharWidth();
-    int indentLayer = 0;
 private:
-    QWidget *sideBarArea;
-    QStringList keywordList;
-    XmlReader xr;
+    RStyleSyntaxHighlighter *highlighter;
+    RSyntaxStyle *syntaxStyle;
+    RSideBar *sidebar;
+    RBorderTextProperty *btp;
+    QCompleter *pCompleter;
 
-    int spacesFront();
+    bool pAutoIndentation;
+    bool pAutoParenthese;
+    bool pReplaceTab;
+    QString pTabReplace;
 };
 
 #endif

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme-configuration-codeeditor version="1.0" name="Default" author="Rakyuu Studio and Dracula Theme Team">
+    <style name="Text" foreground="#000000" background="#ffffff"/>
+    <style name="Selection" background="#44475a"/>
+    <style name="LineNumber" foreground="#6272a4"/>
+    <style name="SearchResult" foreground="#d57544" bold="true"/>
+    <style name="Parentheses" foreground="#f8f8f2" bold="true"/>
+    <style name="ParenthesesMismatch" foreground="#f8f8f2"/>
+    <style name="CurrentLine" foreground="#000000" background="#383b4c"/>
+    <style name="CurrentLineNumber" foreground="#f8f8f2" background="#FFFFFF"/>
+    <style name="Occurrences" background="#b4b4b4"/>
+    <style name="OccurrencesUnused" underlineColor="#808000" underlineStyle="Single"/>
+    <style name="Number" foreground="#000080"/>
+    <style name="String" foreground="#008000"/>
+    <style name="Type" foreground="#800080"/>
+    <style name="VirtualMethod" foreground="#00677c" background="#ffffff" italic="true"/>
+    <style name="Function" foreground="#00677c" background="#ffffff"/>
+    <style name="Keyword" foreground="#ff79c6" bold="true" italic="true"/>
+    <style name="PrimitiveType" foreground="#808000"/>
+    <style name="Operator"/>
+    <style name="Overloaded Operator"/>
+    <style name="Preprocessor" foreground="#bd93f9"/>
+    <style name="Identifier" foreground="#b0b7c9"/>
+    <style name="Comment" foreground="#879ae2"/>
+    <style name="DoxygenComment" foreground="#394360"/>
+    <style name="DoxygenTag" foreground="#0000ff"/>
+    <style name="Tag" foreground="#74b4c1"/>
+    <style name="Warning" underlineColor="#ffbe00" underlineStyle="Single"/>
+    <style name="WarningContext" underlineColor="#ffbe00" underlineStyle="SingleDot"/>
+    <style name="Error" underlineColor="#ff0000" underlineStyle="Single"/>
+    <style name="ErrorContext" underlineColor="#ff0000" underlineStyle="SingleWave"/>
+    <style name="Declaration" bold="true"/>
+    <style name="Brace" foreground="#3234ab" bold="true"/>
+    <style name="Bracket" foreground="#2aa489" bold="true"/>
+    <style name="Parentheses" foreground="#ccc704" bold="true"/>
+    <style name="QuotationMark" foreground="#e0a02f" bold="true"/>
+    <style name="Apostrophe" foreground="#d4f98b" bold="true"/>
+</theme-configuration-codeeditor>

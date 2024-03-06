@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix = "/config">
-        <file>Configuration/RCodeEditor/KeywordList/cppKeywords.xml</file>
+        <file>Configuration/RCodeEditor/KeywordList/cpp.xml</file>
+        <file>Configuration/RCodeEditor/ColorThemes/Dracula.xml</file>
     </qresource>
 </RCC>
