@@ -6,7 +6,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-set(CMAKE_PREFIX_PATH "G:/Qt6/6.6.0/mingw_64/bin")
+set(CMAKE_PREFIX_PATH "E:/Qt/6.6.2/mingw_64/lib/cmake")
 
 find_package(Qt6 COMPONENTS
         Core
@@ -21,17 +21,18 @@ add_executable(Retoccilus main.cpp
         Sources/MainWindow/rmainwindow.h
         Sources/MainWindow/rmainwindow.cpp
         Sources/RCodeEditor/RCodeEditor.h
-        utils/RXmlReader.h
-        utils/RetoErrors.h
-        utils/RetoCodeEditor.h
-        utils/RetoCodeEditor.h
         Sources/RCodeEditor/RCodeEditor.cpp
-        Sources/RCodeEditor/RCodeEditorSidebar.h
-        Sources/RCodeEditor/RCodeEditorSidebar.cpp
         ${RESOURCES}
         Sources/RCodeEditor/RSyntaxHighlighter.h
-        utils/RRegex.h
-        utils/RetoGlobal.h
+        Sources/RCodeEditor/RCFamilyHighlighter.h
+        Sources/RCodeEditor/RCFamilyHighlighter.h
+        Sources/RCodeEditor/RHighlightRule.h
+        Sources/RCodeEditor/RHighlightRule.h
+        Sources/RCodeEditor/RStyleSyntaxHighlighter.h
+        Sources/RCodeEditor/RSyntaxStyle.h
+        Sources/RCodeEditor/RBorderTextProperty.h
+        Sources/RCodeEditor/RSidebar.h
+        Sources/RCodeEditor/RLanguage.h
 )
 
 include_directories(
