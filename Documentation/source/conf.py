@@ -7,8 +7,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Retoccilus'
-copyright = '2024, Rakyuu Studio (Ryan "NvKopres" Almond)'
-author = 'Rakyuu Studio (Ryan "NvKopres" Almond)'
+copyright = '2024, Ryan "NvKopres" Almond'
+author = 'Ryan "NvKopres" Almond'
 release = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
@@ -24,5 +24,5 @@ exclude_patterns = []
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'furo'
 html_static_path = ['_static']

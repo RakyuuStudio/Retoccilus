@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <QTextEdit>
+#include <QPlainTextEdit>
 
 class RSideBar;
 class QCompleter;
@@ -11,7 +11,7 @@ class RSyntaxStyle;
 class RStyleSyntaxHighlighter;
 class RBorderTextProperty;
 
-class RCodeEditor : public QTextEdit {
+class RCodeEditor : public QPlainTextEdit {
     Q_OBJECT
 public:
     explicit RCodeEditor(QWidget *widget = nullptr);
@@ -32,6 +32,8 @@ public:
     bool autoIndentation() const;
     void setCompleter(QCompleter *completer);
     [[nodiscard]] QCompleter *completer() const;
+    void sidebarPaintEvent(QPaintEvent *pEvent);
+    int sidebarWidth();
 public slots:
     void insertCompletion(QString s);
     void updateLineNumberAreaWidth(int);
@@ -39,6 +41,9 @@ public slots:
     void updateExtraSelection();
     void updateStyle();
     void onSelectionChanged();
+
+    void toggleFold(QTextBlock block);
+    bool isFoldable(const QTextBlock &block);
 protected:
     void insertFromMimeData(const QMimeData *source) override;
     void paintEvent(QPaintEvent *e) override;
