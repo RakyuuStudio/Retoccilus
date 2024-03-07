@@ -3,6 +3,8 @@
 
 #pragma once
 
+#define Reto_SideBar_Default_Width 50
+
 #include <QPlainTextEdit>
 
 class RSideBar;
@@ -19,18 +21,18 @@ public:
     RCodeEditor(const RCodeEditor &) = delete;
     RCodeEditor &operator=(const RCodeEditor &) = delete;
 
-    int getFirstVisibleBlock();
-    void setHighlighter(RStyleSyntaxHighlighter *highlighter);
+    [[maybe_unused]] int getFirstVisibleBlock();
+    [[maybe_unused]] void setHighlighter(RStyleSyntaxHighlighter *highlighter);
     void setSyntaxStyle(RSyntaxStyle *style);
-    void setAutoParentheses(bool enabled);
-    bool autoParentheses() const;
-    void setTabReplace(bool enabled);
-    bool tabReplace() const;
-    void setTabReplaceSize(int val);
-    int tabReplaceSize() const;
-    void setAutoIndentation(bool enabled);
-    bool autoIndentation() const;
-    void setCompleter(QCompleter *completer);
+    [[maybe_unused]] void setAutoParentheses(bool enabled);
+    [[maybe_unused]] bool autoParentheses() const;
+    [[maybe_unused]] void setTabReplace(bool enabled);
+    [[maybe_unused]] bool tabReplace() const;
+    [[maybe_unused]] void setTabReplaceSize(int val);
+    [[maybe_unused]] int tabReplaceSize() const;
+    [[maybe_unused]] void setAutoIndentation(bool enabled);
+    [[maybe_unused]] bool autoIndentation() const;
+    [[maybe_unused]] void setCompleter(QCompleter *completer);
     [[nodiscard]] QCompleter *completer() const;
     void sidebarPaintEvent(QPaintEvent *pEvent);
     int sidebarWidth();
@@ -42,8 +44,14 @@ public slots:
     void updateStyle();
     void onSelectionChanged();
 
+    //Folding
     void toggleFold(QTextBlock block);
+    void toggleUnFold(QTextBlock block);
     bool isFoldable(const QTextBlock &block);
+    void addInvisibleFoldRegionMarkStart();
+    void addInvisibleFoldRegionMarkEnd();
+    void deleteFoldRegionMarkStart();
+    void deleteFoldRegionMarkEnd();
 protected:
     void insertFromMimeData(const QMimeData *source) override;
     void paintEvent(QPaintEvent *e) override;
@@ -75,6 +83,8 @@ private:
     bool pAutoParenthese;
     bool pReplaceTab;
     QString pTabReplace;
+
+    void deIndent(int indentationLevel);
 };
 
 #endif
