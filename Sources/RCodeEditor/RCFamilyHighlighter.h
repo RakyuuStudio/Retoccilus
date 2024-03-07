@@ -2,6 +2,7 @@
 #define RetoCodeEditor_CFamilyHighlighter_h
 
 #pragma once
+
 #include "RLanguage.h"
 
 #include "RStyleSyntaxHighlighter.h"
@@ -11,179 +12,155 @@
 #include <QRegularExpressionMatchIterator>
 #include <QVector>
 #include <QFile>
+#include <utility>
 
 class RSyntaxStyle;
 
-class RCFamilyHighlighter : public RStyleSyntaxHighlighter {
-Q_OBJECT
+class RCFamilyHighlighter : public QSyntaxHighlighter {
 public:
-    explicit RCFamilyHighlighter(QTextDocument *document = nullptr)
-            : RStyleSyntaxHighlighter(document),
-              m_highlightRules(),
-              m_includePattern(QRegularExpression(R"(^\s*#\s*include\s*([<"][^:?"<>\|]+[">]))")),
-              m_functionPattern(QRegularExpression(
-                      R"(\b([_a-zA-Z][_a-zA-Z0-9]*\s+)?((?:[_a-zA-Z][_a-zA-Z0-9]*\s*::\s*)*[_a-zA-Z][_a-zA-Z0-9]*)(?=\s*\())")),
-              m_defTypePattern(QRegularExpression(R"(\b([_a-zA-Z][_a-zA-Z0-9]*)\s+[_a-zA-Z][_a-zA-Z0-9]*\s*[;=])")),
-              m_commentStartPattern(QRegularExpression(R"(/\*)")),
-              m_commentEndPattern(QRegularExpression(R"(\*/)")) {
+    explicit RCFamilyHighlighter(QTextDocument *parent = nullptr) : QSyntaxHighlighter(parent) {
+        keywordFormat.setForeground(QColor(255, 108, 133));
+        keywordFormat.setFontItalic(true);
+        keywordFormat.setFontWeight(QFont::Bold);
 
-        QFile fl(":/config/Configuration/RCodeEditor/KeywordList/cpp.xml");
+        singleLineCommentFormat.setFontItalic(true);
+        singleLineCommentFormat.setForeground(QColor(138, 174, 255));
+        multilineCommentFormat.setForeground(QColor(138, 174, 255).darker(100));
+        multilineCommentFormat.setFontItalic(true);
 
-        if (!fl.open(QIODevice::ReadOnly)) {
-            return;
+        preprocessorFormat.setForeground(QColor(124, 130, 248).lighter(100));
+
+        parentheseFormat.setForeground(QColor("#fff906"));
+        bracketFormat.setForeground(QColor("#33ffab"));
+        braceFormat.setForeground(QColor("#5b7eff"));
+
+        quotationFormat.setForeground(QColor("#eaf36f"));
+        apostropheFormat.setForeground(QColor("#d7f98b"));
+        rawStrLitFormat.setForeground(QColor(146, 146, 248));
+
+        identifierFormat.setForeground(QColor("#8be9fd"));
+        functionFormat.setForeground(QColor("#4ef579"));
+
+        numberFormat.setForeground(QColor("#9292f8"));
+
+        QStringList keywordsL;
+        keywordsL = readKeywords(":/config/Configuration/RCodeEditor/KeywordList/cppKeywords.xml");
+
+        for (const QString &pattern : keywordsL) {
+            highlightingRules.append({QRegularExpression("\\b" + pattern + "\\b"), keywordFormat});
         }
 
-        RLanguage language(&fl);
+        singleLineCommentExp.setPattern("//[^\n]*");
+        commentStartExp.setPattern("/\\*");
+        commentEndExp.setPattern("\\*/");
+        preprocessExp.setPattern("#[^\\s]*");
 
-        if (!language.isLoad()) {
-            return;
-        }
-
-        auto keys = language.key();
-        for (auto &&key: keys) {
-            auto names = language.names(key);
-            for (auto &&name: names) {
-                m_highlightRules.append({QRegularExpression(QString(R"(\b%1\b)").arg(name)), key });
-            }
-        }
-
-        m_highlightRules.append({
-                                        QRegularExpression(R"((?<=\b|\s|^)(?i)(?:(?:(?:(?:(?:\d+(?:'\d+)*)?\.(?:\d+(?:'\d+)*)(?:e[+-]?(?:\d+(?:'\d+)*))?)|(?:(?:\d+(?:'\d+)*)\.(?:e[+-]?(?:\d+(?:'\d+)*))?)|(?:(?:\d+(?:'\d+)*)(?:e[+-]?(?:\d+(?:'\d+)*)))|(?:0x(?:[0-9a-f]+(?:'[0-9a-f]+)*)?\.(?:[0-9a-f]+(?:'[0-9a-f]+)*)(?:p[+-]?(?:\d+(?:'\d+)*)))|(?:0x(?:[0-9a-f]+(?:'[0-9a-f]+)*)\.?(?:p[+-]?(?:\d+(?:'\d+)*))))[lf]?)|(?:(?:(?:[1-9]\d*(?:'\d+)*)|(?:0[0-7]*(?:'[0-7]+)*)|(?:0x[0-9a-f]+(?:'[0-9a-f]+)*)|(?:0b[01]+(?:'[01]+)*))(?:u?l{0,2}|l{0,2}u?)))(?=\b|\s|$))"),
-                                        "Number"
-                                });
-
-        m_highlightRules.append({
-                                        QRegularExpression(R"("[^\n"]*")"),
-                                        "String"
-                                });
-
-        m_highlightRules.append({
-                                        QRegularExpression(R"(#[a-zA-Z_]+)"),
-                                        "Preprocessor"
-                                });
-
-        m_highlightRules.append({
-                                        QRegularExpression(R"(//[^\n]*)"),
-                                        "Comment"
-                                });
+        highlightingRules.append({QRegularExpression("\\("), parentheseFormat});
+        highlightingRules.append({QRegularExpression("\\)"), parentheseFormat});
+        highlightingRules.append({QRegularExpression("\\["), bracketFormat});
+        highlightingRules.append({QRegularExpression("\\]"), bracketFormat});
+        highlightingRules.append({QRegularExpression("\\{"), braceFormat});
+        highlightingRules.append({QRegularExpression("\\}"), braceFormat});
+        highlightingRules.append({QRegularExpression("'[^']*'"), apostropheFormat});
+        highlightingRules.append({QRegularExpression(R"("[^"]*")"), quotationFormat});
+        highlightingRules.append({QRegularExpression("R\"(.*?\\n?)\""), rawStrLitFormat});
+        highlightingRules.append({QRegularExpression(R"(\\b[A-Za-z_]+[A-Za-z0-9_]*\\b)"), identifierFormat});
+        highlightingRules.append({QRegularExpression("\\b[A-Za-z0-9_]+(?=\\()"), functionFormat});
+        highlightingRules.append({QRegularExpression("^(-)?(0b[01]+|0[0-7]+|0x[0-9A-Fa-f]+|\\d+)$"), numberFormat});
     }
 
+    QStringList readKeywords(const QString &filePath) {
+        QStringList names;
 
+        QFile file(filePath);
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            qWarning() << "Failed to open XML file";
+            return names;
+        }
+
+        QXmlStreamReader xmlReader(&file);
+
+        while (!xmlReader.atEnd() && !xmlReader.hasError()) {
+            QXmlStreamReader::TokenType token = xmlReader.readNext();
+
+            if (token == QXmlStreamReader::StartElement && xmlReader.name().toString() == "name") {
+                QString name = xmlReader.readElementText();
+                names.append(name);
+            }
+        }
+
+        if (xmlReader.hasError()) {
+            qWarning() << "XML parsing error:" << xmlReader.errorString();
+        }
+
+        file.close();
+
+        return names;
+    }
 protected:
     void highlightBlock(const QString &text) override {
-        {
-            auto matchIterator = m_includePattern.globalMatch(text);
-
-            while (matchIterator.hasNext())
-            {
-                auto match = matchIterator.next();
-
-                setFormat(
-                        match.capturedStart(),
-                        match.capturedLength(),
-                        syntaxStyle()->getFormat("Preprocessor")
-                );
-
-                setFormat(
-                        match.capturedStart(1),
-                        match.capturedLength(1),
-                        syntaxStyle()->getFormat("String")
-                );
-            }
-        }
-        {
-            auto matchIterator = m_functionPattern.globalMatch(text);
-
-            while (matchIterator.hasNext())
-            {
-                auto match = matchIterator.next();
-
-                setFormat(
-                        match.capturedStart(),
-                        match.capturedLength(),
-                        syntaxStyle()->getFormat("Type")
-                );
-
-                setFormat(
-                        match.capturedStart(2),
-                        match.capturedLength(2),
-                        syntaxStyle()->getFormat("Function")
-                );
-            }
-        }
-        {
-            auto matchIterator = m_defTypePattern.globalMatch(text);
-
-            while (matchIterator.hasNext())
-            {
-                auto match = matchIterator.next();
-
-                setFormat(
-                        match.capturedStart(1),
-                        match.capturedLength(1),
-                        syntaxStyle()->getFormat("Type")
-                );
+        for (const HighlightingRule &rule : highlightingRules) {
+            QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text);
+            while (matchIterator.hasNext()) {
+                QRegularExpressionMatch match = matchIterator.next();
+                setFormat(match.capturedStart(), match.capturedLength(), rule.format);
             }
         }
 
-        for (auto& rule : m_highlightRules)
-        {
-            auto matchIterator = rule.pattern.globalMatch(text);
-
-            while (matchIterator.hasNext())
-            {
-                auto match = matchIterator.next();
-
-                setFormat(
-                        match.capturedStart(),
-                        match.capturedLength(),
-                        syntaxStyle()->getFormat(rule.formatName)
-                );
-            }
+        QRegularExpressionMatch preprocessorMatch = preprocessExp.match(text);
+        if (preprocessorMatch.hasMatch()) {
+            setFormat(preprocessorMatch.capturedStart(), preprocessorMatch.capturedEnd(), preprocessorFormat);
         }
 
+        QRegularExpressionMatch singleLineCommentMatch = singleLineCommentExp.match(text);
+        if (singleLineCommentMatch.hasMatch()) {
+            setFormat(singleLineCommentMatch.capturedStart(), singleLineCommentMatch.capturedLength(), singleLineCommentFormat);
+        }
         setCurrentBlockState(0);
 
         int startIndex = 0;
-        if (previousBlockState() != 1)
-        {
-            startIndex = text.indexOf(m_commentStartPattern);
+        if (previousBlockState() != 1) {
+            startIndex = text.indexOf(commentStartExp);
         }
 
-        while (startIndex >= 0)
-        {
-            auto match = m_commentEndPattern.match(text, startIndex);
-
+        while (startIndex >= 0) {
+            QRegularExpressionMatch match = commentEndExp.match(text, startIndex);
             int endIndex = match.capturedStart();
             int commentLength = 0;
 
-            if (endIndex == -1)
-            {
+            if (endIndex == -1) {
                 setCurrentBlockState(1);
                 commentLength = text.length() - startIndex;
-            }
-            else
-            {
+            } else {
                 commentLength = endIndex - startIndex + match.capturedLength();
             }
 
-            setFormat(
-                    startIndex,
-                    commentLength,
-                    syntaxStyle()->getFormat("Comment")
-            );
-            startIndex = text.indexOf(m_commentStartPattern, startIndex + commentLength);
+            setFormat(startIndex, commentLength, multilineCommentFormat);
+            startIndex = text.indexOf(commentStartExp, startIndex + commentLength);
         }
-}
-
+    }
 private:
-    QVector<QHighlightRule> m_highlightRules;
-    QRegularExpression m_includePattern;
-    QRegularExpression m_functionPattern;
-    QRegularExpression m_defTypePattern;
-    QRegularExpression keywordPattern;
-    QRegularExpression m_commentStartPattern;
-    QRegularExpression m_commentEndPattern;
+    struct HighlightingRule {
+        QRegularExpression pattern;
+        QTextCharFormat format;
+    };
+
+    QVector<HighlightingRule> highlightingRules;
+    QRegularExpression commentStartExp;
+    QRegularExpression commentEndExp;
+    QRegularExpression singleLineCommentExp;
+    QRegularExpression preprocessExp;
+    QRegularExpression braceExp, bracketExp, parentheseExp;
+    QRegularExpression apostropheExp, quotationExp;
+
+    QTextCharFormat keywordFormat;
+    QTextCharFormat singleLineCommentFormat;
+    QTextCharFormat multilineCommentFormat;
+    QTextCharFormat preprocessorFormat;
+    QTextCharFormat braceFormat, bracketFormat, parentheseFormat;
+    QTextCharFormat apostropheFormat, quotationFormat, rawStrLitFormat;
+    QTextCharFormat identifierFormat, functionFormat;
+    QTextCharFormat numberFormat;
 };
 
-#endif
+#endif //RetoCodeEditor_CFamilyHighlighter_h

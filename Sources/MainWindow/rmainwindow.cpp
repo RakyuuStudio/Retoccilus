@@ -9,6 +9,7 @@ RMainWindow::RMainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::RMai
     ui->setupUi(this);
     auto *rce = new RCodeEditor(this);
     rce->setStyleSheet("QTextEdit { background-color: #282a36; color: #ffffff; font-family: \"Consolas\" }");
+    auto *highlighter = new RCFamilyHighlighter(rce->document());
     setCentralWidget(rce);
 }
 
