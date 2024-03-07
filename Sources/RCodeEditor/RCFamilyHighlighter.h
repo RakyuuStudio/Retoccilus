@@ -68,7 +68,6 @@ public:
                                 });
     }
 
-    RCFamilyHighlighter ~RCFamilyHighlighter() override;
 
 protected:
     void highlightBlock(const QString &text) override {
@@ -186,9 +185,5 @@ private:
     QRegularExpression m_commentStartPattern;
     QRegularExpression m_commentEndPattern;
 };
-
-RCFamilyHighlighter::~RCFamilyHighlighter() {
-
-}
 
 #endif
