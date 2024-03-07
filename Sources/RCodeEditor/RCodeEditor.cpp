@@ -21,7 +21,8 @@ static QVector<QPair<QString, QString>> parentheses = {
         {"{",  "}"},
         {"[",  "]"},
         {"\"", "\""}, //Quotation mark need \ to mark Escape Character
-        {"'",  "'"}
+        {"'",  "'"},
+        {"<", ">"}
 };
 
 RCodeEditor::RCodeEditor(QWidget *widget) :
@@ -249,30 +250,17 @@ void RCodeEditor::highlightParenthesis(QList<QTextEdit::ExtraSelection> &extraSe
                 directionEnum = QTextCursor::MoveOperation::NextCharacter;
             }
 
-// 第一个额外选择项
             selection.cursor = cursor;
             selection.cursor.clearSelection();
-            selection.cursor.movePosition(directionEnum,
-                                          QTextCursor::MoveMode::MoveAnchor,
-                                          std::abs(cursor.position() - position)
-            );
+            selection.cursor.movePosition(directionEnum, QTextCursor::MoveMode::MoveAnchor, std::abs(cursor.position() - position));
 
-            selection.cursor.movePosition(
-                    QTextCursor::MoveOperation::Right,
-                    QTextCursor::MoveMode::KeepAnchor,
-                    1
-            );
+            selection.cursor.movePosition(QTextCursor::MoveOperation::Right, QTextCursor::MoveMode::KeepAnchor, 1);
 
             extraSelections.append(selection);
 
-// 第二个额外选择项
             selection.cursor = cursor;
             selection.cursor.clearSelection();
-            selection.cursor.movePosition(
-                    directionEnum,
-                    QTextCursor::MoveMode::KeepAnchor,
-                    1
-            );
+            selection.cursor.movePosition(directionEnum,QTextCursor::MoveMode::KeepAnchor,1);
 
             extraSelections.append(selection);
             setExtraSelections(extraSelections);
@@ -302,20 +290,14 @@ void RCodeEditor::paintEvent(QPaintEvent *e) {
     QPlainTextEdit::paintEvent(e);
 }
 
-int RCodeEditor::getFirstVisibleBlock() {
+[[maybe_unused]] int RCodeEditor::getFirstVisibleBlock() {
     QTextCursor curs = QTextCursor(document());
     curs.movePosition(QTextCursor::Start);
     for (int i = 0; i < document()->blockCount(); ++i) {
         QTextBlock block = curs.block();
 
         QRect r1 = viewport()->geometry();
-        QRect r2 = document()
-                ->documentLayout()
-                ->blockBoundingRect(block)
-                .translated(
-                        viewport()->geometry().x(),
-                        viewport()->geometry().y() - verticalScrollBar()->sliderPosition()
-                ).toRect();
+        QRect r2 = document()->documentLayout()->blockBoundingRect(block).translated(viewport()->geometry().x(),viewport()->geometry().y() - verticalScrollBar()->sliderPosition()).toRect();
 
         if (r1.intersects(r2)) {
             return i;
@@ -439,17 +421,9 @@ void RCodeEditor::keyPressEvent(QKeyEvent *e) {
             return;
         }
 
-        // Shortcut for moving line to left
         if (pReplaceTab && e->key() == Qt::Key_Backtab) {
             indentationLevel = std::min(indentationLevel, static_cast<int>(pTabReplace.size()));
-
-            auto cursor = textCursor();
-
-            cursor.movePosition(QTextCursor::MoveOperation::StartOfLine);
-            cursor.movePosition(QTextCursor::MoveOperation::Right,
-                                QTextCursor::MoveMode::KeepAnchor, indentationLevel);
-
-            cursor.removeSelectedText();
+            deIndent(indentationLevel);
             return;
         }
 
@@ -464,14 +438,12 @@ void RCodeEditor::keyPressEvent(QKeyEvent *e) {
 
         if (pAutoParenthese) {
             for (auto &&el: parentheses) {
-                // Inserting closed brace
                 if (el.first == e->text()) {
                     insertPlainText(el.second);
                     moveCursor(QTextCursor::MoveOperation::Left);
                     break;
                 }
 
-                // If it's close brace - check parentheses
                 if (el.second == e->text()) {
                     auto symbol = charUnderCursor();
 
@@ -487,6 +459,15 @@ void RCodeEditor::keyPressEvent(QKeyEvent *e) {
     }
 
     proceedCompleterEnd(e);
+}
+
+void RCodeEditor::deIndent(int indentationLevel) {
+    auto cursor = textCursor();
+
+    cursor.movePosition(QTextCursor::StartOfLine);
+    cursor.movePosition(QTextCursor::Right,QTextCursor::KeepAnchor, indentationLevel);
+
+    cursor.removeSelectedText();
 }
 
 void RCodeEditor::setAutoIndentation(bool enabled) {
@@ -615,7 +596,41 @@ int RCodeEditor::getIndentationSpaces() {
 }
 
 bool RCodeEditor::isFoldable(const QTextBlock &block) {
-    return block.next().isVisible();
+    if (block.text().contains("/*{") || block.text().contains("}*/")) {
+        return true;
+    }
+
+    return false;
+}
+
+void RCodeEditor::toggleUnFold(QTextBlock block) {
+    if (!isFoldable(block)) {
+        return;
+    }
+
+    block.setVisible(true);
+}
+
+void RCodeEditor::addInvisibleFoldRegionMarkStart() {
+    QTextCursor cursor = textCursor();
+    cursor.insertText("/*{");
+}
+
+void RCodeEditor::addInvisibleFoldRegionMarkEnd() {
+    QTextCursor cursor = textCursor();
+    cursor.insertText("}*/");
+}
+
+void RCodeEditor::deleteFoldRegionMarkStart() {
+    QTextCursor cursor = textCursor();
+    cursor.movePosition(QTextCursor::MoveOperation::Left, QTextCursor::MoveMode::KeepAnchor, 3);
+    cursor.removeSelectedText();
+}
+
+void RCodeEditor::deleteFoldRegionMarkEnd() {
+    QTextCursor cursor = textCursor();
+    cursor.movePosition(QTextCursor::MoveOperation::Left, QTextCursor::MoveMode::KeepAnchor, 3);
+    cursor.removeSelectedText();
 }
 
 void RCodeEditor::toggleFold(QTextBlock block) {
@@ -628,7 +643,7 @@ void RCodeEditor::toggleFold(QTextBlock block) {
 
 void RCodeEditor::sidebarPaintEvent(QPaintEvent *pEvent) {
     QPainter painter(sidebar);
-    painter.fillRect(pEvent->rect(), Qt::lightGray);
+    painter.fillRect(pEvent->rect(), QColor("#282a36"));
 
     QTextBlock block = firstVisibleBlock();
     int blockNumber = block.blockNumber();
@@ -638,8 +653,8 @@ void RCodeEditor::sidebarPaintEvent(QPaintEvent *pEvent) {
     while (block.isValid() && top <= pEvent->rect().bottom()) {
         if (block.isVisible() && bottom >= pEvent->rect().top()) {
             QString number = QString::number(blockNumber + 1);
-            painter.setPen(Qt::black);
-            painter.drawText(0, top, sidebar->width(), fontMetrics().height(), Qt::AlignRight, number);
+            painter.setPen(Qt::white);
+            painter.drawText(0, top, sidebar->width(), fontMetrics().height(), Qt::AlignCenter, number);
         }
 
         block = block.next();
@@ -647,6 +662,12 @@ void RCodeEditor::sidebarPaintEvent(QPaintEvent *pEvent) {
         bottom = top + static_cast<int>(blockBoundingRect(block).height());
         ++blockNumber;
     }
+
+    const int lineLength = sidebar->width();
+    const int lineHeight = fontMetrics().height();
+    const int yPosition = sidebar->height() / 2;
+    painter.setPen(Qt::white);
+    painter.drawLine(lineLength - 1, 0, lineLength - 1, sidebar->height());
 }
 
 int RCodeEditor::sidebarWidth() {
@@ -657,7 +678,7 @@ int RCodeEditor::sidebarWidth() {
         ++digits;
     }
 
-    int space = 8 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
+    int space = Reto_SideBar_Default_Width + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
 
     return space;
 }
