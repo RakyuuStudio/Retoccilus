@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>RMainWindow</class>
- <widget class="QMainWindow" name="RMainWindow">
+ <class>RCE_UI</class>
+ <widget class="QMainWindow" name="RCE_UI">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>RMainWindow</string>
+   <string>RCE_UI</string>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
@@ -19,7 +19,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1280</width>
+     <width>1920</width>
      <height>21</height>
     </rect>
    </property>

@@ -6,6 +6,8 @@
 #define Reto_SideBar_Default_Width 50
 
 #include <QPlainTextEdit>
+#include "foldingHandler.h"
+#include "RBorderTextProperty.h"
 
 class RSideBar;
 class QCompleter;
@@ -17,9 +19,6 @@ class RCodeEditor : public QPlainTextEdit {
     Q_OBJECT
 public:
     explicit RCodeEditor(QWidget *widget = nullptr);
-
-    RCodeEditor(const RCodeEditor &) = delete;
-    RCodeEditor &operator=(const RCodeEditor &) = delete;
 
     [[maybe_unused]] int getFirstVisibleBlock();
     [[maybe_unused]] void setHighlighter(RStyleSyntaxHighlighter *highlighter);
@@ -45,13 +44,10 @@ public slots:
     void onSelectionChanged();
 
     //Folding
-    void toggleFold(QTextBlock block);
-    void toggleUnFold(QTextBlock block);
-    bool isFoldable(const QTextBlock &block);
-    void addInvisibleFoldRegionMarkStart();
-    void addInvisibleFoldRegionMarkEnd();
-    void deleteFoldRegionMarkStart();
-    void deleteFoldRegionMarkEnd();
+    void fold();
+    void unfold();
+    void framed();
+    void unframed();
 protected:
     void insertFromMimeData(const QMimeData *source) override;
     void paintEvent(QPaintEvent *e) override;

@@ -13,6 +13,8 @@ find_package(Qt6 COMPONENTS
         Gui
         Widgets
         Xml
+        Qml
+        Quick
         REQUIRED)
 
 qt_add_resources(RESOURCES Resources/Resources.qrc)
@@ -33,11 +35,23 @@ add_executable(Retoccilus main.cpp
         Sources/RCodeEditor/RBorderTextProperty.h
         Sources/RCodeEditor/RSidebar.h
         Sources/RCodeEditor/RLanguage.h
+        Sources/RCodeEditor/foldingHandler.h
+        Sources/RCodeEditor/foldingHandler.cpp
+        Sources/RCodeEditor_UI/rce_ui.cpp
+        Sources/RCodeEditor_UI/rce_ui.h
+        Sources/RCodeEditor_UI/rce_ui.ui
+        Sources/UIComponents/Imports/RFluentUIMain.h
+        Sources/UIComponents/Imports/SingletonHandle.h
+        Sources/UIComponents/Imports/RFluentUIApplication.h
+        Sources/UIComponents/Imports/RFluentUIAffactor.h
+        Sources/UIComponents/Imports/RFluentUIRegister.h
+        Sources/UIComponents/Imports/RFluentUILifeCycle.h
 )
 
 include_directories(
         utils/
         Sources/RCodeEditor/
+        Sources/
 )
 
 target_link_libraries(Retoccilus
@@ -45,6 +59,8 @@ target_link_libraries(Retoccilus
         Qt::Gui
         Qt::Widgets
         Qt::Xml
+        Qt::Qml
+        Qt::Quick
 )
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)

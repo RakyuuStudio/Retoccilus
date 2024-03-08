@@ -49,20 +49,13 @@ public:
         }
         cursor.insertText(QString(QChar::ObjectReplacementCharacter), format);
     }
-    static void clear(QTextCursor cursor) {
-        QTextDocument *doc = cursor.document();
-        for (int blockIndex = 0; blockIndex < doc->blockCount(); blockIndex++) {
-            QTextBlock block = doc->findBlockByNumber(blockIndex);
-            auto formats = block.textFormats();
-            int offset = 0;
-            for (auto &format: formats) {
-                if (format.format.objectType() == type()) {
-                    cursor.setPosition(block.position() + format.start - offset);
-                    cursor.deleteChar();
-                    offset++;
-                }
-            }
+    static bool unframe(QTextCursor c) {
+        auto f = c.charFormat();
+        if (f.type() == type()) {
+            c.deleteChar();
+            return true;
         }
+        return false;
     }
     void setSyntaxStyle(RSyntaxStyle *style) { rcStyle = style; }
     [[nodiscard]] RSyntaxStyle *syntaxStyle() const { return rcStyle; }
