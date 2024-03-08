@@ -22,7 +22,6 @@ static QVector<QPair<QString, QString>> parentheses = {
         {"[",  "]"},
         {"\"", "\""}, //Quotation mark need \ to mark Escape Character
         {"'",  "'"},
-        {"<", ">"}
 };
 
 RCodeEditor::RCodeEditor(QWidget *widget) :
@@ -35,16 +34,21 @@ RCodeEditor::RCodeEditor(QWidget *widget) :
         pAutoIndentation(true),
         pAutoParenthese(true),
         pReplaceTab(true),
-        pTabReplace(QString(4, ' ')) {
+        pTabReplace(QString(4, ' '))
+{
     initDocumentLayoutHandlers();
     initFont();
+
+    QShortcut *foldShortcut = new QShortcut(QKeySequence("F5"), this);
+    QShortcut *unfoldShortcut = new QShortcut(QKeySequence("F6"), this);
+
+    connect(foldShortcut, &QShortcut::activated, this, &RCodeEditor::fold);
+    connect(unfoldShortcut, &QShortcut::activated, this, &RCodeEditor::unfold);
 
     connect(document(),&QTextDocument::blockCountChanged,this,&RCodeEditor::updateLineNumberAreaWidth);
     connect(verticalScrollBar(),&QScrollBar::valueChanged,[this](int) { sidebar->update(); });
     connect(this,&QPlainTextEdit::cursorPositionChanged,this,&RCodeEditor::updateExtraSelection);
     connect(this,&QPlainTextEdit::selectionChanged,this,&RCodeEditor::onSelectionChanged);
-//    connect(document(), &QTextDocument::blockCountChanged, this, &RCodeEditor::updateSidebarWidth);
-//    connect(document(), &QTextDocument::documentLayoutChanged, this, &RCodeEditor::updateSidebar);
 
     setSyntaxStyle(RSyntaxStyle::defaultStyle());
 }
@@ -144,7 +148,7 @@ void RCodeEditor::onSelectionChanged() {
     cursor.select(QTextCursor::SelectionType::WordUnderCursor);
 
     QSignalBlocker blocker(this);
-    RBorderTextProperty::clear(cursor);
+    RBorderTextProperty::unframe(cursor);
 
     if (selected.size() > 1 &&
         cursor.selectedText() == selected) {
@@ -325,7 +329,6 @@ bool RCodeEditor::proceedCompleterBegin(QKeyEvent *e) {
         }
     }
 
-    // todo: Replace with modifiable QShortcut
     auto isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space);
 
     return !(!pCompleter || !isShortcut);
@@ -397,6 +400,10 @@ void RCodeEditor::keyPressEvent(QKeyEvent *e) {
         if (pAutoIndentation &&
             (e->key() == Qt::Key_Return || e->key() == Qt::Key_Enter) &&
             charUnderCursor() == '}' && charUnderCursor(-1) == '{') {
+            if (charUnderCursor() == '{') {
+                QTextBlockUserData *data = textCursor().block().userData();
+
+            }
             int charsBack = 0;
             insertPlainText("\n");
 
@@ -595,50 +602,20 @@ int RCodeEditor::getIndentationSpaces() {
     return indentationLevel;
 }
 
-bool RCodeEditor::isFoldable(const QTextBlock &block) {
-    if (block.text().contains("/*{") || block.text().contains("}*/")) {
-        return true;
-    }
-
-    return false;
+void RCodeEditor::fold() {
+    foldingHandler::fold(textCursor());
 }
 
-void RCodeEditor::toggleUnFold(QTextBlock block) {
-    if (!isFoldable(block)) {
-        return;
-    }
-
-    block.setVisible(true);
+void RCodeEditor::unfold() {
+    foldingHandler::unfold(textCursor());
 }
 
-void RCodeEditor::addInvisibleFoldRegionMarkStart() {
-    QTextCursor cursor = textCursor();
-    cursor.insertText("/*{");
+void RCodeEditor::framed() {
+    RBorderTextProperty::frame(textCursor());
 }
 
-void RCodeEditor::addInvisibleFoldRegionMarkEnd() {
-    QTextCursor cursor = textCursor();
-    cursor.insertText("}*/");
-}
-
-void RCodeEditor::deleteFoldRegionMarkStart() {
-    QTextCursor cursor = textCursor();
-    cursor.movePosition(QTextCursor::MoveOperation::Left, QTextCursor::MoveMode::KeepAnchor, 3);
-    cursor.removeSelectedText();
-}
-
-void RCodeEditor::deleteFoldRegionMarkEnd() {
-    QTextCursor cursor = textCursor();
-    cursor.movePosition(QTextCursor::MoveOperation::Left, QTextCursor::MoveMode::KeepAnchor, 3);
-    cursor.removeSelectedText();
-}
-
-void RCodeEditor::toggleFold(QTextBlock block) {
-    if (!isFoldable(block)) {
-        return;
-    }
-
-    block.setVisible(!block.isVisible());
+void RCodeEditor::unframed() {
+    RBorderTextProperty::unframe(textCursor());
 }
 
 void RCodeEditor::sidebarPaintEvent(QPaintEvent *pEvent) {
@@ -668,6 +645,8 @@ void RCodeEditor::sidebarPaintEvent(QPaintEvent *pEvent) {
     const int yPosition = sidebar->height() / 2;
     painter.setPen(Qt::white);
     painter.drawLine(lineLength - 1, 0, lineLength - 1, sidebar->height());
+
+
 }
 
 int RCodeEditor::sidebarWidth() {
