@@ -2,6 +2,10 @@
 #define RMainWindow_H
 
 #include <QMainWindow>
+#include <RSyntaxStyle.h>
+#include <RStyleSyntaxHighlighter.h>
+#include <QCompleter>
+#include "RCodeEditor.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class RMainWindow; }

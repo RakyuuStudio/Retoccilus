@@ -1,13 +1,15 @@
 #include "rmainwindow.h"
 #include "ui_rmainwindow.h"
+
 #include "RCodeEditor.h"
+#include "RCFamilyHighlighter.h"
+#include "RSyntaxStyle.h"
 
 RMainWindow::RMainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::RMainWindow) {
     ui->setupUi(this);
-    RCodeEditor *rce = new RCodeEditor(this);
-    rce->setStyleSheet("QPlainTextEdit { background-color: #282a36; font-family: \"Consolas\" }");
-    RSyntaxHighlighter *rhl;
-    rhl = new RSyntaxHighlighter(rce->document());
+    auto *rce = new RCodeEditor(this);
+    rce->setStyleSheet("QPlainTextEdit { background-color: #282a36; color: #ffffff; font-family: \"Consolas\" }");
+    auto *highlighter = new RCFamilyHighlighter(rce->document());
     setCentralWidget(rce);
 }
 

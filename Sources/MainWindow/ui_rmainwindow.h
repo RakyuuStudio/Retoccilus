@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'rmainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 6.6.0
+** Created by: Qt User Interface Compiler version 6.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -29,13 +29,13 @@ public:
     {
         if (RMainWindow->objectName().isEmpty())
             RMainWindow->setObjectName("RMainWindow");
-        RMainWindow->resize(400, 300);
+        RMainWindow->resize(1280, 768);
         centralwidget = new QWidget(RMainWindow);
         centralwidget->setObjectName("centralwidget");
         RMainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(RMainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 400, 17));
+        menubar->setGeometry(QRect(0, 0, 1280, 21));
         RMainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(RMainWindow);
         statusbar->setObjectName("statusbar");

@@ -1,288 +1,609 @@
-#include <QPainter>
-#include <QTextBlock>
+/*
+ * Note: This project is inspired by QCodeEditor project.
+ * The original project can be found at <https://github.com/Megaxela/QCodeEditor>.
+ * This project is a modified version of the original project.
+ * The original project is licensed under the MIT License.
+ *
+ * Original Creator: Megaxela
+ * Modified by: Ryan Almond
+ */
+#include "RSidebar.h"
 #include "RCodeEditor.h"
-#include "RetoCodeEditor.h"
-#include "RSyntaxHighlighter.h"
+#include "RBorderTextProperty.h"
+#include "RStyleSyntaxHighlighter.h"
+#include "RSyntaxStyle.h"
 
-using namespace Retoccilus;
+#include <QPlainTextEdit>
+#include <QTextBlock>
+#include <QPaintEvent>
+#include <QFontDatabase>
+#include <QScrollBar>
+#include <QTextCharFormat>
+#include <QCursor>
+#include <QCompleter>
+#include <QAbstractItemView>
+#include <QShortcut>
+#include <QMimeData>
+
+static QVector<QPair<QString, QString>> parentheses = {
+        {"(",  ")"},
+        {"{",  "}"},
+        {"[",  "]"},
+        {"\"", "\""}, //Quotation mark need \ to mark Escape Character
+        {"'",  "'"},
+};
 
 RCodeEditor::RCodeEditor(QWidget *widget) :
-        QPlainTextEdit(widget), autoIndentation(true), replaceTab(true), autoParenthese(true), indentLayer(0) {
-    sideBarArea = new SidebarArea(this);
+        QPlainTextEdit(widget),
+        highlighter(nullptr),
+        syntaxStyle(nullptr),
+        sidebar(new RSideBar(this)),
+        pCompleter(nullptr),
+        btp(new RBorderTextProperty(this)),
+        pAutoIndentation(true),
+        pAutoParenthese(true),
+        pReplaceTab(true),
+        pTabReplace(QString(4, ' '))
+{
+    initDocumentLayoutHandlers();
+    initFont();
 
-    connect(this, &RCodeEditor::blockCountChanged, this, &RCodeEditor::updateSideBarAreaWidth);
-    connect(this, &RCodeEditor::updateRequest, this, &RCodeEditor::updateSideBarArea);
-    connect(this, &RCodeEditor::cursorPositionChanged, this, &RCodeEditor::highlightCurrentLine);
+    QShortcut *foldShortcut = new QShortcut(QKeySequence("F5"), this);
+    QShortcut *unfoldShortcut = new QShortcut(QKeySequence("F6"), this);
 
-    updateSideBarAreaWidth(0);
-    highlightCurrentLine();
+    connect(foldShortcut, &QShortcut::activated, this, &RCodeEditor::fold);
+    connect(unfoldShortcut, &QShortcut::activated, this, &RCodeEditor::unfold);
+
+    connect(document(),&QTextDocument::blockCountChanged,this,&RCodeEditor::updateLineNumberAreaWidth);
+    connect(verticalScrollBar(),&QScrollBar::valueChanged,[this](int) { sidebar->update(); });
+    connect(this,&QPlainTextEdit::cursorPositionChanged,this,&RCodeEditor::updateExtraSelection);
+    connect(this,&QPlainTextEdit::selectionChanged,this,&RCodeEditor::onSelectionChanged);
+
+    setSyntaxStyle(RSyntaxStyle::defaultStyle());
 }
 
-RCodeEditor::~RCodeEditor() = default;
-
-int RCodeEditor::getFirstVisibleBlock() {
-    return 0;
+void RCodeEditor::initDocumentLayoutHandlers() {
+    document()->documentLayout()->registerHandler(RBorderTextProperty::type(), btp);
 }
 
-bool RCodeEditor::autoIndent() const {
-    return autoIndentation;
-}
-
-void RCodeEditor::setIndentation(bool i) {
-    if (i) {
-        autoIndentation = true;
-    } else {
-        autoIndentation = false;
-    }
-}
-
-void RCodeEditor::resizeEvent(QResizeEvent *event) {
-    QPlainTextEdit::resizeEvent(event);
-    QRect currentRect = contentsRect();
-    sideBarArea->setGeometry(QRect(currentRect.left(), currentRect.top(), sideBarAreaWidth(), currentRect.height()));
-}
-
-void RCodeEditor::wheelEvent(QWheelEvent *event) {
-    if (event->modifiers() & Qt::ControlModifier) {
-        int delta = event->angleDelta().y();
-        double fSize = font().pointSize();
-        QFont font = this->font();
+void RCodeEditor::wheelEvent(QWheelEvent *e) {
+    if (e->modifiers() & Qt::ControlModifier) {
+        qreal fontsize = font().pointSizeF();
+        qreal sbfontsize = sidebar->font().pointSizeF();
+        int delta = e->angleDelta().y();
 
         if (delta > 0) {
-            font.setPointSize(font.pointSizeF() + 1.0);
-
-            QFont lineNumberFont = sideBarArea->font();
-            lineNumberFont.setPointSizeF(lineNumberFont.pointSizeF() + 1.0);
-            sideBarArea->setFont(lineNumberFont);
-        } else if (delta < 0) {
-            font.setPointSizeF(font.pointSizeF() - 1.0);
-
-            QFont lineNumberFont = sideBarArea->font();
-            lineNumberFont.setPointSizeF(lineNumberFont.pointSizeF() - 1.0);
-            sideBarArea->setFont(lineNumberFont);
+            fontsize += 1.0;
+            sbfontsize += 1.0;
+        }
+        else {
+            fontsize -= 1.0;
+            sbfontsize -= 1.0;
         }
 
-        this->setFont(font);
-        event->accept();
-    } else {
-        QPlainTextEdit::wheelEvent(event);
+        QFont tfont = font();
+        tfont.setPointSizeF(fontsize);
+        this->setFont(tfont);
+
+        QFont sbfont = sidebar->font();
+        sbfont.setPointSizeF(sbfontsize);
+        sidebar->setFont(sbfont);
+
+        e->accept();
+    }
+    else {
+        QPlainTextEdit::wheelEvent(e);
     }
 }
 
+void RCodeEditor::initFont() {
+    QFont fnt = QFont("Consolas");
+    fnt.setFixedPitch(true);
+    fnt.setPointSize(10);
 
-void RCodeEditor::sideBarAreaPaintEvent(QPaintEvent *event) {
-    QPainter painter(sideBarArea);
-    painter.fillRect(event->rect(), QColor(57, 59, 90));
+    setFont(fnt);
+}
 
-    QFont lineNumberFont;
-    lineNumberFont.setFamily("Consolas");
-    QTextBlock block = firstVisibleBlock();
-    int blockNumber = block.blockNumber();
-    int top = qRound(blockBoundingGeometry(block).translated(contentOffset()).top());
-    int bottom = top + qRound(blockBoundingRect(block).height());
+void RCodeEditor::setHighlighter(RStyleSyntaxHighlighter *xhighlighter) {
+    if (highlighter) {
+        highlighter->setDocument(nullptr);
+    }
 
-    while (block.isValid() && top <= event->rect().bottom()) {
-        if (block.isVisible() && bottom >= event->rect().top()) {
-            QString number = QString::number(blockNumber + 1);
-            painter.setPen(Qt::white);
-            painter.setFont(lineNumberFont);
-            painter.drawText(0, top, sideBarArea->width(), fontMetrics().height(),
-                             Qt::AlignRight, number);
+    highlighter = xhighlighter;
+
+    if (highlighter) {
+        highlighter->setSyntaxStyle(syntaxStyle);
+        highlighter->setDocument(document());
+    }
+}
+
+void RCodeEditor::setSyntaxStyle(RSyntaxStyle *style) {
+    syntaxStyle = style;
+
+    btp->setSyntaxStyle(syntaxStyle);
+
+    if (highlighter) {
+        highlighter->setSyntaxStyle(syntaxStyle);
+    }
+
+    updateStyle();
+}
+
+void RCodeEditor::updateStyle() {
+    if (highlighter) {
+        highlighter->rehighlight();
+    }
+
+    if (syntaxStyle) {
+        QPalette currentPalette = palette();
+        currentPalette.setColor(QPalette::ColorRole::Text,syntaxStyle->getFormat("Text").foreground().color());
+        currentPalette.setColor(QPalette::Base,syntaxStyle->getFormat("Text").background().color());
+        currentPalette.setColor(QPalette::Highlight,syntaxStyle->getFormat("Selection").background().color());
+        setPalette(currentPalette);
+    }
+
+    updateExtraSelection();
+}
+
+void RCodeEditor::onSelectionChanged() {
+    QString selected = textCursor().selectedText();
+    QTextCursor cursor = textCursor();
+
+    if (cursor.isNull()) {
+        return;
+    }
+
+    cursor.movePosition(QTextCursor::MoveOperation::Left);
+    cursor.select(QTextCursor::SelectionType::WordUnderCursor);
+
+    QSignalBlocker blocker(this);
+    RBorderTextProperty::unframe(cursor);
+
+    if (selected.size() > 1 &&
+        cursor.selectedText() == selected) {
+        QTextCursor backup = textCursor();
+        handleSelectionQuery(cursor);
+        setTextCursor(backup);
+    }
+}
+
+void RCodeEditor::resizeEvent(QResizeEvent *e) {
+    QPlainTextEdit::resizeEvent(e);
+    updateLineGeometry();
+}
+
+void RCodeEditor::updateLineGeometry() {
+    QRect cr = contentsRect();
+    sidebar->setGeometry(QRect(cr.left(),cr.top(),sidebar->sizeHint().width(),cr.height()));
+}
+
+void RCodeEditor::updateLineNumberAreaWidth(int) {
+    setViewportMargins(sidebar->sizeHint().width(), 0, 0, 0);
+}
+
+void RCodeEditor::updateLineNumberArea(const QRect &rect) {
+    sidebar->update(0,rect.y(),sidebar->sizeHint().width(),rect.height());
+    updateLineGeometry();
+    if (rect.contains(viewport()->rect())) {
+        updateLineNumberAreaWidth(0);
+    }
+}
+
+void RCodeEditor::handleSelectionQuery(const QTextCursor& cursor) {
+
+    auto searchIterator = cursor;
+    searchIterator.movePosition(QTextCursor::Start);
+    searchIterator = document()->find(cursor.selectedText(), searchIterator);
+    while (searchIterator.hasSelection()) {
+        RBorderTextProperty::frame(searchIterator);
+
+        searchIterator = document()->find(cursor.selectedText(), searchIterator);
+    }
+}
+
+void RCodeEditor::updateExtraSelection() {
+    QList<QTextEdit::ExtraSelection> extra;
+
+    highlightCurrentLine(extra);
+    highlightParenthesis(extra);
+
+    setExtraSelections(extra);
+}
+
+void RCodeEditor::highlightParenthesis(QList<QTextEdit::ExtraSelection> &extraSelection) {
+    auto currentSymbol = charUnderCursor();
+    auto prevSymbol = charUnderCursor(-1);
+
+    for (QPair<QString, QString> &pair: parentheses) {
+        int direction;
+
+        QChar counterSymbol;
+        QChar activeSymbol;
+        int position = textCursor().position();
+
+        if (pair.first == currentSymbol) {
+            direction = 1;
+            counterSymbol = pair.second[0];
+            activeSymbol = currentSymbol;
+        } else if (pair.second == prevSymbol) {
+            direction = -1;
+            counterSymbol = pair.first[0];
+            activeSymbol = prevSymbol;
+            position--;
+        } else {
+            continue;
         }
 
-        block = block.next();
-        top = bottom;
-        bottom = top + qRound(blockBoundingRect(block).height());
-        blockNumber++;
+        auto counter = 1;
+
+        while (counter != 0 && position > 0 && position < (document()->characterCount() - 1)) {
+            position += direction;
+
+            auto character = document()->characterAt(position);
+            if (character == activeSymbol) {
+                counter++;
+            } else if (character == counterSymbol) {
+                counter--;
+            }
+        }
+        QTextCharFormat format = syntaxStyle->getFormat("Parentheses");
+        if (counter == 0) {
+            QList<QTextEdit::ExtraSelection> extraSelections;
+            QTextEdit::ExtraSelection selection;
+            QTextCursor cursor = textCursor();
+            QTextCharFormat format;
+
+            format.setBackground(Qt::yellow);
+            selection.format = format;
+
+            QTextCursor::MoveOperation directionEnum;
+            if (direction < 0) {
+                directionEnum = QTextCursor::MoveOperation::PreviousCharacter;
+            } else {
+                directionEnum = QTextCursor::MoveOperation::NextCharacter;
+            }
+
+            selection.cursor = cursor;
+            selection.cursor.clearSelection();
+            selection.cursor.movePosition(directionEnum, QTextCursor::MoveMode::MoveAnchor, std::abs(cursor.position() - position));
+
+            selection.cursor.movePosition(QTextCursor::MoveOperation::Right, QTextCursor::MoveMode::KeepAnchor, 1);
+
+            extraSelections.append(selection);
+
+            selection.cursor = cursor;
+            selection.cursor.clearSelection();
+            selection.cursor.movePosition(directionEnum,QTextCursor::MoveMode::KeepAnchor,1);
+
+            extraSelections.append(selection);
+            setExtraSelections(extraSelections);
+        }
+
+        break;
     }
 }
 
-int RCodeEditor::sideBarAreaWidth() {
-    int digit = 1;
-    int max = qMax(1, blockCount());
-    while (max >= 10) {
-        max /= 10;
-        digit++;
-    }
-    int space = 9 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digit * 2;
-    return space;
-}
-
-void RCodeEditor::updateSideBarAreaWidth(int newBlockCount) {
-    //I DON'T KNOW WHAT THE HECK THE "newBlockCount" VARIABLE EXIST
-    //BECAUSE THIS VARIABLE IS NEED TO MATCH THE PARAMETER LIST IN CONNECT FUNCTION HOLY FUCK
-    Q_UNUSED(newBlockCount); //I DON'T NEED YOU MORE, This is literally unnecessary
-    setViewportMargins(sideBarAreaWidth(), 0, 0, 0);
-}
-
-void RCodeEditor::highlightCurrentLine() {
-    QList<QTextEdit::ExtraSelection> extraSelections;
-
+void RCodeEditor::highlightCurrentLine(QList<QTextEdit::ExtraSelection> &extraSelection) {
     if (!isReadOnly()) {
-        QTextEdit::ExtraSelection selection;
+        QTextEdit::ExtraSelection selection{};
 
-        QColor lineColor = QColor(Qt::white).lighter(30);
-
-        selection.format.setBackground(lineColor);
+        selection.format = syntaxStyle->getFormat("CurrentLine");
+        selection.format.setForeground(QBrush());
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
         selection.cursor = textCursor();
         selection.cursor.clearSelection();
-        extraSelections.append(selection);
-    }
 
-    setExtraSelections(extraSelections);
-}
-
-void RCodeEditor::updateSideBarArea(const QRect &rect, int dy) {
-    if (dy) {
-        //If dy exists (means it is not zero)
-        sideBarArea->scroll(0, dy);
-    } else {
-        sideBarArea->update(0, rect.y(), sideBarArea->width(), rect.height());
-    }
-    if (rect.contains(viewport()->rect())) {
-        updateSideBarAreaWidth(0);
+        extraSelection.append(selection);
     }
 }
 
+void RCodeEditor::paintEvent(QPaintEvent *e) {
+    updateLineNumberArea(e->rect());
+//    updateSidebarWidth();
+    QPlainTextEdit::paintEvent(e);
+}
 
-void RCodeEditor::keyPressEvent(QKeyEvent *event) {
-    int indentation = 0;
-    int indentationLevel = getIndentationSpaces();
+[[maybe_unused]] int RCodeEditor::getFirstVisibleBlock() {
+    QTextCursor curs = QTextCursor(document());
+    curs.movePosition(QTextCursor::Start);
+    for (int i = 0; i < document()->blockCount(); ++i) {
+        QTextBlock block = curs.block();
 
+        QRect r1 = viewport()->geometry();
+        QRect r2 = document()->documentLayout()->blockBoundingRect(block).translated(viewport()->geometry().x(),viewport()->geometry().y() - verticalScrollBar()->sliderPosition()).toRect();
+
+        if (r1.intersects(r2)) {
+            return i;
+        }
+
+        curs.movePosition(QTextCursor::NextBlock);
+    }
+
+    return 0;
+}
+
+bool RCodeEditor::proceedCompleterBegin(QKeyEvent *e) {
+    if (pCompleter &&
+        pCompleter->popup()->isVisible()) {
+        switch (e->key()) {
+            case Qt::Key_Enter:
+            case Qt::Key_Return:
+            case Qt::Key_Escape:
+            case Qt::Key_Tab:
+            case Qt::Key_Backtab:
+                e->ignore();
+                return true; // let the completer do default behavior
+            default:
+                break;
+        }
+    }
+
+    auto isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space);
+
+    return !(!pCompleter || !isShortcut);
+
+}
+
+void RCodeEditor::proceedCompleterEnd(QKeyEvent *e) {
+    auto ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+
+    if (!pCompleter ||
+        (ctrlOrShift && e->text().isEmpty()) ||
+        e->key() == Qt::Key_Delete) {
+        return;
+    }
+
+    static QString eow(R"(~!@#$%^&*()_+{}|:"<>?,./;'[]\-=)");
+
+    auto isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space);
+    auto completionPrefix = wordUnderCursor();
+
+    if (!isShortcut &&
+        (e->text().isEmpty() ||
+         completionPrefix.length() < 2 ||
+         eow.contains(e->text().right(1)))) {
+        pCompleter->popup()->hide();
+        return;
+    }
+
+    if (completionPrefix != pCompleter->completionPrefix()) {
+        pCompleter->setCompletionPrefix(completionPrefix);
+        pCompleter->popup()->setCurrentIndex(pCompleter->completionModel()->index(0, 0));
+    }
+
+    auto cursRect = cursorRect();
+    cursRect.setWidth(
+            pCompleter->popup()->sizeHintForColumn(0) +
+            pCompleter->popup()->verticalScrollBar()->sizeHint().width()
+    );
+
+    pCompleter->complete(cursRect);
+}
+
+void RCodeEditor::keyPressEvent(QKeyEvent *e) {
 #if QT_VERSION >= 0x050A00
-//    int defaultIndent = tabStopDistance() / fontMetrics().averageCharWidth();
-    int tabCounts = indentationLevel * fontMetrics().averageCharWidth() / tabStopDistance();
+//    const int defaultIndent = tabStopDistance() / fontMetrics().averageCharWidth();
+    const int defaultIndent = 4;
 #else
     const int defaultIndent = tabStopWidth() / fontMetrics().averageCharWidth();
-    int tabCounts = indentationLevel * fontMetrics().averageCharWidth() / tabStopWidth();
 #endif
 
-    if (textCursor().atStart()) {
-        indentLayer == 0;
-    }
+    auto completerSkip = proceedCompleterBegin(e);
 
-    //==Process Auto Pair==
-    if (event->text() == "(") {
-        insertPlainText(")");
-        moveCursor(QTextCursor::MoveOperation::Left);
-    }
-    else if (event->text() == ")") {
-        QString lc;
-        moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
-        lc = textCursor().selectedText();
-        moveCursor(QTextCursor::Right, QTextCursor::MoveAnchor);
-        if (lc == "(") {
-            moveCursor(QTextCursor::MoveOperation::Right);
+    if (!completerSkip) {
+        if (pReplaceTab && e->key() == Qt::Key_Tab &&
+            e->modifiers() == Qt::NoModifier) {
+            insertPlainText(pTabReplace);
             return;
         }
-        else {
-            insertPlainText(")");
-        }
-    }
-    else if (event->text() == "[") {
-        insertPlainText("]");
-        moveCursor(QTextCursor::MoveOperation::Left);
-    }
-    else if (event->text() == "]") {
-        QString lc;
-        moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
-        lc = textCursor().selectedText();
-        moveCursor(QTextCursor::Right, QTextCursor::MoveAnchor);
-        if (lc == "[") {
-            moveCursor(QTextCursor::MoveOperation::Right);
+
+        int indentationLevel = getIndentationSpaces();
+
+#if QT_VERSION >= 0x050A00
+        int tabCounts =
+                indentationLevel * fontMetrics().averageCharWidth() / tabStopDistance();
+#else
+        int tabCounts =
+        indentationLevel * fontMetrics().averageCharWidth() / tabStopWidth();
+#endif
+        if (pAutoIndentation &&
+            (e->key() == Qt::Key_Return || e->key() == Qt::Key_Enter) &&
+            charUnderCursor() == '}' && charUnderCursor(-1) == '{') {
+            if (charUnderCursor() == '{') {
+                QTextBlockUserData *data = textCursor().block().userData();
+
+            }
+            int charsBack = 0;
+            insertPlainText("\n");
+
+            if (pReplaceTab)
+                insertPlainText(QString(indentationLevel + defaultIndent, ' '));
+            else
+                insertPlainText(QString(tabCounts + 1, '\t'));
+
+            insertPlainText("\n");
+            charsBack++;
+
+            if (pReplaceTab) {
+                insertPlainText(QString(indentationLevel, ' '));
+                charsBack += indentationLevel;
+            } else {
+                insertPlainText(QString(tabCounts, '\t'));
+                charsBack += tabCounts;
+            }
+
+            while (charsBack--)
+                moveCursor(QTextCursor::MoveOperation::Left);
             return;
         }
-        else {
-            insertPlainText("]");
-        }
-    }
-    else if (event->text() == "{") {
-        insertPlainText("}");
-        moveCursor(QTextCursor::MoveOperation::Left);
-    }
-    else if (event->text() == "}") {
-        QString lc;
-        moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
-        lc = textCursor().selectedText();
-        moveCursor(QTextCursor::Right, QTextCursor::MoveAnchor);
-        if (lc == "{") {
-            moveCursor(QTextCursor::MoveOperation::Right);
+
+        if (pReplaceTab && e->key() == Qt::Key_Backtab) {
+            indentationLevel = std::min(indentationLevel, static_cast<int>(pTabReplace.size()));
+            deIndent(indentationLevel);
             return;
         }
-        else {
-            insertPlainText("}");
+
+        QPlainTextEdit::keyPressEvent(e);
+
+        if (pAutoIndentation && (e->key() == Qt::Key_Return || e->key() == Qt::Key_Enter)) {
+            if (pReplaceTab)
+                insertPlainText(QString(indentationLevel, ' '));
+            else
+                insertPlainText(QString(tabCounts, '\t'));
         }
-    }
-    else if (autoParenthese && event->text().length() == 1) {
-        for (const auto &pair : Retoccilus::parentheses) {
-            if (pair.first == event->text()) {
-                QString rightChar = charUnderCursor(0);
-                if (rightChar == pair.second) {
-                    moveCursor(QTextCursor::MoveOperation::Right);
-                } else {
-                    insertPlainText(event->text() + pair.second);
+
+        if (pAutoParenthese) {
+            for (auto &&el: parentheses) {
+                if (el.first == e->text()) {
+                    insertPlainText(el.second);
                     moveCursor(QTextCursor::MoveOperation::Left);
+                    break;
                 }
-                return;
-            } else if (pair.second == event->text()) {
-                QString rightChar = charUnderCursor(0);
-                if (rightChar == pair.second) {
-                    moveCursor(QTextCursor::MoveOperation::Right);
-                } else if (charUnderCursor(-1) == pair.first) {
-                    insertPlainText(pair.second);
+
+                if (el.second == e->text()) {
+                    auto symbol = charUnderCursor();
+
+                    if (symbol == el.second) {
+                        textCursor().deletePreviousChar();
+                        moveCursor(QTextCursor::MoveOperation::Right);
+                    }
+
+                    break;
                 }
             }
         }
     }
-    else if (event->text() == "'" || event->text() == "\"") {
-        QString lc;
-        moveCursor(QTextCursor::Left, QTextCursor::KeepAnchor);
-        lc = textCursor().selectedText();
-        moveCursor(QTextCursor::Right, QTextCursor::MoveAnchor);
-        if (lc == event->text()) {
-            moveCursor(QTextCursor::MoveOperation::Right);
-        } else {
-            insertPlainText(event->text());
-            moveCursor(QTextCursor::MoveOperation::Left);
-        }
+
+    proceedCompleterEnd(e);
+}
+
+void RCodeEditor::deIndent(int indentationLevel) {
+    auto cursor = textCursor();
+
+    cursor.movePosition(QTextCursor::StartOfLine);
+    cursor.movePosition(QTextCursor::Right,QTextCursor::KeepAnchor, indentationLevel);
+
+    cursor.removeSelectedText();
+}
+
+void RCodeEditor::setAutoIndentation(bool enabled) {
+    pAutoIndentation = enabled;
+}
+
+bool RCodeEditor::autoIndentation() const {
+    return pAutoIndentation;
+}
+
+void RCodeEditor::setAutoParentheses(bool enabled) {
+    pAutoParenthese = enabled;
+}
+
+bool RCodeEditor::autoParentheses() const {
+    return pAutoParenthese;
+}
+
+void RCodeEditor::setTabReplace(bool enabled) {
+    pReplaceTab = enabled;
+}
+
+bool RCodeEditor::tabReplace() const {
+    return pReplaceTab;
+}
+
+void RCodeEditor::setTabReplaceSize(int val) {
+    pTabReplace.clear();
+
+    pTabReplace.fill(' ', val);
+}
+
+int RCodeEditor::tabReplaceSize() const {
+    return pTabReplace.size();
+}
+
+void RCodeEditor::setCompleter(QCompleter *completer) {
+    if (pCompleter) {
+        disconnect(pCompleter, nullptr, this, nullptr);
     }
 
-    if (autoIndentation && (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)) {
-        textCursor().movePosition(QTextCursor::MoveOperation::StartOfLine); //Maybe unnecessary
+    pCompleter = completer;
 
+    if (!pCompleter) {
+        return;
     }
 
-    QPlainTextEdit::keyPressEvent(event);
+    pCompleter->setWidget(this);
+    pCompleter->setCompletionMode(QCompleter::CompletionMode::PopupCompletion);
+
+    connect(
+            pCompleter,
+            QOverload<const QString &>::of(&QCompleter::activated),
+            this,
+            &RCodeEditor::insertCompletion
+    );
+}
+
+void RCodeEditor::focusInEvent(QFocusEvent *e) {
+    if (pCompleter) {
+        pCompleter->setWidget(this);
+    }
+
+    QPlainTextEdit::focusInEvent(e);
+}
+
+void RCodeEditor::insertCompletion(QString s) {
+    if (pCompleter->widget() != this) {
+        return;
+    }
+
+    auto tc = textCursor();
+    tc.select(QTextCursor::SelectionType::WordUnderCursor);
+    tc.insertText(s);
+    setTextCursor(tc);
+}
+
+QCompleter *RCodeEditor::completer() const {
+    return pCompleter;
 }
 
 QChar RCodeEditor::charUnderCursor(int offset) const {
-    int block = textCursor().blockNumber();
+    auto block = textCursor().blockNumber();
     auto index = textCursor().positionInBlock();
     auto text = document()->findBlockByNumber(block).text();
 
     index += offset;
+
     if (index < 0 || index >= text.size()) {
-        return {}; //Return an empty set
+        return {};
     }
 
     return text[index];
 }
 
+QString RCodeEditor::wordUnderCursor() const {
+    auto tc = textCursor();
+    tc.select(QTextCursor::WordUnderCursor);
+    return tc.selectedText();
+}
+
+void RCodeEditor::insertFromMimeData(const QMimeData *source) {
+    insertPlainText(source->text());
+}
+
 int RCodeEditor::getIndentationSpaces() {
-    auto blockText = textCursor().block().text(); //Clang-Tidy recommend me
+    auto blockText = textCursor().block().text();
+
     int indentationLevel = 0;
 
-    for (int i = 0; i < blockText.size() && QString("\t ").contains(blockText[i]); i++) {
+    for (auto i = 0;
+         i < blockText.size() && QString("\t ").contains(blockText[i]);
+         ++i) {
         if (blockText[i] == ' ') {
             indentationLevel++;
-        }
-        else {
+        } else {
 #if QT_VERSION >= 0x050A00
-            //If Qt major version >= 5 (Qt 5.0.0 above)
-            const int defaultIndent = tabStopDistance() / fontMetrics().averageCharWidth();
+            indentationLevel += tabStopDistance() / fontMetrics().averageCharWidth();
 #else
-            const int defaultIndent = tabtStopWidth() / fontMetrics().averageCharWidth();
+            indentationLevel += tabStopWidth() / fontMetrics().averageCharWidth();
 #endif
         }
     }
@@ -290,11 +611,62 @@ int RCodeEditor::getIndentationSpaces() {
     return indentationLevel;
 }
 
-int RCodeEditor::countSpacesAtCurrentLine(int indentationLevel) {
-    int spaces = 0;
-    while (textCursor().columnNumber() > 0 && textCursor().block().text()[textCursor().columnNumber() - 1] == ' ') {
-        spaces++;
-        textCursor().movePosition(QTextCursor::PreviousCharacter);
+void RCodeEditor::fold() {
+    foldingHandler::fold(textCursor());
+}
+
+void RCodeEditor::unfold() {
+    foldingHandler::unfold(textCursor());
+}
+
+void RCodeEditor::framed() {
+    RBorderTextProperty::frame(textCursor());
+}
+
+void RCodeEditor::unframed() {
+    RBorderTextProperty::unframe(textCursor());
+}
+
+void RCodeEditor::sidebarPaintEvent(QPaintEvent *pEvent) {
+    QPainter painter(sidebar);
+    painter.fillRect(pEvent->rect(), QColor("#282a36"));
+
+    QTextBlock block = firstVisibleBlock();
+    int blockNumber = block.blockNumber();
+    int top = static_cast<int>(blockBoundingGeometry(block).translated(contentOffset()).top());
+    int bottom = top + static_cast<int>(blockBoundingRect(block).height());
+
+    while (block.isValid() && top <= pEvent->rect().bottom()) {
+        if (block.isVisible() && bottom >= pEvent->rect().top()) {
+            QString number = QString::number(blockNumber + 1);
+            painter.setPen(Qt::white);
+            painter.drawText(0, top, sidebar->width(), fontMetrics().height(), Qt::AlignCenter, number);
+        }
+
+        block = block.next();
+        top = bottom;
+        bottom = top + static_cast<int>(blockBoundingRect(block).height());
+        ++blockNumber;
     }
-    return std::min(spaces, indentationLevel * defaultIndent);
+
+    const int lineLength = sidebar->width();
+    const int lineHeight = fontMetrics().height();
+    const int yPosition = sidebar->height() / 2;
+    painter.setPen(Qt::white);
+    painter.drawLine(lineLength - 1, 0, lineLength - 1, sidebar->height());
+
+
+}
+
+int RCodeEditor::sidebarWidth() {
+    int digits = 1;
+    int max = qMax(1, blockCount());
+    while (max >= 10) {
+        max /= 10;
+        ++digits;
+    }
+
+    int space = Reto_SideBar_Default_Width + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
+
+    return space;
 }

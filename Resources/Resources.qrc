@@ -1,5 +1,12 @@
 <RCC>
     <qresource prefix = "/config">
+        <file>Configuration/RCodeEditor/KeywordList/cpp.xml</file>
         <file>Configuration/RCodeEditor/KeywordList/cppKeywords.xml</file>
+    </qresource>
+
+    <qresource prefix = "/icons">
+        <file>Icons/Icon_CloseWindow.svg</file>
+        <file>Icons/Icon_Maximize.svg</file>
+        <file>Icons/Icon_Minimize.svg</file>
     </qresource>
 </RCC>

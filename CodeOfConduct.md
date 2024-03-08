@@ -8,7 +8,7 @@ well as all the consequences of unacceptable behavior.
 
 We welcome all those who participate to help us create a safe and happy experience
 for everyone. And to make this Code of Conduct, to make the community or even the
-society more positive and abuse the power.
+society more positive and make sure forbid abuse the power.
 
 ***
 
