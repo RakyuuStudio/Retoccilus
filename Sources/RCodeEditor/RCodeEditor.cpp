@@ -1,3 +1,12 @@
+/*
+ * Note: This project is inspired by QCodeEditor project.
+ * The original project can be found at <https://github.com/Megaxela/QCodeEditor>.
+ * This project is a modified version of the original project.
+ * The original project is licensed under the MIT License.
+ *
+ * Original Creator: Megaxela
+ * Modified by: Ryan Almond
+ */
 #include "RSidebar.h"
 #include "RCodeEditor.h"
 #include "RBorderTextProperty.h"
