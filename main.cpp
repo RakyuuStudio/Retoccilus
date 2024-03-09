@@ -1,6 +1,7 @@
+#include <QtQml>
 #include <QApplication>
 #include "Sources/MainWindow/rmainwindow.h"
-#include "Sources/RCodeEditor_UI/rce_ui.h"
+#include "Sources/UIs/CodeEditor/rcodeeditorhandler.h"
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
@@ -8,8 +9,8 @@ int main(int argc, char *argv[]) {
 //    RMainWindow *rm = new RMainWindow;
 //    rm->show();
 
-    auto *rce = new RCE_UI;
-    rce->show();
+    RCodeEditorHandler *rceh = new RCodeEditorHandler;
+    rceh->show();
 
     return QApplication::exec();
 }
