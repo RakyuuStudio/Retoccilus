@@ -18,6 +18,10 @@ void RCodeEditorHandler::performConnection() {
 
 }
 
+void RCodeEditorHandler::initUIs() {
+
+}
+
 void RCodeEditorHandler::mousePressEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         last = event->globalPosition();
