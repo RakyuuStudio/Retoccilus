@@ -37,9 +37,6 @@ add_executable(Retoccilus main.cpp
         Sources/RCodeEditor/RLanguage.h
         Sources/RCodeEditor/foldingHandler.h
         Sources/RCodeEditor/foldingHandler.cpp
-        Sources/UIs/CodeEditor/rcodeeditorhandler.cpp
-        Sources/UIs/CodeEditor/rcodeeditorhandler.h
-        Sources/UIs/CodeEditor/rcodeeditorhandler.ui
 )
 
 include_directories(

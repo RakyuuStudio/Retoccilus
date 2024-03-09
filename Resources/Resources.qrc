@@ -9,4 +9,8 @@
         <file>Icons/Icon_Maximize.svg</file>
         <file>Icons/Icon_Minimize.svg</file>
     </qresource>
+
+    <qresource prefix = "/uiQmls">
+        <file>UIs/RCodeEditor_UI/RCodeEditorUIHandler.qml</file>
+    </qresource>
 </RCC>
