@@ -15,11 +15,18 @@ class RSyntaxStyle;
 class RStyleSyntaxHighlighter;
 class RBorderTextProperty;
 
+/**
+ * @class RCodeEditor
+ * @brief This class prevent you a code editor
+ */
 class RCodeEditor : public QPlainTextEdit {
     Q_OBJECT
 public:
+    /**
+     * @brief Constructor.
+     * @param widget (Parent widget, means this editor component need to be insert to another parent widget)
+     */
     explicit RCodeEditor(QWidget *widget = nullptr);
-
     [[maybe_unused]] int getFirstVisibleBlock();
     [[maybe_unused]] void setHighlighter(RStyleSyntaxHighlighter *highlighter);
     void setSyntaxStyle(RSyntaxStyle *style);
@@ -46,8 +53,6 @@ public slots:
     //Folding
     void fold();
     void unfold();
-    void framed();
-    void unframed();
 protected:
     void insertFromMimeData(const QMimeData *source) override;
     void paintEvent(QPaintEvent *e) override;
@@ -62,8 +67,8 @@ private:
     void updateLineGeometry();
     bool proceedCompleterBegin(QKeyEvent *e);
     void proceedCompleterEnd(QKeyEvent *e);
-    QChar charUnderCursor(int offset = 0) const;
-    QString wordUnderCursor() const;
+    [[nodiscard]] QChar charUnderCursor(int offset = 0) const;
+    [[nodiscard]] QString wordUnderCursor() const;
     void highlightCurrentLine(QList<QTextEdit::ExtraSelection> &extraSelection);
     void highlightParenthesis(QList<QTextEdit::ExtraSelection> &extraSelection);
     int getIndentationSpaces();

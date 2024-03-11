@@ -7,6 +7,8 @@
 #include <QTextObjectInterface>
 #include <QTextObject>
 
+#include <functional>
+
 class foldingHandler : public QObject, public QTextObjectInterface {
     Q_OBJECT
     Q_INTERFACES(QTextObjectInterface)
@@ -21,10 +23,15 @@ public:
         return 2;
     }
 
+    struct foldingStructure {
+        QString foldingContent;
+        int foldingRows;
+    };
+
     QSizeF intrinsicSize(QTextDocument *doc, int posInDocument, const QTextFormat &format) override;
     void drawObject(QPainter *painter, const QRectF &rect, QTextDocument *doc, int posInDocument, const QTextFormat &format) override;
-    static void fold(QTextCursor c);
-    static bool unfold(QTextCursor c);
+    static foldingStructure fold(QTextCursor c);
+    static bool unfold(QTextCursor c, foldingStructure fs);
 };
 
 #endif

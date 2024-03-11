@@ -66,6 +66,8 @@ void RCodeEditor::initDocumentLayoutHandlers() {
     document()->documentLayout()->registerHandler(RBorderTextProperty::type(), btp);
 }
 
+/// \brief Wheel event, handle the Control + Mouse Scroll to zoom in or out.
+/// \param e
 void RCodeEditor::wheelEvent(QWheelEvent *e) {
     if (e->modifiers() & Qt::ControlModifier) {
         qreal fontsize = font().pointSizeF();
@@ -96,6 +98,7 @@ void RCodeEditor::wheelEvent(QWheelEvent *e) {
     }
 }
 
+/// \brief Initialize the font for the code editor
 void RCodeEditor::initFont() {
     QFont fnt = QFont("Consolas");
     fnt.setFixedPitch(true);
@@ -104,6 +107,8 @@ void RCodeEditor::initFont() {
     setFont(fnt);
 }
 
+/// \brief Set the highlighter for the code editor.
+/// \todo This function may used in future, but not now.
 void RCodeEditor::setHighlighter(RStyleSyntaxHighlighter *xhighlighter) {
     if (highlighter) {
         highlighter->setDocument(nullptr);
@@ -117,6 +122,8 @@ void RCodeEditor::setHighlighter(RStyleSyntaxHighlighter *xhighlighter) {
     }
 }
 
+/// \brief Set the syntax style for the code editor.
+/// \todo This function may used in future, but not now.
 void RCodeEditor::setSyntaxStyle(RSyntaxStyle *style) {
     syntaxStyle = style;
 
@@ -129,6 +136,8 @@ void RCodeEditor::setSyntaxStyle(RSyntaxStyle *style) {
     updateStyle();
 }
 
+/// \brief Update the highlight style for the code editor.
+/// \todo This function may used in future, but not now.
 void RCodeEditor::updateStyle() {
     if (highlighter) {
         highlighter->rehighlight();
@@ -145,6 +154,9 @@ void RCodeEditor::updateStyle() {
     updateExtraSelection();
 }
 
+/// \brief Handle the collapse (folding) selection changing of the code editor
+/// \todo This function may used in future, but not now.
+/// \bug This function may has some unexpected bug need to fix.
 void RCodeEditor::onSelectionChanged() {
     QString selected = textCursor().selectedText();
     QTextCursor cursor = textCursor();
@@ -167,20 +179,24 @@ void RCodeEditor::onSelectionChanged() {
     }
 }
 
+/// \brief Resize event.
 void RCodeEditor::resizeEvent(QResizeEvent *e) {
     QPlainTextEdit::resizeEvent(e);
     updateLineGeometry();
 }
 
+/// \brief Update the geometry property of line (such as word wrapping)
 void RCodeEditor::updateLineGeometry() {
     QRect cr = contentsRect();
     sidebar->setGeometry(QRect(cr.left(),cr.top(),sidebar->sizeHint().width(),cr.height()));
 }
 
+/// \brief Update the lineNumberArea width.
 void RCodeEditor::updateLineNumberAreaWidth(int) {
     setViewportMargins(sidebar->sizeHint().width(), 0, 0, 0);
 }
 
+/// \brief Update the LineNumberArea
 void RCodeEditor::updateLineNumberArea(const QRect &rect) {
     sidebar->update(0,rect.y(),sidebar->sizeHint().width(),rect.height());
     updateLineGeometry();
@@ -189,8 +205,8 @@ void RCodeEditor::updateLineNumberArea(const QRect &rect) {
     }
 }
 
+/// \brief Handle the selection.
 void RCodeEditor::handleSelectionQuery(const QTextCursor& cursor) {
-
     auto searchIterator = cursor;
     searchIterator.movePosition(QTextCursor::Start);
     searchIterator = document()->find(cursor.selectedText(), searchIterator);
@@ -201,6 +217,7 @@ void RCodeEditor::handleSelectionQuery(const QTextCursor& cursor) {
     }
 }
 
+/// \brief Update Extra Selection. (Highlight Current Line and Parentheses)
 void RCodeEditor::updateExtraSelection() {
     QList<QTextEdit::ExtraSelection> extra;
 
@@ -210,6 +227,7 @@ void RCodeEditor::updateExtraSelection() {
     setExtraSelections(extra);
 }
 
+/// \brief Highlight the parentheses.
 void RCodeEditor::highlightParenthesis(QList<QTextEdit::ExtraSelection> &extraSelection) {
     auto currentSymbol = charUnderCursor();
     auto prevSymbol = charUnderCursor(-1);
@@ -283,6 +301,7 @@ void RCodeEditor::highlightParenthesis(QList<QTextEdit::ExtraSelection> &extraSe
     }
 }
 
+/// \brief Highlight current line.
 void RCodeEditor::highlightCurrentLine(QList<QTextEdit::ExtraSelection> &extraSelection) {
     if (!isReadOnly()) {
         QTextEdit::ExtraSelection selection{};
@@ -297,12 +316,14 @@ void RCodeEditor::highlightCurrentLine(QList<QTextEdit::ExtraSelection> &extraSe
     }
 }
 
+/// \brief Trigger the lineNumberArea repaint.
 void RCodeEditor::paintEvent(QPaintEvent *e) {
     updateLineNumberArea(e->rect());
 //    updateSidebarWidth();
     QPlainTextEdit::paintEvent(e);
 }
 
+/// \brief Get first visible block in current viewport
 [[maybe_unused]] int RCodeEditor::getFirstVisibleBlock() {
     QTextCursor curs = QTextCursor(document());
     curs.movePosition(QTextCursor::Start);
@@ -322,6 +343,8 @@ void RCodeEditor::paintEvent(QPaintEvent *e) {
     return 0;
 }
 
+/// \brief Process the completer.
+/// \todo  Fix the completer, and add completer rules and AST to analyze the source
 bool RCodeEditor::proceedCompleterBegin(QKeyEvent *e) {
     if (pCompleter &&
         pCompleter->popup()->isVisible()) {
@@ -344,6 +367,8 @@ bool RCodeEditor::proceedCompleterBegin(QKeyEvent *e) {
 
 }
 
+/// \brief Process the completer
+/// \todo Fix the completer, and add completer rules and AST to analyze the source
 void RCodeEditor::proceedCompleterEnd(QKeyEvent *e) {
     auto ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
 
@@ -380,6 +405,7 @@ void RCodeEditor::proceedCompleterEnd(QKeyEvent *e) {
     pCompleter->complete(cursRect);
 }
 
+/// \brief Handle keyPressEvent. Such as autoParentheses, autoIndentation and etc.
 void RCodeEditor::keyPressEvent(QKeyEvent *e) {
 #if QT_VERSION >= 0x050A00
 //    const int defaultIndent = tabStopDistance() / fontMetrics().averageCharWidth();
@@ -477,6 +503,7 @@ void RCodeEditor::keyPressEvent(QKeyEvent *e) {
     proceedCompleterEnd(e);
 }
 
+/// \brief Slots, de-indent of current line.
 void RCodeEditor::deIndent(int indentationLevel) {
     auto cursor = textCursor();
 
@@ -486,40 +513,49 @@ void RCodeEditor::deIndent(int indentationLevel) {
     cursor.removeSelectedText();
 }
 
+/// \brief An interface function to give the ability of setting the auto indentation on or off.
 void RCodeEditor::setAutoIndentation(bool enabled) {
     pAutoIndentation = enabled;
 }
 
+/// \brief An interface function, return the state of codeEditor auto indentation on or off.
 bool RCodeEditor::autoIndentation() const {
     return pAutoIndentation;
 }
 
+/// \brief An interface function to give the ability of setting the auto parentheses on or off.
 void RCodeEditor::setAutoParentheses(bool enabled) {
     pAutoParenthese = enabled;
 }
 
+/// \brief An interface function, return the state of setting the auto parentheses on or off.
 bool RCodeEditor::autoParentheses() const {
     return pAutoParenthese;
 }
 
+/// \brief An interface function to give the ability of setting the tab replacing on or off.
 void RCodeEditor::setTabReplace(bool enabled) {
     pReplaceTab = enabled;
 }
 
+/// \brief An interface function, return the state of setting the tab replacing on or off.
 bool RCodeEditor::tabReplace() const {
     return pReplaceTab;
 }
 
+/// \brief An interface function, to set the size of tab replacing.
 void RCodeEditor::setTabReplaceSize(int val) {
     pTabReplace.clear();
 
     pTabReplace.fill(' ', val);
 }
 
+/// \brief An interface function, return the value of tabReplaceSize.
 int RCodeEditor::tabReplaceSize() const {
     return pTabReplace.size();
 }
 
+/// \brief Setup the completer.
 void RCodeEditor::setCompleter(QCompleter *completer) {
     if (pCompleter) {
         disconnect(pCompleter, nullptr, this, nullptr);
@@ -542,6 +578,7 @@ void RCodeEditor::setCompleter(QCompleter *completer) {
     );
 }
 
+/// \brief Focus In Event, an override version of factory function.
 void RCodeEditor::focusInEvent(QFocusEvent *e) {
     if (pCompleter) {
         pCompleter->setWidget(this);
@@ -550,6 +587,7 @@ void RCodeEditor::focusInEvent(QFocusEvent *e) {
     QPlainTextEdit::focusInEvent(e);
 }
 
+/// \brief Insert Completion.
 void RCodeEditor::insertCompletion(QString s) {
     if (pCompleter->widget() != this) {
         return;
@@ -561,10 +599,12 @@ void RCodeEditor::insertCompletion(QString s) {
     setTextCursor(tc);
 }
 
+/// \brief An interface function, return the object of completer;
 QCompleter *RCodeEditor::completer() const {
     return pCompleter;
 }
 
+/// \brief Return the character of the cursor, depends on offset is left (negative) or right (positive)
 QChar RCodeEditor::charUnderCursor(int offset) const {
     auto block = textCursor().blockNumber();
     auto index = textCursor().positionInBlock();
@@ -579,16 +619,19 @@ QChar RCodeEditor::charUnderCursor(int offset) const {
     return text[index];
 }
 
+/// \brief Return the string(word) of the cursor. NOTE: NO OFFSET ALLOWED
 QString RCodeEditor::wordUnderCursor() const {
     auto tc = textCursor();
     tc.select(QTextCursor::WordUnderCursor);
     return tc.selectedText();
 }
 
+/// \brief Insert the code from Mime Data.
 void RCodeEditor::insertFromMimeData(const QMimeData *source) {
     insertPlainText(source->text());
 }
 
+/// \brief Get the indentation spaces of current line.
 int RCodeEditor::getIndentationSpaces() {
     auto blockText = textCursor().block().text();
 
@@ -611,22 +654,17 @@ int RCodeEditor::getIndentationSpaces() {
     return indentationLevel;
 }
 
+/// \brief Slot, trigger folding or not.
 void RCodeEditor::fold() {
     foldingHandler::fold(textCursor());
 }
 
+/// \brief Slot, trigger unfloding or not.
 void RCodeEditor::unfold() {
     foldingHandler::unfold(textCursor());
 }
 
-void RCodeEditor::framed() {
-    RBorderTextProperty::frame(textCursor());
-}
-
-void RCodeEditor::unframed() {
-    RBorderTextProperty::unframe(textCursor());
-}
-
+/// \brief Retrigger the sidebarPaintEvent.
 void RCodeEditor::sidebarPaintEvent(QPaintEvent *pEvent) {
     QPainter painter(sidebar);
     painter.fillRect(pEvent->rect(), QColor("#282a36"));
@@ -658,6 +696,7 @@ void RCodeEditor::sidebarPaintEvent(QPaintEvent *pEvent) {
 
 }
 
+/// \brief Return the width of sidebar.
 int RCodeEditor::sidebarWidth() {
     int digits = 1;
     int max = qMax(1, blockCount());

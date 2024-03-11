@@ -37,12 +37,15 @@ add_executable(Retoccilus main.cpp
         Sources/RCodeEditor/RLanguage.h
         Sources/RCodeEditor/foldingHandler.h
         Sources/RCodeEditor/foldingHandler.cpp
+        Parser/Cpp/Tokenizer.h
+        Parser/utils/ParserUtils.h
 )
 
 include_directories(
         utils/
         Sources/RCodeEditor/
         Sources/
+        Parser/
 )
 
 target_link_libraries(Retoccilus

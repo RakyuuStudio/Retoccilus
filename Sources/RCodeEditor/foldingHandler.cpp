@@ -29,25 +29,34 @@ void foldingHandler::drawObject(QPainter *painter, const QRectF &rect, QTextDocu
     painter->drawRect(rect);
 }
 
-void foldingHandler::fold(QTextCursor c) {
-    QTextCharFormat f;
-    f.setObjectType(type());
+foldingHandler::foldingStructure foldingHandler::fold(QTextCursor c) {
+    foldingStructure fs;
+    QTextCharFormat format;
+    format.setObjectType(type());
     QVariant v;
     v.setValue(c.selection());
-    f.setProperty(prop(), v);
-    c.insertText(tr("/*.Folded.*/"), f);
+
+    fs.foldingContent = c.selectedText();
+    fs.foldingRows = static_cast<int>(c.selectedText().count("\n"));
+
+    format.setProperty(prop(), v);
+    c.insertText(tr("/*.Folded.*/"), format);
+    return fs;
 }
 
-bool foldingHandler::unfold(QTextCursor c) {
-    if (!c.hasSelection()) {
-        QTextCharFormat f = c.charFormat();
-        if (f.objectType() == type()) {
-            c.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
-            QVariant v = f.property(prop());
-            auto q = v.value<QTextDocumentFragment>();
-            c.insertFragment(q);
+bool foldingHandler::unfold(QTextCursor cursor, foldingStructure fs) {
+    if (!cursor.hasSelection()) {
+        QTextCharFormat format = cursor.charFormat();
+        if (format.objectType() == type()) {
+            cursor.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
+            QVariant variant = format.property(prop());
+//            QTextDocumentFragment fragment = variant.value<QTextDocumentFragment>();
+            cursor.insertText(fs.foldingContent);
+            fs.foldingContent = "";
+            fs.foldingRows = 0;
             return true;
         }
     }
     return false;
 }
+
