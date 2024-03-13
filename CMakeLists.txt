@@ -7,7 +7,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_PREFIX_PATH "E:/Qt/6.6.2/mingw_64/lib/cmake")
-
+set(SARibbonBar_DIR "F:/Retoccilus/ThirdPartyLibraries/SARibbon/bin_qt6.6.2_GNU_x64/lib/cmake/SARibbonBar")
 find_package(Qt6 COMPONENTS
         Core
         Gui
@@ -15,7 +15,10 @@ find_package(Qt6 COMPONENTS
         Xml
         Qml
         Quick
+        Core5Compat
         REQUIRED)
+
+find_package(SARibbonBar)
 
 qt_add_resources(RESOURCES Resources/Resources.qrc)
 
@@ -39,6 +42,10 @@ add_executable(Retoccilus main.cpp
         Sources/RCodeEditor/foldingHandler.cpp
         Parser/Cpp/Tokenizer.h
         Parser/utils/ParserUtils.h
+        Sources/Global/utils.h
+        Sources/Global/qt_lib_utils.h
+        Sources/Global/charset_info.h
+        Sources/Global/SimpleIni.h
 )
 
 include_directories(
@@ -55,6 +62,9 @@ target_link_libraries(Retoccilus
         Qt::Xml
         Qt::Qml
         Qt::Quick
+        Qt6::Core5Compat
+
+        SARibbonBar
 )
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)

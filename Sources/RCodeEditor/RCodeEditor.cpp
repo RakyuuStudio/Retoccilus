@@ -661,7 +661,7 @@ void RCodeEditor::fold() {
 
 /// \brief Slot, trigger unfloding or not.
 void RCodeEditor::unfold() {
-    foldingHandler::unfold(textCursor());
+//    foldingHandler::unfold(textCursor());
 }
 
 /// \brief Retrigger the sidebarPaintEvent.

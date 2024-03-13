@@ -12,7 +12,7 @@
 #include <functional>
 
 using namespace std;
-using getFileStreamCallingBack = function<bool>(const QString&, const QStringList&);
+using getFileStreamCallingBack = function<bool>(const QString &, const QStringList &);
 
 namespace RParser {
     enum class ParserLanguage {
@@ -41,7 +41,7 @@ namespace RParser {
         QString formatValue;
 
         bool codeIsHardcodeInMemory;   //Is the code Hard-Code in the memory? If yes, we don't free memory.
-        int  variableArgumentIndex;
+        int variableArgumentIndex;
 
         QList<bool> argumentUsed;
     };
@@ -139,18 +139,25 @@ namespace RParser {
     };
 
     enum StatementProperty {
-        sp_None                               = 0x0,
-        sp_Static                             = 0x0001,
-        sp_DefinitionExist                    = 0x0002,
-        sp_InAProject                         = 0x0004,
-        sp_InLibraryHeader                    = 0x0008,
-        sp_Inherited                          = 0x0010,
-        sp_Virtual                            = 0x0020,
-        sp_Override                           = 0x0040,
-        sp_ConstExpression                    = 0x0080,
-        sp_FunctionPointer                    = 0x0100,
-        sp_OperatorOverload                   = 0x0200,
-        sp_DummyStatement                     = 0x0400
+        sp_None = 0x0,
+        sp_Static = 0x0001,
+        sp_DefinitionExist = 0x0002,
+        sp_InAProject = 0x0004,
+        sp_InLibraryHeader = 0x0008,
+        sp_Inherited = 0x0010,
+        sp_Virtual = 0x0020,
+        sp_Override = 0x0040,
+        sp_ConstExpression = 0x0080,
+        sp_FunctionPointer = 0x0100,
+        sp_OperatorOverload = 0x0200,
+        sp_DummyStatement = 0x0400
+    };
+
+    struct UsingNamespace {
+        QStringList namespaces;
+        QString filename;
+        int line;
+        bool fromHeader;
     };
 
     struct Statement; //Forward Declaration
@@ -166,6 +173,7 @@ namespace RParser {
     using RStatementListPointer = shared_ptr<RStatementList>;
     using RStatementMultimap = QMultiMap<QString, RStatement>;
     Q_DECLARE_FLAGS(StatementProperties, StatementProperty)
+
     Q_DECLARE_OPERATORS_FOR_FLAGS(StatementProperties)
 
     struct Statement {
@@ -187,16 +195,120 @@ namespace RParser {
         QList<RStatementMatchPosition> matchPositions;
 
         bool hasDefination() { return properties.testFlag(StatementProperty::sp_DefinitionExist); }
+
         bool inProject() { return properties.testFlag(StatementProperty::sp_InAProject); }
+
         bool inLibraryHeader() { return properties.testFlag(StatementProperty::sp_InLibraryHeader); }
+
         bool isStatic() { return properties.testFlag(StatementProperty::sp_Static); }
+
         bool isInherited() { return properties.testFlag(StatementProperty::sp_Inherited); }
 
-        void setHasDefination(bool on) { properties.setFlag(StatementProperty::sp_DefinitionExist,on); }
-        void setInProject(bool on) { properties.setFlag(StatementProperty::sp_InAProject,on); }
-        void setInLibraryHeader(bool on) { properties.setFlag(StatementProperty::sp_InLibraryHeader,on); }
-        void setIsStatic(bool on) { properties.setFlag(StatementProperty::sp_Static,on); }
+        void setHasDefination(bool on) { properties.setFlag(StatementProperty::sp_DefinitionExist, on); }
+
+        void setInProject(bool on) { properties.setFlag(StatementProperty::sp_InAProject, on); }
+
+        void setInLibraryHeader(bool on) { properties.setFlag(StatementProperty::sp_InLibraryHeader, on); }
+
+        void setIsStatic(bool on) { properties.setFlag(StatementProperty::sp_Static, on); }
     };
+
+    struct EvaluateStatement;
+    using REvaluateStatement = shared_ptr<EvaluateStatement>;
+
+    struct EvaluateStatement {
+        QString baseType, templateParams;
+        EvaluateStatementType kind;
+        int pointerLayer;
+        QString definitionString;
+        RStatement baseStatement, typeStatement, effectiveTypeStatement;
+    public:
+        EvaluateStatement(const QString &baseType, EvaluateStatementType kind, const RStatement &baseStatement,
+                          const RStatement &typeStatement, const RStatement &effectiveTypeStatement, int pointerLevel = 0,
+                          const QString &templateParams = QString())
+        {
+
+        }
+
+        void assignType(const REvaluateStatement &typeStatement);
+    };
+
+    struct CppScope {
+        int startLine;
+        RStatement statement;
+    };
+
+    using RUsingNamespace = shared_ptr<UsingNamespace>;
+    using RCppScope = shared_ptr<CppScope>;
+
+    struct ClassInheritanceInfo{
+        weak_ptr<Statement> derivedClass;
+        QString file, parentClassName;
+        bool isGlobal, isStruct, handling;
+        StatementPriority pStatementAccessibility;
+    };
+
+    struct FileIncluding{
+        QString baseFile;
+    };
+
+    class CppScopeContent {
+    public:
+        RStatement findScopeAtLine(int lineOffset);
+        void addScope(int line, RStatement scopeStatement);
+        RStatement lastScope();
+        void removeLastScope();
+        void clear();
+    private:
+        QVector<RCppScope> r_Scopes;
+    };
+
+    struct FileIncludes {
+        QString baseFile;
+        QMap<QString, bool> includeFiles;
+        QSet<QString> usings;
+        QStringList directIncludes;
+
+        RStatementMultimap statements, declaredStatements;
+        RCppScope scopes;
+        QMap<int, bool> branches;
+        QList<weak_ptr<ClassInheritanceInfo>> handledInheritances;
+        bool isLineVisible(int line);
+    };
+    using RFileIncludes = shared_ptr<FileIncludes>;
+
+    extern QStringList CppDirectives;
+    extern QStringList JavaDocumentPropertyTags;
+    extern QMap<QString, KeywordType> CppKeywords;
+    extern QSet<QString> CppControlKeyWords;
+    extern QSet<QString> CKeywords;
+    extern QSet<QString> CppTypeKeywords;
+    extern QSet<QString> STLPointers;
+    extern QSet<QString> STLContainers;
+    extern QSet<QString> STLMaps;
+    extern QSet<QString> STLElementMethods;
+    extern QSet<QString> STLIterators;
+    extern QSet<QString> MemberOperators;
+    extern QSet<QString> IOManipulators;
+    extern QSet<QString> AutoTypes;
+
+    void initParser();
+
+    QString getHeaderFilename(const QString& relativeTo, const QString& line, const QStringList& includePaths, const QStringList& projectIncludePaths);
+    QString getLocalHeaderFilename(const QString& relativeTo, const QString& fileName);
+    QString getSystemHeaderFilename(const QString& fileName, const QStringList& includePaths);
+    bool isSystemHeaderFile(const QString& fileName, const QSet<QString>& includePaths);
+    bool isHFile(const QString& filename);
+    bool isCFile(const QString& filename);
+    bool isCppFile(const QString& filename);
+    bool isCppKeyword(const QString& word);
+    bool isCppControlKeyword(const QString& word);
+    bool isScopeTypeKind(StatementKind kind);
+    bool isTypeKind(StatementKind kind);
+    MemberOperator getOperatorType(const QString& phrase, int index);
+    QStringList getOwnerExpressionAndMember(const QStringList expression,QString& memberOperator,QStringList& memberExpression);
+    bool isMemberOperator(QString token);
+    StatementKind getKindOfStatement(const RStatement & statement);
 }
 
 #endif
