@@ -1,3 +1,6 @@
 [submodule "SARibbon"]
 path = ThirdPartyLib/SARibbon
 url = https://github.com/czyt1988/SARibbon
+[submodule "ThirdPartyLib/SARibbon"]
+	path = ThirdPartyLib/SARibbon
+	url = git@github.com:czyt1988/SARibbon.git
