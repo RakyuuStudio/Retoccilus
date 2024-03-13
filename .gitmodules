@@ -1,0 +1,3 @@
+[submodule "SARibbon"]
+path = ThirdPartyLib/SARibbon
+url = https://github.com/czyt1988/SARibbon
