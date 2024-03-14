@@ -2,6 +2,8 @@
 #include <QApplication>
 #include <RCodeEditor.h>
 #include <RCFamilyHighlighter.h>
+#include "Sources/RCodeEditor_UI/retocodeeditor_uihandler.h"
+
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 //
@@ -9,9 +11,9 @@ int main(int argc, char *argv[]) {
 //    const QUrl codeEditorUIUrl(QStringLiteral("qrc:/uiQmls/UIs/RCodeEditor_UI/RCodeEditorUIHandler.qml"));
 //    engine.load(codeEditorUIUrl);
 
-RCodeEditor *rce = new RCodeEditor();
-rce->setStyleSheet("background-color: #2E2E2E; color: #FFFFFF;");
-rce->show();
-RCFamilyHighlighter *highlighter = new RCFamilyHighlighter(rce->document());
+    RetoCodeEditor_UIHandler *codeEditorUI;
+    codeEditorUI = new RetoCodeEditor_UIHandler();
+    codeEditorUI->show();
+
     return QApplication::exec();
 }

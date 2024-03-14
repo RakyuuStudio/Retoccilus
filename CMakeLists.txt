@@ -40,12 +40,10 @@ add_executable(Retoccilus main.cpp
         Sources/RCodeEditor/RLanguage.h
         Sources/RCodeEditor/foldingHandler.h
         Sources/RCodeEditor/foldingHandler.cpp
-        Parser/Cpp/Tokenizer.h
-        Parser/utils/ParserUtils.h
-        Sources/Global/utils.h
-        Sources/Global/qt_lib_utils.h
-        Sources/Global/charset_info.h
-        Sources/Global/SimpleIni.h
+        Sources/RCodeEditor_UI/retocodeeditor_uihandler.cpp
+        Sources/RCodeEditor_UI/retocodeeditor_uihandler.h
+        Sources/RCodeEditor_UI/retocodeeditor_uihandler.ui
+        Sources/RCodeEditor_UI/retocodeeditor_uihandler.h
 )
 
 include_directories(
