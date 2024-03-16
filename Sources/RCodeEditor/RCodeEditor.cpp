@@ -63,7 +63,7 @@ RCodeEditor::RCodeEditor(QWidget *widget) :
 }
 
 void RCodeEditor::initDocumentLayoutHandlers() {
-    document()->documentLayout()->registerHandler(RBorderTextProperty::type(), btp);
+//    document()->documentLayout()->registerHandler(RBorderTextProperty::type(), btp);
 }
 
 /// \brief Wheel event, handle the Control + Mouse Scroll to zoom in or out.
@@ -127,7 +127,7 @@ void RCodeEditor::setHighlighter(RStyleSyntaxHighlighter *xhighlighter) {
 void RCodeEditor::setSyntaxStyle(RSyntaxStyle *style) {
     syntaxStyle = style;
 
-    btp->setSyntaxStyle(syntaxStyle);
+//    btp->setSyntaxStyle(syntaxStyle);
 
     if (highlighter) {
         highlighter->setSyntaxStyle(syntaxStyle);
@@ -169,8 +169,7 @@ void RCodeEditor::onSelectionChanged() {
     cursor.select(QTextCursor::SelectionType::WordUnderCursor);
 
     QSignalBlocker blocker(this);
-    RBorderTextProperty::unframe(cursor);
-
+//    RBorderTextProperty::unframe(cursor);
     if (selected.size() > 1 &&
         cursor.selectedText() == selected) {
         QTextCursor backup = textCursor();
@@ -211,7 +210,7 @@ void RCodeEditor::handleSelectionQuery(const QTextCursor& cursor) {
     searchIterator.movePosition(QTextCursor::Start);
     searchIterator = document()->find(cursor.selectedText(), searchIterator);
     while (searchIterator.hasSelection()) {
-        RBorderTextProperty::frame(searchIterator);
+//        RBorderTextProperty::frame(searchIterator);
 
         searchIterator = document()->find(cursor.selectedText(), searchIterator);
     }
@@ -656,7 +655,7 @@ int RCodeEditor::getIndentationSpaces() {
 
 /// \brief Slot, trigger folding or not.
 void RCodeEditor::fold() {
-    foldingHandler::fold(textCursor());
+//    foldingHandler::fold(textCursor());
 }
 
 /// \brief Slot, trigger unfloding or not.

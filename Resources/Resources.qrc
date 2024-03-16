@@ -1,16 +1,53 @@
 <RCC>
-    <qresource prefix = "/config">
+    <qresource prefix="/config">
         <file>Configuration/RCodeEditor/KeywordList/cpp.xml</file>
         <file>Configuration/RCodeEditor/KeywordList/cppKeywords.xml</file>
     </qresource>
-
-    <qresource prefix = "/icons">
-        <file>Icons/Icon_CloseWindow.svg</file>
-        <file>Icons/Icon_Maximize.svg</file>
-        <file>Icons/Icon_Minimize.svg</file>
-    </qresource>
-
-    <qresource prefix = "/uiQmls">
-        <file>UIs/RCodeEditor_UI/RCodeEditorUIHandler.qml</file>
+    <qresource prefix="/icons">
+        <file>Icons/Icon_CHeader.png</file>
+        <file>Icons/Icon_CMake.png</file>
+        <file>Icons/Icon_CMakeTerminal.png</file>
+        <file>Icons/Icon_Copy.png</file>
+        <file>Icons/Icon_CppHeader.png</file>
+        <file>Icons/Icon_CppSource.png</file>
+        <file>Icons/Icon_CreateNew.png</file>
+        <file>Icons/Icon_CSource.png</file>
+        <file>Icons/Icon_Css.png</file>
+        <file>Icons/Icon_Cut.png</file>
+        <file>Icons/Icon_Duplicate.png</file>
+        <file>Icons/Icon_Error.png</file>
+        <file>Icons/Icon_Exit.png</file>
+        <file>Icons/Icon_Export.png</file>
+        <file>Icons/Icon_Find.png</file>
+        <file>Icons/Icon_Format.png</file>
+        <file>Icons/Icon_GitBold.png</file>
+        <file>Icons/Icon_GitBranch.png</file>
+        <file>Icons/Icon_GitCommit.png</file>
+        <file>Icons/Icon_GitMerge.png</file>
+        <file>Icons/Icon_Indent.png</file>
+        <file>Icons/Icon_Javascript.png</file>
+        <file>Icons/Icon_Json.png</file>
+        <file>Icons/Icon_JumpToEnd.png</file>
+        <file>Icons/Icon_JumpToStart.png</file>
+        <file>Icons/Icon_Notification.png</file>
+        <file>Icons/Icon_Open.png</file>
+        <file>Icons/Icon_Paste.png</file>
+        <file>Icons/Icon_Print.png</file>
+        <file>Icons/Icon_Python.png</file>
+        <file>Icons/Icon_React.png</file>
+        <file>Icons/Icon_ReadOnly.png</file>
+        <file>Icons/Icon_Redo.png</file>
+        <file>Icons/Icon_Save.png</file>
+        <file>Icons/Icon_SaveAs.png</file>
+        <file>Icons/Icon_Settings.png</file>
+        <file>Icons/Icon_Structure.png</file>
+        <file>Icons/Icon_Sync.png</file>
+        <file>Icons/Icon_Terminal.png</file>
+        <file>Icons/Icon_TypeScript.png</file>
+        <file>Icons/Icon_Undo.png</file>
+        <file>Icons/Icon_UnIndent.png</file>
+        <file>Icons/Icon_Vue.png</file>
+        <file>Icons/Icon_XML.png</file>
+        <file>Icons/Icon_HTML.png</file>
     </qresource>
 </RCC>

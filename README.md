@@ -68,4 +68,4 @@ For more information, look at the LICENSES (Remember the S) file for more inform
 
 If you have any questions or need assistance, please feel free to contact us at [ryan2551@foxmail.com or ryan_nvkopres@outlook.com]
 
-We hope you enjoy using Retoccilus for your game development projects! Happy coding!
+We hope you enjoy using Retoccilus for your game development projects! Happy coding! I'm waiting for your games!
