@@ -1,3 +1,9 @@
+//==-- RBorderTextProperty.h - RCodeEditor Text Frame Attributes----------*- C++ -*-==//
+//* Copyright (c) 2023-2024 Rakyuu Studio. All rights reserved.                      *//
+//* Retoccilus licensed under GNU GPL v3 license.                                    *//
+//* See https://www.gnu.org/licenses/gpl-3.0.html for license information.           *//
+//==-----------------------------------------------------------------------------====*//
+
 #ifndef RetoCodeEditor_BorderTextProperty_h
 #define RetoCodeEditor_BorderTextProperty_h
 

@@ -1,3 +1,8 @@
+//==-- RSideBar.h - RCodeEditor Left Sidebar Interface Header - ----------*- C++ -*-==//
+//* Copyright (c) 2023-2024 Rakyuu Studio. All rights reserved.                      *//
+//* Retoccilus licensed under GNU GPL v3 license.                                    *//
+//* See https://www.gnu.org/licenses/gpl-3.0.html for license information.           *//
+//==-----------------------------------------------------------------------------====*//
 #ifndef RCodeEditor_Sidebar_h
 #define RCodeEditor_Sidebar_h
 
@@ -15,7 +20,7 @@
 #include <QTextEdit>
 #include <QFontMetrics>
 
-class RCodeEditor; //Fuck you forward declaration
+class RCodeEditor;
 
 class RSideBar : public QWidget
 {

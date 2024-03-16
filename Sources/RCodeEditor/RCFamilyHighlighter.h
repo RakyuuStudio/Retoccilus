@@ -1,3 +1,9 @@
+//==-- RCFamilyHighlighter.h - RCodeEditor C-Family Highlighter Header----*- C++ -*-==//
+//* Copyright (c) 2023-2024 Rakyuu Studio. All rights reserved.                      *//
+//* Retoccilus licensed under GNU GPL v3 license.                                    *//
+//* See https://www.gnu.org/licenses/gpl-3.0.html for license information.           *//
+//==-----------------------------------------------------------------------------====*//
+
 #ifndef RetoCodeEditor_CFamilyHighlighter_h
 #define RetoCodeEditor_CFamilyHighlighter_h
 

@@ -28,7 +28,6 @@ add_executable(Retoccilus main.cpp
         Sources/RCodeEditor/RCodeEditor.h
         Sources/RCodeEditor/RCodeEditor.cpp
         ${RESOURCES}
-        Sources/RCodeEditor/RSyntaxHighlighter.h
         Sources/RCodeEditor/RCFamilyHighlighter.h
         Sources/RCodeEditor/RCFamilyHighlighter.h
         Sources/RCodeEditor/RHighlightRule.h
@@ -38,12 +37,11 @@ add_executable(Retoccilus main.cpp
         Sources/RCodeEditor/RBorderTextProperty.h
         Sources/RCodeEditor/RSidebar.h
         Sources/RCodeEditor/RLanguage.h
-        Sources/RCodeEditor/foldingHandler.h
-        Sources/RCodeEditor/foldingHandler.cpp
         Sources/RCodeEditor_UI/retocodeeditor_uihandler.cpp
         Sources/RCodeEditor_UI/retocodeeditor_uihandler.h
         Sources/RCodeEditor_UI/retocodeeditor_uihandler.ui
         Sources/RCodeEditor_UI/retocodeeditor_uihandler.h
+        Sources/RCodeEditor/Clang/ASTGenerator.h
 )
 
 include_directories(
@@ -51,6 +49,7 @@ include_directories(
         Sources/RCodeEditor/
         Sources/
         Parser/
+        ThirdPartyLibraries/clang
 )
 
 target_link_libraries(Retoccilus
