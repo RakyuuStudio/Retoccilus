@@ -27,7 +27,7 @@ RetoCodeEditor_UIHandler::RetoCodeEditor_UIHandler(QWidget *parent) :
         SARibbonMainWindow(parent), ui(new Ui::RetoCodeEditor_UIHandler)
 {
     ui->setupUi(this);
-    setWindowTitle("RCodeEditor");
+//    setWindowTitle("RCodeEditor");
     this->setWindowState(Qt::WindowMaximized);
     init();
     performConnection();
@@ -97,12 +97,6 @@ void RetoCodeEditor_UIHandler::judgeSourceType() {
 }
 
 void RetoCodeEditor_UIHandler::insertPage() {
-//    QVBoxLayout *layout = new QVBoxLayout(ui->tabWidget);
-//    layout->addWidget(editor);
-//    inTabWidget->setLayout(layout);
-//    ui->tabWidget->addTab(editor, tr("New Source"));
-//    ui->tabWidget->addTab(inTabWidget, tr("New Source"));
-//    ui->tabWidget->setCurrentIndex(ui->tabWidget->currentIndex() + 1);
 }
 
 void RetoCodeEditor_UIHandler::insertPageSlot() {
@@ -425,25 +419,28 @@ void RetoCodeEditor_UIHandler::openPreference() {
 void RetoCodeEditor_UIHandler::init() {
     //Create SARibbon
     ribbonBar = new SARibbonBar(this);
-    ribbonBar->setVisible(true);
+//    ribbonBar->setVisible(true);
     ribbonBar->setRibbonStyle(SARibbonBar::RibbonStyleCompactThreeRow);
     ribbonBar->setContentsMargins(5, 0, 5, 0);
-    ribbonBar->setTitleVisible(true);
+    ribbonBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+//    ribbonBar->setTitleVisible(true);
     sa_set_ribbon_theme(ribbonBar, SARibbonMainWindow::RibbonTheme::RibbonThemeOffice2021Blue);
     initCategoryPages();
-//    ui->verticalLayout->insertWidget(0, ribbonBar);
-//    auto *editor = new RCodeEditor();
-//    auto *highlighter = new RCFamilyHighlighter(editor->document());
-//    editor->setStyleSheet("background-color: #282a36; color: #FFFFFF; font-family: 'Consolas';");
-//    setCentralWidget(editor);
+    navigateBar = new QTabBar(this);
+    navigateBar->addTab("New Source");
+    navigateBar->addTab("New Source");
+    navigateBar->addTab("New Source");
+    navigateBar->addTab("New Source");
+    navigateBar->setVisible(true);
     codeEditor = new RCodeEditor();
     highlighter = new RCFamilyHighlighter(codeEditor->document());
     codeEditor->setStyleSheet("background-color: #282a36; color: #FFFFFF; font-family: 'Consolas';");
-    setCentralWidget(codeEditor);
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->insertWidget(0, ribbonBar);
-//    layout->insertWidget(1,editor);
+//    ui->verticalLayout->insertWidget(0, ribbonBar);
+    ui->verticalLayout->insertWidget(0, navigateBar);
+    ui->verticalLayout->insertWidget(1, codeEditor);
+//    QVBoxLayout *layout = new QVBoxLayout();
+//    layout->insertWidget(0, ribbonBar);
+//    layout->insertWidget(1, navigateBar);
+//    layout->insertWidget(2, codeEditor);
 //    setLayout(layout);
-
-    insertPage();
 }

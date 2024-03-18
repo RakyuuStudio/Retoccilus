@@ -13,6 +13,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -21,6 +22,8 @@ class Ui_RetoCodeEditor_UIHandler
 {
 public:
     QWidget *centralwidget;
+    QWidget *verticalLayoutWidget;
+    QVBoxLayout *verticalLayout;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *RetoCodeEditor_UIHandler)
@@ -30,6 +33,12 @@ public:
         RetoCodeEditor_UIHandler->resize(1920, 1080);
         centralwidget = new QWidget(RetoCodeEditor_UIHandler);
         centralwidget->setObjectName("centralwidget");
+        verticalLayoutWidget = new QWidget(centralwidget);
+        verticalLayoutWidget->setObjectName("verticalLayoutWidget");
+        verticalLayoutWidget->setGeometry(QRect(-1, 0, 1921, 1058));
+        verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+        verticalLayout->setObjectName("verticalLayout");
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
         RetoCodeEditor_UIHandler->setCentralWidget(centralwidget);
         statusbar = new QStatusBar(RetoCodeEditor_UIHandler);
         statusbar->setObjectName("statusbar");

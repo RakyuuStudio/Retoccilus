@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QWidget>
+#include <QTabBar>
 
 //SARibbon
 #include <SARibbonBar.h>
@@ -50,6 +51,7 @@ private:
 
     RCodeEditor *codeEditor;
     RCFamilyHighlighter *highlighter;
+    QTabBar *navigateBar;
     Ui::RetoCodeEditor_UIHandler *ui;
     SARibbonBar* ribbonBar {nullptr};
 };

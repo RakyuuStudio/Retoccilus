@@ -379,7 +379,7 @@ QTreeWidget::item:selected{
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>3</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="AppAndBehIndex">
        <widget class="QLabel" name="label_2">
@@ -1122,6 +1122,658 @@ QTreeWidget::item:selected{
        <zorder>checkBox_11</zorder>
        <zorder>pushButton_5</zorder>
        <zorder>lineEdit</zorder>
+      </widget>
+      <widget class="QWidget" name="page_3">
+       <widget class="QLabel" name="label_16">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>7</y>
+          <width>494</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+          <horstretch>10</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>14</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Key Mapping &amp;amp; Shortcut&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QScrollArea" name="scrollArea_4">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>37</y>
+          <width>975</width>
+          <height>737</height>
+         </rect>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents_4">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>973</width>
+           <height>735</height>
+          </rect>
+         </property>
+         <widget class="QTableWidget" name="tableWidget_3">
+          <property name="geometry">
+           <rect>
+            <x>11</x>
+            <y>30</y>
+            <width>949</width>
+            <height>685</height>
+           </rect>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SingleSelection</enum>
+          </property>
+          <property name="rowCount">
+           <number>90</number>
+          </property>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <row>
+           <property name="text">
+            <string/>
+           </property>
+          </row>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <column>
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Shortcut</string>
+           </property>
+          </column>
+          <item row="0" column="0">
+           <property name="text">
+            <string>Add or Remove Text Cursor</string>
+           </property>
+          </item>
+          <item row="1" column="0">
+           <property name="text">
+            <string>Add Rectangle Selection on Mouse Dragging</string>
+           </property>
+          </item>
+          <item row="2" column="0">
+           <property name="text">
+            <string>Backspace</string>
+           </property>
+          </item>
+          <item row="3" column="0">
+           <property name="text">
+            <string>Move the Text Cursor back</string>
+           </property>
+          </item>
+          <item row="4" column="0">
+           <property name="text">
+            <string>Move the Text Cursor and keep the Selection</string>
+           </property>
+          </item>
+          <item row="5" column="0">
+           <property name="text">
+            <string>Choose the Query Item</string>
+           </property>
+          </item>
+          <item row="6" column="0">
+           <property name="text">
+            <string>Choose the Query Item and trigger statement completion</string>
+           </property>
+          </item>
+          <item row="7" column="0">
+           <property name="text">
+            <string>Choose the Query Item and insert Dot</string>
+           </property>
+          </item>
+          <item row="8" column="0">
+           <property name="text">
+            <string>Query Item Replace</string>
+           </property>
+          </item>
+          <item row="9" column="0">
+           <property name="text">
+            <string>Clone Text Cursor Above</string>
+           </property>
+          </item>
+          <item row="10" column="0">
+           <property name="text">
+            <string>Clone Text Cursor Bottom</string>
+           </property>
+          </item>
+          <item row="11" column="0">
+           <property name="text">
+            <string>Move the Text Cursor to the block end</string>
+           </property>
+          </item>
+          <item row="12" column="0">
+           <property name="text">
+            <string>Keep Selection and Move the Text Cursor To Block End</string>
+           </property>
+          </item>
+          <item row="13" column="0">
+           <property name="text">
+            <string>Move the Text Cursor to the block start</string>
+           </property>
+          </item>
+          <item row="14" column="0">
+           <property name="text">
+            <string>Keep Selection and Move the Text Cursor To Block Start</string>
+           </property>
+          </item>
+          <item row="15" column="0">
+           <property name="text">
+            <string>Complete current statement</string>
+           </property>
+          </item>
+          <item row="16" column="0">
+           <property name="text">
+            <string>Copy</string>
+           </property>
+          </item>
+          <item row="17" column="0">
+           <property name="text">
+            <string>Create Rectangle Selection</string>
+           </property>
+          </item>
+          <item row="18" column="0">
+           <property name="text">
+            <string>Create Rectangle Selection with Mouse Dragging</string>
+           </property>
+          </item>
+          <item row="19" column="0">
+           <property name="text">
+            <string>Cut</string>
+           </property>
+          </item>
+          <item row="20" column="0">
+           <property name="text">
+            <string>Reverse Cut the Row</string>
+           </property>
+          </item>
+          <item row="21" column="0">
+           <property name="text">
+            <string>Cut to the Row End</string>
+           </property>
+          </item>
+          <item row="22" column="0">
+           <property name="text">
+            <string>Decrease the Font Size</string>
+           </property>
+          </item>
+          <item row="23" column="0">
+           <property name="text">
+            <string>Decrease the Font Size in All Editor</string>
+           </property>
+          </item>
+          <item row="24" column="0">
+           <property name="text">
+            <string>Delete</string>
+           </property>
+          </item>
+          <item row="25" column="0">
+           <property name="text">
+            <string>Delete Row</string>
+           </property>
+          </item>
+          <item row="26" column="0">
+           <property name="text">
+            <string>Delete to the Row Start</string>
+           </property>
+          </item>
+          <item row="27" column="0">
+           <property name="text">
+            <string>Delete to the Row End</string>
+           </property>
+          </item>
+          <item row="28" column="0">
+           <property name="text">
+            <string>Delete to the Word End</string>
+           </property>
+          </item>
+          <item row="29" column="0">
+           <property name="text">
+            <string>Delete to the Word Start</string>
+           </property>
+          </item>
+          <item row="30" column="0">
+           <property name="text">
+            <string>Down</string>
+           </property>
+          </item>
+          <item row="31" column="0">
+           <property name="text">
+            <string>Keep Selection and Down</string>
+           </property>
+          </item>
+          <item row="32" column="0">
+           <property name="text">
+            <string>Duplicate the Row or Selection</string>
+           </property>
+          </item>
+          <item row="33" column="0">
+           <property name="text">
+            <string>Duplicate the Row</string>
+           </property>
+          </item>
+          <item row="34" column="0">
+           <property name="text">
+            <string>Enter</string>
+           </property>
+          </item>
+          <item row="35" column="0">
+           <property name="text">
+            <string>Escape</string>
+           </property>
+          </item>
+          <item row="36" column="0">
+           <property name="text">
+            <string>Increase the Font Size</string>
+           </property>
+          </item>
+          <item row="37" column="0">
+           <property name="text">
+            <string>Increase the Font Size in All Editor</string>
+           </property>
+          </item>
+          <item row="38" column="0">
+           <property name="text">
+            <string>Indent Row or Selection</string>
+           </property>
+          </item>
+          <item row="39" column="0">
+           <property name="text">
+            <string>Left</string>
+           </property>
+          </item>
+          <item row="40" column="0">
+           <property name="text">
+            <string>Keep Selection and Left</string>
+           </property>
+          </item>
+          <item row="41" column="0">
+           <property name="text">
+            <string>Right</string>
+           </property>
+          </item>
+          <item row="42" column="0">
+           <property name="text">
+            <string>Keep Selection and Right</string>
+           </property>
+          </item>
+          <item row="43" column="0">
+           <property name="text">
+            <string>Move the cursor to Match Parenthese</string>
+           </property>
+          </item>
+          <item row="44" column="0">
+           <property name="text">
+            <string>Move and Scroll Down</string>
+           </property>
+          </item>
+          <item row="45" column="0">
+           <property name="text">
+            <string>Move to the Page End</string>
+           </property>
+          </item>
+          <item row="46" column="0">
+           <property name="text">
+            <string>Move and Scroll Up</string>
+           </property>
+          </item>
+          <item row="47" column="0">
+           <property name="text">
+            <string>Move to the Page Start</string>
+           </property>
+          </item>
+          <item row="48" column="0">
+           <property name="text">
+            <string>Move to the Page Start with Selection</string>
+           </property>
+          </item>
+          <item row="49" column="0">
+           <property name="text">
+            <string>Move to the Page End with Selection</string>
+           </property>
+          </item>
+          <item row="50" column="0">
+           <property name="text">
+            <string>Paste</string>
+           </property>
+          </item>
+          <item row="51" column="0">
+           <property name="text">
+            <string>Paste as Plain Text</string>
+           </property>
+          </item>
+          <item row="52" column="0">
+           <property name="text">
+            <string>Next Parameter</string>
+           </property>
+          </item>
+          <item row="53" column="0">
+           <property name="text">
+            <string>Previous Parameter</string>
+           </property>
+          </item>
+          <item row="54" column="0">
+           <property name="text">
+            <string>Rebuild select expression as variable</string>
+           </property>
+          </item>
+          <item row="55" column="0">
+           <property name="text">
+            <string>Rebuild select expression as function</string>
+           </property>
+          </item>
+          <item row="56" column="0">
+           <property name="text">
+            <string>Create New Source</string>
+           </property>
+          </item>
+          <item row="57" column="0">
+           <property name="text">
+            <string>Open Preference</string>
+           </property>
+          </item>
+          <item row="58" column="0">
+           <property name="text">
+            <string>Save</string>
+           </property>
+          </item>
+          <item row="59" column="0">
+           <property name="text">
+            <string>Save All</string>
+           </property>
+          </item>
+          <item row="60" column="0">
+           <property name="text">
+            <string>Save As</string>
+           </property>
+          </item>
+          <item row="61" column="0">
+           <property name="text">
+            <string>Reload from Disk</string>
+           </property>
+          </item>
+          <item row="62" column="0">
+           <property name="text">
+            <string>Print</string>
+           </property>
+          </item>
+          <item row="63" column="0">
+           <property name="text">
+            <string>Export</string>
+           </property>
+          </item>
+          <item row="64" column="0">
+           <property name="text">
+            <string>Undo</string>
+           </property>
+          </item>
+          <item row="65" column="0">
+           <property name="text">
+            <string>Redo</string>
+           </property>
+          </item>
+          <item row="66" column="0">
+           <property name="text">
+            <string>Find</string>
+           </property>
+          </item>
+          <item row="67" column="0">
+           <property name="text">
+            <string>Replace</string>
+           </property>
+          </item>
+          <item row="68" column="0">
+           <property name="text">
+            <string>Find Usage</string>
+           </property>
+          </item>
+          <item row="69" column="0">
+           <property name="text">
+            <string>Evaluate for Expression</string>
+           </property>
+          </item>
+          <item row="70" column="0">
+           <property name="text">
+            <string>Select All</string>
+           </property>
+          </item>
+          <item row="71" column="0">
+           <property name="text">
+            <string>Switch Uppercase</string>
+           </property>
+          </item>
+          <item row="72" column="0">
+           <property name="text">
+            <string>Switch Lowercase</string>
+           </property>
+          </item>
+          <item row="73" column="0">
+           <property name="text">
+            <string>Full Screen View</string>
+           </property>
+          </item>
+          <item row="74" column="0">
+           <property name="text">
+            <string>Show Auto Completion</string>
+           </property>
+          </item>
+          <item row="75" column="0">
+           <property name="text">
+            <string>Enable Auto Completion</string>
+           </property>
+          </item>
+          <item row="76" column="0">
+           <property name="text">
+            <string>Disable Auto Completion</string>
+           </property>
+          </item>
+          <item row="77" column="0">
+           <property name="text">
+            <string>Enable Auto Parenthese</string>
+           </property>
+          </item>
+          <item row="78" column="0">
+           <property name="text">
+            <string>Disable Auto Parenthese</string>
+           </property>
+          </item>
+          <item row="79" column="0">
+           <property name="text">
+            <string>Show Quick Fix</string>
+           </property>
+          </item>
+          <item row="80" column="0">
+           <property name="text">
+            <string>Apply Quick Fix</string>
+           </property>
+          </item>
+          <item row="81" column="0">
+           <property name="text">
+            <string>Disable Warning</string>
+           </property>
+          </item>
+          <item row="82" column="0">
+           <property name="text">
+            <string>Format</string>
+           </property>
+          </item>
+          <item row="83" column="0">
+           <property name="text">
+            <string>Format All Source</string>
+           </property>
+          </item>
+          <item row="84" column="0">
+           <property name="text">
+            <string>Format All Active Source</string>
+           </property>
+          </item>
+          <item row="85" column="0">
+           <property name="text">
+            <string>Packaging / UnPackaging</string>
+           </property>
+          </item>
+          <item row="86" column="0">
+           <property name="text">
+            <string>Compile</string>
+           </property>
+          </item>
+          <item row="87" column="0">
+           <property name="text">
+            <string>Compile Current</string>
+           </property>
+          </item>
+          <item row="88" column="0">
+           <property name="text">
+            <string>Compile All</string>
+           </property>
+          </item>
+          <item row="89" column="0">
+           <property name="text">
+            <string>Sent to Retoccilus Main</string>
+           </property>
+          </item>
+         </widget>
+         <widget class="QPushButton" name="pushButton_6">
+          <property name="geometry">
+           <rect>
+            <x>869</x>
+            <y>1</y>
+            <width>75</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
       </widget>
      </widget>
     </item>
