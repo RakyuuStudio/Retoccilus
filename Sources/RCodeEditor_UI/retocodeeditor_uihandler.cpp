@@ -21,11 +21,13 @@
 #include <QtWidgets>
 #include <QFile>
 #include <QFileDialog>
+#include "RCodeEditor/PreferenceHandle/rcodeeditorpreferencewindow.h"
 
 RetoCodeEditor_UIHandler::RetoCodeEditor_UIHandler(QWidget *parent) :
         SARibbonMainWindow(parent), ui(new Ui::RetoCodeEditor_UIHandler)
 {
     ui->setupUi(this);
+    setWindowTitle("RCodeEditor");
     this->setWindowState(Qt::WindowMaximized);
     init();
     performConnection();
@@ -38,6 +40,9 @@ RetoCodeEditor_UIHandler::~RetoCodeEditor_UIHandler() {
 void RetoCodeEditor_UIHandler::performConnection() {
     connect(actNew, &QAction::triggered, this, &RetoCodeEditor_UIHandler::insertPageSlot);
     connect(actSave, &QAction::triggered, this, &RetoCodeEditor_UIHandler::saveSlot);
+    connect(comment, &QAction::triggered, this, &RetoCodeEditor_UIHandler::commentLineSlot);
+    connect(uncomment, &QAction::triggered, this, &RetoCodeEditor_UIHandler::unCommentLineSlot);
+    connect(preference, &QAction::triggered, this, &RetoCodeEditor_UIHandler::openPreference);
 }
 
 void RetoCodeEditor_UIHandler::saveSlot() {
@@ -45,62 +50,79 @@ void RetoCodeEditor_UIHandler::saveSlot() {
 }
 
 void RetoCodeEditor_UIHandler::save() {
-    auto *editor = qobject_cast<RCodeEditor *>(ui->tabWidget->currentWidget());
-    if (editor) {
-        QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "", tr("All Files (*.*)"));
-        if (fileName.isEmpty()) {
-            return;
-        }
-        QFile file(fileName);
-        if (!file.open(QIODevice::WriteOnly)) {
-            ui->statusbar->showMessage(tr("Unable to open file"));
-            return;
-        }
-        QTextStream out(&file);
-        out << editor->toPlainText();
-        file.close();
-        ui->statusbar->showMessage(tr("File saved"), 2000);
-        SaveFileName = fileName;
-        judgeSourceType();
-    }
+//    auto *editor = qobject_cast<RCodeEditor *>(ui->tabWidget->currentWidget());
+//    if (editor) {
+//        QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "", tr("All Files (*.*)"));
+//        if (fileName.isEmpty()) {
+//            return;
+//        }
+//        QFile file(fileName);
+//        if (!file.open(QIODevice::WriteOnly)) {
+//            ui->statusbar->showMessage(tr("Unable to open file"));
+//            return;
+//        }
+//        QTextStream out(&file);
+//        out << editor->toPlainText();
+//        file.close();
+//        ui->statusbar->showMessage(tr("File saved"), 2000);
+//        SaveFileName = fileName;
+//        judgeSourceType();
+//    }
 }
 
 void RetoCodeEditor_UIHandler::judgeSourceType() {
-    QString extensionType = SaveFileName.split('.').last();
-    static const QMap<QString, QString> extensionToIconMap = {
-            { "c", ":/icons/Icons/Icon_CSource.png" },
-            { "cpp", ":/icons/Icons/Icon_CppSource.png" },
-            { "h", ":/icons/Icons/Icon_CHeader.png" },
-            { "hpp", ":/icons/Icons/Icon_CppHeader.png" },
-            { "css", ":/icons/Icons/Icon_Css.png" },
-            { "html", ":/icons/Icons/Icon_HTML.png" },
-            { "htm", ":/icons/Icons/Icon_HTML.png" },
-            { "js", ":/icons/Icons/Icon_Javascript.png" },
-            { "ts", ":/icons/Icons/Icon_TypeScript.png" },
-            { "json", ":/icons/Icons/Icon_Json.png" },
-            { "xml", ":/icons/Icons/Icon_XML.png" },
-            { "py", ":/icons/Icons/Icon_Python.png" },
-            { "vue", ":/icons/Icons/Icon_Vue.png" },
-            { "jsx", ":/icons/Icons/Icon_React.png" }
-    };
-    if (extensionToIconMap.contains(extensionType)) {
-        ui->tabWidget->setTabIcon(ui->tabWidget->currentIndex(), QIcon(extensionToIconMap[extensionType]));
-    }
-    else if (SaveFileName.contains("CMakeLists.txt") || SaveFileName.contains("CMakeCache.txt")) {
-        ui->tabWidget->setTabIcon(ui->tabWidget->currentIndex(), QIcon(":/icons/Icons/Icon_CMake.png"));
-    }
+//    QString extensionType = SaveFileName.split('.').last();
+//    static const QMap<QString, QString> extensionToIconMap = {
+//            { "c", ":/icons/Icons/Icon_CSource.png" },
+//            { "cpp", ":/icons/Icons/Icon_CppSource.png" },
+//            { "h", ":/icons/Icons/Icon_CHeader.png" },
+//            { "hpp", ":/icons/Icons/Icon_CppHeader.png" },
+//            { "css", ":/icons/Icons/Icon_Css.png" },
+//            { "html", ":/icons/Icons/Icon_HTML.png" },
+//            { "htm", ":/icons/Icons/Icon_HTML.png" },
+//            { "js", ":/icons/Icons/Icon_Javascript.png" },
+//            { "ts", ":/icons/Icons/Icon_TypeScript.png" },
+//            { "json", ":/icons/Icons/Icon_Json.png" },
+//            { "xml", ":/icons/Icons/Icon_XML.png" },
+//            { "py", ":/icons/Icons/Icon_Python.png" },
+//            { "vue", ":/icons/Icons/Icon_Vue.png" },
+//            { "jsx", ":/icons/Icons/Icon_React.png" }
+//    };
+//    if (extensionToIconMap.contains(extensionType)) {
+//        ui->tabWidget->setTabIcon(ui->tabWidget->currentIndex(), QIcon(extensionToIconMap[extensionType]));
+//    }
+//    else if (SaveFileName.contains("CMakeLists.txt") || SaveFileName.contains("CMakeCache.txt")) {
+//        ui->tabWidget->setTabIcon(ui->tabWidget->currentIndex(), QIcon(":/icons/Icons/Icon_CMake.png"));
+//    }
 }
 
 void RetoCodeEditor_UIHandler::insertPage() {
-    auto *editor = new RCodeEditor();
-    auto *highlighter = new RCFamilyHighlighter(editor->document());
-    editor->setStyleSheet("background-color: #282a36; color: #FFFFFF; font-family: 'Consolas';");
-    ui->tabWidget->addTab(editor, tr("New Source"));
-    ui->tabWidget->setCurrentIndex(ui->tabWidget->currentIndex() + 1);
+//    QVBoxLayout *layout = new QVBoxLayout(ui->tabWidget);
+//    layout->addWidget(editor);
+//    inTabWidget->setLayout(layout);
+//    ui->tabWidget->addTab(editor, tr("New Source"));
+//    ui->tabWidget->addTab(inTabWidget, tr("New Source"));
+//    ui->tabWidget->setCurrentIndex(ui->tabWidget->currentIndex() + 1);
 }
 
 void RetoCodeEditor_UIHandler::insertPageSlot() {
     insertPage();
+}
+
+void RetoCodeEditor_UIHandler::commentLineSlot() {
+    codeEditor->commentLine();
+}
+
+void RetoCodeEditor_UIHandler::unCommentLineSlot() {
+    codeEditor->uncommentLine();
+}
+
+void RetoCodeEditor_UIHandler::commentBlockSlot() {
+    codeEditor->commentBlock();
+}
+
+void RetoCodeEditor_UIHandler::unCommentBlockSlot() {
+    codeEditor->uncommentBlock();
 }
 
 void RetoCodeEditor_UIHandler::initCategoryPages() {
@@ -184,11 +206,6 @@ void RetoCodeEditor_UIHandler::initCategoryPages() {
     pannelBuildSystem->addLargeAction(actReloadCMake);
 
     //Edit===================================
-    QAction *undo, *redo, *cut, *copy, *copyPathRef, *paste, *deleteSelect;
-    QAction *find, *findUsage, *replace, *replaceUsage, *findInFiles, *replaceInFiles;
-    QAction *switchCase, *upperCase, *lowerCase, *comment, *uncomment, *blockComment, *blockUncomment;
-    QAction *indent, *unindent, *autoIndent, *autoUnindent, *autoFormat;
-    QAction *goToLine, *goToDefinition, *goToDeclaration, *goToImplementation, *goToUsage, *goToInclude;
 
     undo = new QAction(tr("Undo"), this);
     undo->setToolTip(tr("Undo the last action"));
@@ -376,6 +393,11 @@ void RetoCodeEditor_UIHandler::initCategoryPages() {
     goToInclude->setObjectName("goToInclude");
     goToInclude->setShortcut(QKeySequence(QLatin1String("Ctrl+Shift+I")));
 
+    preference = new QAction(tr("Preference"), this);
+    preference->setToolTip(tr("Open the preference window"));
+    preference->setObjectName("preference");
+    preference->setShortcut(QKeySequence(QLatin1String("Ctrl+,")));
+
     SARibbonPannel *pannelEdit = editCategory->addPannel(tr("Text Edit"));
     auto *btnFindAndReplace = new SARibbonToolButton(this);
     btnFindAndReplace->setObjectName("btnFindAndReplace");
@@ -390,6 +412,14 @@ void RetoCodeEditor_UIHandler::initCategoryPages() {
     btnFindAndReplace->addAction(replaceInFiles);
     btnFindAndReplace->setPopupMode(QToolButton::InstantPopup);
     pannelEdit->addLargeWidget(btnFindAndReplace);
+    pannelEdit->addLargeAction(comment);
+    pannelEdit->addLargeAction(uncomment);
+    pannelEdit->addLargeAction(preference);
+}
+
+void RetoCodeEditor_UIHandler::openPreference() {
+    auto *preferenceWindow = new RCodeEditorPreferenceWindow();
+    preferenceWindow->show();
 }
 
 void RetoCodeEditor_UIHandler::init() {
@@ -398,14 +428,22 @@ void RetoCodeEditor_UIHandler::init() {
     ribbonBar->setVisible(true);
     ribbonBar->setRibbonStyle(SARibbonBar::RibbonStyleCompactThreeRow);
     ribbonBar->setContentsMargins(5, 0, 5, 0);
+    ribbonBar->setTitleVisible(true);
     sa_set_ribbon_theme(ribbonBar, SARibbonMainWindow::RibbonTheme::RibbonThemeOffice2021Blue);
     initCategoryPages();
-    ui->verticalLayout->insertWidget(0, ribbonBar);
+//    ui->verticalLayout->insertWidget(0, ribbonBar);
+//    auto *editor = new RCodeEditor();
+//    auto *highlighter = new RCFamilyHighlighter(editor->document());
+//    editor->setStyleSheet("background-color: #282a36; color: #FFFFFF; font-family: 'Consolas';");
+//    setCentralWidget(editor);
+    codeEditor = new RCodeEditor();
+    highlighter = new RCFamilyHighlighter(codeEditor->document());
+    codeEditor->setStyleSheet("background-color: #282a36; color: #FFFFFF; font-family: 'Consolas';");
+    setCentralWidget(codeEditor);
+    QVBoxLayout *layout = new QVBoxLayout();
+    layout->insertWidget(0, ribbonBar);
+//    layout->insertWidget(1,editor);
+//    setLayout(layout);
 
-    ui->tabWidget->setTabsClosable(true);
-    ui->tabWidget->setMovable(true);
-    while (ui->tabWidget->count() > 0) {
-        ui->tabWidget->removeTab(0);
-    }
     insertPage();
 }

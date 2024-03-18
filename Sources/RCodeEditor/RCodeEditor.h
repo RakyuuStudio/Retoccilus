@@ -50,6 +50,11 @@ public:
     [[nodiscard]] QCompleter *completer() const;
     void sidebarPaintEvent(QPaintEvent *pEvent);
     int sidebarWidth();
+signals:
+    void commentLine_NoSelection();
+    void unCommentLine_NoSelection();
+    void commentBlock_NoSelection();
+    void unCommentBlock_NoSelection();
 public slots:
     void insertCompletion(QString s);
     void updateLineNumberAreaWidth(int);
@@ -57,6 +62,11 @@ public slots:
     void updateExtraSelection();
     void updateStyle();
     void onSelectionChanged();
+
+    void commentLine();
+    void uncommentLine();
+    void commentBlock();
+    void uncommentBlock();
 
     //Folding
     void fold();

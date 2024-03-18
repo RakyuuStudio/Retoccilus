@@ -15,5 +15,10 @@ int main(int argc, char *argv[]) {
     codeEditorUI = new RetoCodeEditor_UIHandler();
     codeEditorUI->show();
 
+//    auto *editor = new RCodeEditor();
+//    auto *highlighter = new RCFamilyHighlighter(editor->document());
+//    editor->setStyleSheet("background-color: #282a36; color: #FFFFFF; font-family: 'Consolas';");
+//    editor->show();
+
     return QApplication::exec();
 }

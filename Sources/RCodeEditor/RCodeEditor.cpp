@@ -7,15 +7,6 @@
 //* See <https://github.com/Megaxela/QCodeEditor>. for license information.          *//
 //==-----------------------------------------------------------------------------====*//
 
-/*
- * Note: This project is inspired by QCodeEditor project.
- * The original project can be found at <https://github.com/Megaxela/QCodeEditor>.
- * This project is a modified version of the original project.
- * The original project is licensed under the MIT License.
- *
- * Original Creator: Megaxela
- * Modified by: Ryan Almond
- */
 #include "RSidebar.h"
 #include "RCodeEditor.h"
 #include "RBorderTextProperty.h"
@@ -33,6 +24,7 @@
 #include <QAbstractItemView>
 #include <QShortcut>
 #include <QMimeData>
+#include <QLayout>
 
 static QVector<QPair<QString, QString>> parentheses = {
         {"(",  ")"},
@@ -114,6 +106,70 @@ void RCodeEditor::initFont() {
     fnt.setPointSize(10);
 
     setFont(fnt);
+}
+
+void RCodeEditor::commentBlock() {
+    QTextCursor cursor = textCursor();
+    if (cursor.hasSelection()) {
+        int start = cursor.selectionStart();
+        int end = cursor.selectionEnd();
+        cursor.setPosition(start);
+        cursor.insertText("/*");
+        cursor.setPosition(end + 2);
+        cursor.insertText("*/");
+    }
+    else {
+        emit commentBlock_NoSelection();
+    }
+}
+
+void RCodeEditor::uncommentBlock() {
+    QTextCursor cursor = textCursor();
+    if (cursor.hasSelection()) {
+        int start = cursor.selectionStart();
+        int end = cursor.selectionEnd();
+        cursor.setPosition(start);
+        cursor.movePosition(QTextCursor::MoveOperation::Right, QTextCursor::MoveMode::KeepAnchor, 2);
+        cursor.removeSelectedText();
+        cursor.setPosition(end - 2);
+        cursor.movePosition(QTextCursor::MoveOperation::Right, QTextCursor::MoveMode::KeepAnchor, 2);
+        cursor.removeSelectedText();
+    }
+    else {
+        emit unCommentBlock_NoSelection();
+    }
+}
+
+void RCodeEditor::commentLine() {
+    QTextCursor cursor = textCursor();
+    if (cursor.hasSelection()) {
+        int start = cursor.selectionStart();
+        int end = cursor.selectionEnd();
+        cursor.setPosition(start);
+        cursor.insertText("//");
+        cursor.setPosition(end + 2);
+        cursor.clearSelection();
+        cursor.movePosition(QTextCursor::EndOfLine);
+    }
+    else {
+        emit commentLine_NoSelection();
+    }
+}
+
+void RCodeEditor::uncommentLine() {
+    QTextCursor cursor = textCursor();
+    if (cursor.hasSelection()) {
+        int start = cursor.selectionStart();
+        int end = cursor.selectionEnd();
+        cursor.setPosition(start);
+        cursor.movePosition(QTextCursor::MoveOperation::Right, QTextCursor::MoveMode::KeepAnchor, 2);
+        cursor.removeSelectedText();
+        cursor.clearSelection();
+        cursor.movePosition(QTextCursor::EndOfLine);
+    }
+    else {
+        emit unCommentLine_NoSelection();
+    }
 }
 
 /// \brief Set the highlighter for the code editor.
@@ -700,8 +756,6 @@ void RCodeEditor::sidebarPaintEvent(QPaintEvent *pEvent) {
     const int yPosition = sidebar->height() / 2;
     painter.setPen(Qt::white);
     painter.drawLine(lineLength - 1, 0, lineLength - 1, sidebar->height());
-
-
 }
 
 /// \brief Return the width of sidebar.
@@ -710,7 +764,7 @@ int RCodeEditor::sidebarWidth() {
     int max = qMax(1, blockCount());
     while (max >= 10) {
         max /= 10;
-        ++digits;
+        digits++;
     }
 
     int space = Reto_SideBar_Default_Width + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
