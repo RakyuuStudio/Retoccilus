@@ -419,6 +419,7 @@ void RetoCodeEditor_UIHandler::openPreference() {
 }
 
 void RetoCodeEditor_UIHandler::init() {
+    ui->gridLayout->setSizeConstraint()
     //Create SARibbon
     ribbonBar = new SARibbonBar(this);
     ribbonBar->setRibbonStyle(SARibbonBar::RibbonStyleCompactThreeRow);

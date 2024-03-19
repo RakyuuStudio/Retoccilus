@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<RetoCodeEditor>
+    <KeywordList>
+        <KContent>
+            <keyword name="\\a">
+                <name>\a</name>
+            </keyword>
+            <keyword name="\\addindex">
+                <name>\addindex</name>
+            </keyword>
+            <keyword name="\\addtogroup">
+                <name>\addtogroup</name>
+            </keyword>
+            <keyword name="\\anchor">
+                <name>\anchor</name>
+            </keyword>
+            <keyword name="\\arg">
+                <name>\arg</name>
+            </keyword>
+            <keyword name="\\attention">
+                <name>\attention</name>
+            </keyword>
+            <keyword name="\\author">
+                <name>\author</name>
+            </keyword>
+            <keyword name="\\authors">
+                <name>\authors</name>
+            </keyword>
+            <keyword name="\\b">
+                <name>\b</name>
+            </keyword>
+            <keyword name="\\brief">
+                <name>\brief</name>
+            </keyword>
+            <keyword name="\\bug">
+                <name>\bug</name>
+            </keyword>
+            <keyword name="\\c">
+                <name>\c</name>
+            </keyword>
+            <keyword name="\\callergraph">
+                <name>\callergraph</name>
+            </keyword>
+            <keyword name="\\callgraph">
+                <name>\callgraph</name>
+            </keyword>
+            <keyword name="\\category">
+                <name>\category</name>
+            </keyword>
+            <keyword name="\\cite">
+                <name>\cite</name>
+            </keyword>
+            <keyword name="\\class">
+                <name>\class</name>
+            </keyword>
+            <keyword name="\\code">
+                <name>\code</name>
+            </keyword>
+            <keyword name="\\collaborationgraph">
+                <name>\collaborationgraph</name>
+            </keyword>
+            <keyword name="\\concept">
+                <name>\concept</name>
+            </keyword>
+            <keyword name="\\cond">
+                <name>\cond</name>
+            </keyword>
+            <keyword name="\\copybrief">
+                <name>\copybrief</name>
+            </keyword>
+            <keyword name="\\copydetails">
+                <name>\copydetails</name>
+            </keyword>
+            <keyword name="\\copydoc">
+                <name>\copydoc</name>
+            </keyword>
+            <keyword name="\\copyright">
+                <name>\copyright</name>
+            </keyword>
+            <keyword name="\\date">
+                <name>\date</name>
+            </keyword>
+            <keyword name="\\def">
+                <name>\def</name>
+            </keyword>
+            <keyword name="\\defgroup">
+                <name>\defgroup</name>
+            </keyword>
+            <keyword name="\\deprecated">
+                <name>\deprecated</name>
+            </keyword>
+            <keyword name="\\details">
+                <name>\details</name>
+            </keyword>
+            <keyword name="\\diafile">
+                <name>\diafile</name>
+            </keyword>
+            <keyword name="\\dir">
+                <name>\dir</name>
+            </keyword>
+            <keyword name="\\directorygraph">
+                <name>\directorygraph</name>
+            </keyword>
+            <keyword name="\\docbookinclude">
+                <name>\docbookinclude</name>
+            </keyword>
+            <keyword name="\\docbookonly">
+                <name>\docbookonly</name>
+            </keyword>
+            <keyword name="\\dontinclude">
+                <name>\dontinclude</name>
+            </keyword>
+            <keyword name="\\dot">
+                <name>\dot</name>
+            </keyword>
+            <keyword name="\\dotfile">
+                <name>\dotfile</name>
+            </keyword>
+            <keyword name="\\doxyconfig">
+                <name>\doxyconfig</name>
+            </keyword>
+            <keyword name="\\e">
+                <name>\e</name>
+            </keyword>
+            <keyword name="\\else">
+                <name>\else</name>
+            </keyword>
+            <keyword name="\\elseif">
+                <name>\elseif</name>
+            </keyword>
+            <keyword name="\\em">
+                <name>\em</name>
+            </keyword>
+            <keyword name="\\emoji">
+                <name>\emoji</name>
+            </keyword>
+            <keyword name="\\endcode">
+                <name>\endcode</name>
+            </keyword>
+            <keyword name="\\endcond">
+                <name>\endcond</name>
+            </keyword>
+            <keyword name="\\enddocbookonly">
+                <name>\enddocbookonly</name>
+            </keyword>
+            <keyword name="\\enddot">
+                <name>\enddot</name>
+            </keyword>
+            <keyword name="\\endhtmlonly">
+                <name>\endhtmlonly</name>
+            </keyword>
+            <keyword name="\\endif">
+                <name>\endif</name>
+            </keyword>
+            <keyword name="\\endinternal">
+                <name>\endinternal</name>
+            </keyword>
+            <keyword name="\\endlatexonly">
+                <name>\endlatexonly</name>
+            </keyword>
+            <keyword name="\\endlink">
+                <name>\endlink</name>
+            </keyword>
+            <keyword name="\\endmanonly">
+                <name>\endmanonly</name>
+            </keyword>
+            <keyword name="\\endmsc">
+                <name>\endmsc</name>
+            </keyword>
+            <keyword name="\\endparblock">
+                <name>\endparblock</name>
+            </keyword>
+            <keyword name="\\endrtfonly">
+                <name>\endrtfonly</name>
+            </keyword>
+            <keyword name="\\endsecreflist">
+                <name>\endsecreflist</name>
+            </keyword>
+            <keyword name="\\endverbatim">
+                <name>\endverbatim</name>
+            </keyword>
+            <keyword name="\\enduml">
+                <name>\enduml</name>
+            </keyword>
+            <keyword name="\\endxmlonly">
+                <name>\endxmlonly</name>
+            </keyword>
+            <keyword name="\\enum">
+                <name>\enum</name>
+            </keyword>
+            <keyword name="\\example">
+                <name>\example</name>
+            </keyword>
+            <keyword name="\\exception">
+                <name>\exception</name>
+            </keyword>
+            <keyword name="\\extends">
+                <name>\extends</name>
+            </keyword>
+        </KContent>
+    </KeywordList>
+</RetoCodeEditor>

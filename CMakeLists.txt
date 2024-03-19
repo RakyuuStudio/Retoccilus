@@ -45,6 +45,7 @@ add_executable(Retoccilus main.cpp
         Sources/RCodeEditor/PreferenceHandle/rcodeeditorpreferencewindow.cpp
         Sources/RCodeEditor/PreferenceHandle/rcodeeditorpreferencewindow.h
         Sources/RCodeEditor/PreferenceHandle/rcodeeditorpreferencewindow.ui
+        Sources/RDefs.h
 )
 
 include_directories(
