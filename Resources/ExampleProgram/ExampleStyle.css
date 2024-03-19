@@ -1,0 +1,5 @@
+/*Note: This program is just an example. It does not have any practical use and is only for demonstration purposes.*/
+.styleNav {
+    background-image: linear-gradient(to right, lightyellow 0%, #bfefff 100%);
+    padding: 10px 100px;
+}

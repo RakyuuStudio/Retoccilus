@@ -63,6 +63,18 @@ RCodeEditor::RCodeEditor(QWidget *widget) :
     setSyntaxStyle(RSyntaxStyle::defaultStyle());
 }
 
+void RCodeEditor::refreshLayout() {
+    QTextCursor cursor = textCursor();
+    auto currentPos = cursor.position();
+    cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
+    QString savedText = cursor.selectedText();
+    cursor.insertText("\n");
+    cursor.movePosition(QTextCursor::Up, QTextCursor::KeepAnchor, 1);
+    cursor.removeSelectedText();
+    cursor.insertText(savedText);
+    setTextCursor(cursor);
+}
+
 void RCodeEditor::initDocumentLayoutHandlers() {
 //    document()->documentLayout()->registerHandler(RBorderTextProperty::type(), btp);
 }
@@ -78,10 +90,30 @@ void RCodeEditor::wheelEvent(QWheelEvent *e) {
         if (delta > 0) {
             fontsize += 1.0;
             sbfontsize += 1.0;
+
+            QTextCursor cursor = textCursor();
+            auto currentPos = cursor.position();
+            cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
+            QString savedText = cursor.selectedText();
+            cursor.insertText("\n");
+            cursor.movePosition(QTextCursor::Up, QTextCursor::KeepAnchor, 1);
+            cursor.removeSelectedText();
+            cursor.insertText(savedText);
+            setTextCursor(cursor);
         }
         else {
             fontsize -= 1.0;
             sbfontsize -= 1.0;
+
+            QTextCursor cursor = textCursor();
+            auto currentPos = cursor.position();
+            cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
+            QString savedText = cursor.selectedText();
+            cursor.insertText("\n");
+            cursor.movePosition(QTextCursor::Up, QTextCursor::KeepAnchor, 1);
+            cursor.removeSelectedText();
+            cursor.insertText(savedText);
+            setTextCursor(cursor);
         }
 
         QFont tfont = font();
@@ -246,7 +278,16 @@ void RCodeEditor::onSelectionChanged() {
 /// \brief Resize event.
 void RCodeEditor::resizeEvent(QResizeEvent *e) {
     QPlainTextEdit::resizeEvent(e);
+
+//    updateCodeEditorWidth();
+
     updateLineGeometry();
+}
+
+void RCodeEditor::updateCodeEditorWidth() {
+    int parentWidth = width();
+    int sidebarWidth = sidebar->width();
+    setFixedWidth(parentWidth - sidebarWidth);
 }
 
 /// \brief Update the geometry property of line (such as word wrapping)

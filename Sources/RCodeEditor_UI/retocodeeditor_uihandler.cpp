@@ -22,12 +22,13 @@
 #include <QFile>
 #include <QFileDialog>
 #include "RCodeEditor/PreferenceHandle/rcodeeditorpreferencewindow.h"
+#include "RCodeEditor/RSidebar.h"
 
 RetoCodeEditor_UIHandler::RetoCodeEditor_UIHandler(QWidget *parent) :
         SARibbonMainWindow(parent), ui(new Ui::RetoCodeEditor_UIHandler)
 {
     ui->setupUi(this);
-//    setWindowTitle("RCodeEditor");
+    setWindowTitle("RCodeEditor");
     this->setWindowState(Qt::WindowMaximized);
     init();
     performConnection();
@@ -97,6 +98,7 @@ void RetoCodeEditor_UIHandler::judgeSourceType() {
 }
 
 void RetoCodeEditor_UIHandler::insertPage() {
+
 }
 
 void RetoCodeEditor_UIHandler::insertPageSlot() {
@@ -419,28 +421,17 @@ void RetoCodeEditor_UIHandler::openPreference() {
 void RetoCodeEditor_UIHandler::init() {
     //Create SARibbon
     ribbonBar = new SARibbonBar(this);
-//    ribbonBar->setVisible(true);
     ribbonBar->setRibbonStyle(SARibbonBar::RibbonStyleCompactThreeRow);
     ribbonBar->setContentsMargins(5, 0, 5, 0);
-    ribbonBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-//    ribbonBar->setTitleVisible(true);
     sa_set_ribbon_theme(ribbonBar, SARibbonMainWindow::RibbonTheme::RibbonThemeOffice2021Blue);
     initCategoryPages();
     navigateBar = new QTabBar(this);
-    navigateBar->addTab("New Source");
-    navigateBar->addTab("New Source");
-    navigateBar->addTab("New Source");
     navigateBar->addTab("New Source");
     navigateBar->setVisible(true);
     codeEditor = new RCodeEditor();
     highlighter = new RCFamilyHighlighter(codeEditor->document());
     codeEditor->setStyleSheet("background-color: #282a36; color: #FFFFFF; font-family: 'Consolas';");
-//    ui->verticalLayout->insertWidget(0, ribbonBar);
-    ui->verticalLayout->insertWidget(0, navigateBar);
-    ui->verticalLayout->insertWidget(1, codeEditor);
-//    QVBoxLayout *layout = new QVBoxLayout();
-//    layout->insertWidget(0, ribbonBar);
-//    layout->insertWidget(1, navigateBar);
-//    layout->insertWidget(2, codeEditor);
-//    setLayout(layout);
+    codeEditor->refreshLayout();
+    ui->gridLayout->addWidget(navigateBar, 0, 0);
+    ui->gridLayout->addWidget(codeEditor, 1, 0);
 }

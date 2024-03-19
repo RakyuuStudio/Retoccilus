@@ -48,6 +48,7 @@ public:
     [[maybe_unused]] bool autoIndentation() const;
     [[maybe_unused]] void setCompleter(QCompleter *completer);
     [[nodiscard]] QCompleter *completer() const;
+    void refreshLayout();
     void sidebarPaintEvent(QPaintEvent *pEvent);
     int sidebarWidth();
 signals:
@@ -104,6 +105,8 @@ private:
     QString pTabReplace;
 
     void deIndent(int indentationLevel);
+
+    void updateCodeEditorWidth();
 };
 
 #endif

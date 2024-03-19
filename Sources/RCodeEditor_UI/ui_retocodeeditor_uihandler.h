@@ -11,9 +11,8 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QStatusBar>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -22,9 +21,8 @@ class Ui_RetoCodeEditor_UIHandler
 {
 public:
     QWidget *centralwidget;
-    QWidget *verticalLayoutWidget;
-    QVBoxLayout *verticalLayout;
-    QStatusBar *statusbar;
+    QWidget *gridLayoutWidget;
+    QGridLayout *gridLayout;
 
     void setupUi(QMainWindow *RetoCodeEditor_UIHandler)
     {
@@ -33,16 +31,13 @@ public:
         RetoCodeEditor_UIHandler->resize(1920, 1080);
         centralwidget = new QWidget(RetoCodeEditor_UIHandler);
         centralwidget->setObjectName("centralwidget");
-        verticalLayoutWidget = new QWidget(centralwidget);
-        verticalLayoutWidget->setObjectName("verticalLayoutWidget");
-        verticalLayoutWidget->setGeometry(QRect(-1, 0, 1921, 1058));
-        verticalLayout = new QVBoxLayout(verticalLayoutWidget);
-        verticalLayout->setObjectName("verticalLayout");
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        gridLayoutWidget = new QWidget(centralwidget);
+        gridLayoutWidget->setObjectName("gridLayoutWidget");
+        gridLayoutWidget->setGeometry(QRect(0, -1, 1920, 1052));
+        gridLayout = new QGridLayout(gridLayoutWidget);
+        gridLayout->setObjectName("gridLayout");
+        gridLayout->setContentsMargins(0, 0, 0, 0);
         RetoCodeEditor_UIHandler->setCentralWidget(centralwidget);
-        statusbar = new QStatusBar(RetoCodeEditor_UIHandler);
-        statusbar->setObjectName("statusbar");
-        RetoCodeEditor_UIHandler->setStatusBar(statusbar);
 
         retranslateUi(RetoCodeEditor_UIHandler);
 
