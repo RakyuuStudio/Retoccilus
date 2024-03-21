@@ -5,6 +5,8 @@
 #include "RCFamilyHighlighter.h"
 #include "RSyntaxStyle.h"
 
+//using namespace RetoccilusCodeEditor;
+
 RMainWindow::RMainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::RMainWindow) {
     ui->setupUi(this);
     auto *rce = new RCodeEditor(this);

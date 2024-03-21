@@ -24,6 +24,8 @@
 #include "RCodeEditor/PreferenceHandle/rcodeeditorpreferencewindow.h"
 #include "RCodeEditor/RSidebar.h"
 
+//using namespace RetoccilusCodeEditor;
+
 RetoCodeEditor_UIHandler::RetoCodeEditor_UIHandler(QWidget *parent) :
         SARibbonMainWindow(parent), ui(new Ui::RetoCodeEditor_UIHandler)
 {
@@ -419,7 +421,6 @@ void RetoCodeEditor_UIHandler::openPreference() {
 }
 
 void RetoCodeEditor_UIHandler::init() {
-    ui->gridLayout->setSizeConstraint()
     //Create SARibbon
     ribbonBar = new SARibbonBar(this);
     ribbonBar->setRibbonStyle(SARibbonBar::RibbonStyleCompactThreeRow);

@@ -12,6 +12,8 @@
 #include "RCodeEditor/RCodeEditor.h"
 #include "RCodeEditor/RCFamilyHighlighter.h"
 
+//using namespace RetoccilusCodeEditor;
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class RetoCodeEditor_UIHandler; }
 QT_END_NAMESPACE

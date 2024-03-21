@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/config">
-        <file>Configuration/RCodeEditor/KeywordList/cpp.xml</file>
         <file>Configuration/RCodeEditor/KeywordList/cppKeywords.xml</file>
+        <file>Configuration/RCodeEditor/KeywordList/doxygenTags.xml</file>
     </qresource>
     <qresource prefix="/icons">
         <file>Icons/Icon_CHeader.png</file>

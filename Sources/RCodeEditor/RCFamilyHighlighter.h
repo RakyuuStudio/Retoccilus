@@ -21,9 +21,7 @@
 #include <utility>
 #include <RDefs.h>
 
-namespace RetoccilusCodeEditor {
-    class RSyntaxStyle;
-
+//namespace RetoccilusCodeEditor {
     class RCFamilyHighlighter : public QSyntaxHighlighter {
     public:
         explicit RCFamilyHighlighter(QTextDocument *parent = nullptr) : QSyntaxHighlighter(parent) {
@@ -32,10 +30,17 @@ namespace RetoccilusCodeEditor {
 
             QStringList keywordsL;
             keywordsL = readKeywords(":/config/Configuration/RCodeEditor/KeywordList/cppKeywords.xml");
+
+//            QStringList doxygenTagsList;
+//            doxygenTagsList = readKeywords(":/config/Configuration/RCodeEditor/KeywordList/doxygenTags.xml");
+
             for (const QString &pattern: keywordsL) {
                 highlightingRules.append({QRegularExpression("\\b" + pattern + "\\b"), keywordFormat});
             }
 
+//            for (const QString &pattern: doxygenTagsList) {
+//                highlightingRules.append({QRegularExpression("\\b" + pattern + "\\b"), keywordFormat});
+//            }
             highlightingRules.append({QRegularExpression("\\("), parentheseFormat});
             highlightingRules.append({QRegularExpression("\\)"), parentheseFormat});
             highlightingRules.append({QRegularExpression("\\["), bracketFormat});
@@ -60,11 +65,12 @@ namespace RetoccilusCodeEditor {
             QStringList names;
 
             QFile file(filePath);
-            if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                qWarning() << "Failed to open XML file";
-                return names;
-            }
-
+//            if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+//                qDebug() << "Value of File Path" << filePath;
+//                qDebug() << "Failed to open XML file：" << file.errorString();
+//                return names;
+//            }
+            qDebug() << "AAh" << filePath;
             QXmlStreamReader xmlReader(&file);
 
             while (!xmlReader.atEnd() && !xmlReader.hasError()) {
@@ -85,7 +91,7 @@ namespace RetoccilusCodeEditor {
             return names;
         }
 
-        void readAndSetStyle(QString colorThemeXMLPath) {
+        void readAndSetStyle(const QString& colorThemeXMLPath) {
             QFile colorSchemeFile(colorThemeXMLPath);
             if (!colorSchemeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
                 qWarning() << "Failed to open XML file";
@@ -97,7 +103,7 @@ namespace RetoccilusCodeEditor {
                 QXmlStreamReader::TokenType token = xmlReader.readNext();
                 if (token == QXmlStreamReader::StartElement && xmlReader.name().toString() == "color") {
                     QString name = xmlReader.attributes().value("name").toString();
-                    QString value = xmlReader.readElementText();
+//                    QString value = xmlReader.readElementText();
                     if (name == "Keyword") {
                         keywordFormat.setForeground(QColor(xmlReader.attributes().value("value").toString()));
                         keywordFormat.setBackground(QColor(xmlReader.attributes().value("background").toString()));
@@ -207,6 +213,9 @@ namespace RetoccilusCodeEditor {
                         apostropheFormat.setForeground(QColor(xmlReader.attributes().value("foreground").toString()));
                         apostropheFormat.setFontWeight(xmlReader.attributes().value("bold").toString() == "true" ? QFont::Bold : QFont::Normal);
                     }
+                    else if (name == "DoxygenTags") {
+                        doxygenTagsFormat.setForeground(QColor(xmlReader.attributes().value("foreground").toString()));
+                    }
                 }
             }
             colorSchemeFile.close();
@@ -233,41 +242,41 @@ namespace RetoccilusCodeEditor {
                 QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text);
                 while (matchIterator.hasNext()) {
                     QRegularExpressionMatch match = matchIterator.next();
-                    setFormat(match.capturedStart(), match.capturedLength(), rule.format);
+                    setFormat(static_cast<int>(match.capturedStart()), static_cast<int>(match.capturedLength()), rule.format);
                 }
             }
 
             QRegularExpressionMatch preprocessorMatch = preprocessExp.match(text);
             if (preprocessorMatch.hasMatch()) {
-                setFormat(preprocessorMatch.capturedStart(), preprocessorMatch.capturedEnd(), preprocessorFormat);
+                setFormat(static_cast<int>(preprocessorMatch.capturedStart()), static_cast<int>(preprocessorMatch.capturedEnd()), preprocessorFormat);
             }
 
             QRegularExpressionMatch singleLineCommentMatch = singleLineCommentExp.match(text);
             if (singleLineCommentMatch.hasMatch()) {
-                setFormat(singleLineCommentMatch.capturedStart(), singleLineCommentMatch.capturedLength(),
-                          singleLineCommentFormat);
+                setFormat(static_cast<int>(singleLineCommentMatch.capturedStart()), static_cast<int>(singleLineCommentMatch.capturedLength()),
+                          commentFormat);
             }
             setCurrentBlockState(0);
 
             int startIndex = 0;
             if (previousBlockState() != 1) {
-                startIndex = text.indexOf(commentStartExp);
+                startIndex = static_cast<int>(text.indexOf(commentStartExp));
             }
 
             while (startIndex >= 0) {
                 QRegularExpressionMatch match = commentEndExp.match(text, startIndex);
-                int endIndex = match.capturedStart();
-                int commentLength = 0;
+                int endIndex = static_cast<int>(match.capturedStart());
+                int commentLength;
 
                 if (endIndex == -1) {
                     setCurrentBlockState(1);
-                    commentLength = text.length() - startIndex;
+                    commentLength = static_cast<int>(text.length() - startIndex);
                 } else {
-                    commentLength = endIndex - startIndex + match.capturedLength();
+                    commentLength = static_cast<int>(endIndex - startIndex + match.capturedLength());
                 }
 
-                setFormat(startIndex, commentLength, multilineCommentFormat);
-                startIndex = text.indexOf(commentStartExp, startIndex + commentLength);
+                setFormat(startIndex, commentLength, commentFormat);
+                startIndex = static_cast<int>(text.indexOf(commentStartExp, startIndex + commentLength));
             }
         }
 
@@ -300,8 +309,8 @@ namespace RetoccilusCodeEditor {
                         propertyFormat, warningFormat,
                         errorFormat, errorContextFormat,
                         declarationFormat, selectionFormat,
-                        quotationFormat, apostropheFormat,
+                        quotationFormat, apostropheFormat, doxygenTagsFormat;
     };
-}
+//}
 
 #endif //RetoCodeEditor_CFamilyHighlighter_h
