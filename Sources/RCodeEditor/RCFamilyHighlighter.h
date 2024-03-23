@@ -121,6 +121,7 @@ private:
         QRegularExpression pattern;
         QTextCharFormat format;
     };
+
     QVector<HighlightingRule> highlightingRules;
     QRegularExpression commentStartExp;
     QRegularExpression commentEndExp;
