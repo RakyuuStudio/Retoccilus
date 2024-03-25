@@ -498,7 +498,7 @@ public:
         RCE_GetSelectionEOLFilled = 2479,
         RCE_SetSelectionEOLFilled = 2480,
         RCE_StyleGetForeground = 2481,
-        RCE_STYLEGETBACK = 2482,
+        RCE_StyleGetBackground = 2482,
         RCE_STYLEGETBOLD = 2483,
         RCE_STYLEGETITALIC = 2484,
         RCE_STYLEGETSIZE = 2485,
