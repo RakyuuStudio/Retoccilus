@@ -16,7 +16,7 @@
 #include <QVector>
 #include <QFile>
 #include <utility>
-class RSyntaxStyle;
+
 class RCFamilyHighlighter : public QSyntaxHighlighter {
 public:
     explicit RCFamilyHighlighter(QTextDocument *parent = nullptr) : QSyntaxHighlighter(parent) {
@@ -86,7 +86,7 @@ protected:
             QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text);
             while (matchIterator.hasNext()) {
                 QRegularExpressionMatch match = matchIterator.next();
-                setFormat(match.capturedStart(), match.capturedLength(), rule.format);
+                setFormat(static_cast<int>(match.capturedStart()), match.capturedLength(), rule.format);
             }
         }
         QRegularExpressionMatch preprocessorMatch = preprocessExp.match(text);
@@ -138,4 +138,5 @@ private:
     QTextCharFormat identifierFormat, functionFormat;
     QTextCharFormat numberFormat;
 };
+
 #endif //RetoCodeEditor_CFamilyHighlighter_h
