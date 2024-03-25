@@ -433,6 +433,7 @@ void RetoCodeEditor_UIHandler::init() {
     codeEditor = new RCodeEditor();
     highlighter = new RCFamilyHighlighter(codeEditor->document());
     codeEditor->setStyleSheet("background-color: #282a36; color: #FFFFFF; font-family: 'Consolas';");
+//    codeEditor->setFixedHeight(900);
     codeEditor->refreshLayout();
     ui->gridLayout->addWidget(navigateBar, 0, 0);
     ui->gridLayout->addWidget(codeEditor, 1, 0);
