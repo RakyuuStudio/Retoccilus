@@ -31,6 +31,7 @@ To get started with Retoccilus, please follow these steps:
 - FBXSDK (by Autodesk)
 - VST3SDK (by Steinberg Media Technologies)
   Make sure you have installed the whole Qt6 on your computer.
+  And all dependencies in ThirdPartyLib Folder, make sure it is after compile
 3. Import the project into your favorite build system (Such as Qt Creator and CLion)
 4. Build and Run the Software
 
