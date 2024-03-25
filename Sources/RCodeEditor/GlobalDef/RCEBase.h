@@ -274,740 +274,329 @@ public:
         RCE_GetFoldParent = 2225,
         RCE_ShowLines = 2226,
         RCE_HideLines = 2227,
-
-        RCE_GETLINEVISIBLE = 2228,
-        RCE_SETFOLDEXPANDED = 2229,
-        RCE_GETFOLDEXPANDED = 2230,
-        RCE_TOGGLEFOLD = 2231,
-        RCE_ENSUREVISIBLE = 2232,
-        RCE_SETFOLDFLAGS = 2233,
-        RCE_ENSUREVISIBLEENFORCEPOLICY = 2234,
-        RCE_WRAPCOUNT = 2235,
-        RCE_GETALLLINESVISIBLE = 2236,
-        RCE_FOLDLINE = 2237,
-        RCE_FOLDCHILDREN = 2238,
-        RCE_EXPANDCHILDREN = 2239,
-        RCE_SETMARGINBACKN = 2250,
-        RCE_GETMARGINBACKN = 2251,
-        RCE_SETMARGINS = 2252,
-        RCE_GETMARGINS = 2253,
-        RCE_SETTABINDENTS = 2260,
-        RCE_GETTABINDENTS = 2261,
-        RCE_SETBACKSPACEUNINDENTS = 2262,
-        RCE_GETBACKSPACEUNINDENTS = 2263,
-        RCE_SETMOUSEDWELLTIME = 2264,
-        RCE_GETMOUSEDWELLTIME = 2265,
-        RCE_WORDSTARTPOSITION = 2266,
-        RCE_WORDENDPOSITION = 2267,
-        RCE_SETWRAPMODE = 2268,
-        RCE_GETWRAPMODE = 2269,
-        RCE_SETLAYOUTCACHE = 2272,
-        RCE_GETLAYOUTCACHE = 2273,
-        RCE_SETSCROLLWIDTH = 2274,
-        RCE_GETSCROLLWIDTH = 2275,
-        RCE_TEXTWIDTH = 2276,
-        RCE_SETENDATLASTLINE = 2277,
-        RCE_GETENDATLASTLINE = 2278,
-        RCE_TEXTHEIGHT = 2279,
-        RCE_SETVSCROLLBAR = 2280,
-        RCE_GETVSCROLLBAR = 2281,
-        RCE_APPENDTEXT = 2282,
-        RCE_GETTWOPHASEDRAW = 2283,
-        RCE_SETTWOPHASEDRAW = 2284,
-        RCE_AUTOCGETTYPESEPARATOR = 2285,
-        RCE_AUTOCSETTYPESEPARATOR = 2286,
-        RCE_TARGETFROMSELECTION = 2287,
-        RCE_LINESJOIN = 2288,
-        RCE_LINESSPLIT = 2289,
-        RCE_SETFOLDMARGINCOLOUR = 2290,
-        RCE_SETFOLDMARGINHICOLOUR = 2291,
-        RCE_MARKERSETBACKSELECTED = 2292,
-        RCE_MARKERENABLEHIGHLIGHT = 2293,
-        RCE_LINEDOWN = 2300,
-        RCE_LINEDOWNEXTEND = 2301,
-        RCE_LINEUP = 2302,
-        RCE_LINEUPEXTEND = 2303,
-        RCE_CHARLEFT = 2304,
-        RCE_CHARLEFTEXTEND = 2305,
-        RCE_CHARRIGHT = 2306,
-        RCE_CHARRIGHTEXTEND = 2307,
-        RCE_WORDLEFT = 2308,
-        RCE_WORDLEFTEXTEND = 2309,
-        RCE_WORDRIGHT = 2310,
-        RCE_WORDRIGHTEXTEND = 2311,
-        RCE_HOME = 2312,
-        RCE_HOMEEXTEND = 2313,
-        RCE_LINEEND = 2314,
-        RCE_LINEENDEXTEND = 2315,
-        RCE_DOCUMENTSTART = 2316,
-        RCE_DOCUMENTSTARTEXTEND = 2317,
-        RCE_DOCUMENTEND = 2318,
-        RCE_DOCUMENTENDEXTEND = 2319,
-        RCE_PAGEUP = 2320,
-        RCE_PAGEUPEXTEND = 2321,
-        RCE_PAGEDOWN = 2322,
-        RCE_PAGEDOWNEXTEND = 2323,
-        RCE_EDITTOGGLEOVERTYPE = 2324,
-        RCE_CANCEL = 2325,
-        RCE_DELETEBACK = 2326,
-        RCE_TAB = 2327,
-        RCE_BACKTAB = 2328,
-        RCE_NEWLINE = 2329,
-        RCE_FORMFEED = 2330,
-        RCE_VCHOME = 2331,
-        RCE_VCHOMEEXTEND = 2332,
-        RCE_ZOOMIN = 2333,
-        RCE_ZOOMOUT = 2334,
-        RCE_DELWORDLEFT = 2335,
-        RCE_DELWORDRIGHT = 2336,
-        RCE_LINECUT = 2337,
-        RCE_LINEDELETE = 2338,
-        RCE_LINETRANSPOSE = 2339,
-        RCE_LOWERCASE = 2340,
-        RCE_UPPERCASE = 2341,
-        RCE_LINESCROLLDOWN = 2342,
-        RCE_LINESCROLLUP = 2343,
-        RCE_DELETEBACKNOTLINE = 2344,
-        RCE_HOMEDISPLAY = 2345,
-        RCE_HOMEDISPLAYEXTEND = 2346,
-        RCE_LINEENDDISPLAY = 2347,
-        RCE_LINEENDDISPLAYEXTEND = 2348,
-        RCE_MOVECARETINSIDEVIEW = 2401,
-        RCE_LINELENGTH = 2350,
-        RCE_BRACEHIGHLIGHT = 2351,
-        RCE_BRACEBADLIGHT = 2352,
-        RCE_BRACEMATCH = 2353,
-        RCE_LINEREVERSE = 2354,
-        RCE_GETVIEWEOL = 2355,
-        RCE_SETVIEWEOL = 2356,
-        RCE_GETDOCPOINTER = 2357,
-        RCE_SETDOCPOINTER = 2358,
-        RCE_SETMODEVENTMASK = 2359,
-        RCE_GETEDGECOLUMN = 2360,
-        RCE_SETEDGECOLUMN = 2361,
-        RCE_GETEDGEMODE = 2362,
-        RCE_SETEDGEMODE = 2363,
-        RCE_GETEDGECOLOUR = 2364,
-        RCE_SETEDGECOLOUR = 2365,
-        RCE_SEARCHANCHOR = 2366,
-        RCE_SEARCHNEXT = 2367,
-        RCE_SEARCHPREV = 2368,
-        RCE_LINESONSCREEN = 2370,
-        RCE_USEPOPUP = 2371,
-        RCE_SELECTIONISRECTANGLE = 2372,
-        RCE_SETZOOM = 2373,
-        RCE_GETZOOM = 2374,
-        RCE_CREATEDOCUMENT = 2375,
-
-        //!
-        RCE_ADDREFDOCUMENT = 2376,
-
-        //!
-        RCE_RELEASEDOCUMENT = 2377,
-
-        //!
-        RCE_GETMODEVENTMASK = 2378,
-
-        //!
-        RCE_SETFOCUS = 2380,
-
-        //!
-        RCE_GETFOCUS = 2381,
-
-        //!
-        RCE_SETSTATUS = 2382,
-
-        //!
-        RCE_GETSTATUS = 2383,
-
-        //!
-        RCE_SETMOUSEDOWNCAPTURES = 2384,
-
-        //!
-        RCE_GETMOUSEDOWNCAPTURES = 2385,
-
-        //!
-        RCE_SETCURSOR = 2386,
-
-        //!
-        RCE_GETCURSOR = 2387,
-
-        //!
-        RCE_SETCONTROLCHARSYMBOL = 2388,
-
-        //!
-        RCE_GETCONTROLCHARSYMBOL = 2389,
-
-        //!
-        RCE_WORDPARTLEFT = 2390,
-
-        //!
-        RCE_WORDPARTLEFTEXTEND = 2391,
-
-        //!
-        RCE_WORDPARTRIGHT = 2392,
-
-        //!
-        RCE_WORDPARTRIGHTEXTEND = 2393,
-
-        //!
-        RCE_SETVISIBLEPOLICY = 2394,
-
-        //!
-        RCE_DELLINELEFT = 2395,
-
-        //!
-        RCE_DELLINERIGHT = 2396,
-
-        //!
-        RCE_SETXOFFSET = 2397,
-
-        //!
-        RCE_GETXOFFSET = 2398,
-
-        //!
-        RCE_CHOOSECARETX = 2399,
-
-        //!
-        RCE_GRABFOCUS = 2400,
-
-        //!
-        RCE_SETXCARETPOLICY = 2402,
-
-        //!
-        RCE_SETYCARETPOLICY = 2403,
-
-        //!
-        RCE_LINEDUPLICATE = 2404,
-
-        //! This message takes a copy of an image and registers it so that it
-        //! can be refered to by a unique integer identifier.
-        //! \a wParam is the image's identifier.
-        //! \a lParam is a pointer to a QPixmap instance.  Note that in other
-        //! ports of Scintilla this is a pointer to either raw or textual XPM
-        //! image data.
-        //!
-        //! \sa RCE_CLEARREGISTEREDIMAGES, RCE_REGISTERRGBAIMAGE
-        RCE_REGISTERIMAGE = 2405,
-
-        //!
-        RCE_SETPRINTWRAPMODE = 2406,
-
-        //!
-        RCE_GETPRINTWRAPMODE = 2407,
-
-        //! This message de-registers all currently registered images.
-        //!
-        //! \sa RCE_REGISTERIMAGE, RCE_REGISTERRGBAIMAGE
-        RCE_CLEARREGISTEREDIMAGES = 2408,
-
-        //!
-        RCE_STYLESETHOTSPOT = 2409,
-
-        //!
-        RCE_SETHOTSPOTACTIVEFORE = 2410,
-
-        //!
-        RCE_SETHOTSPOTACTIVEBACK = 2411,
-
-        //!
-        RCE_SETHOTSPOTACTIVEUNDERLINE = 2412,
-
-        //!
-        RCE_PARADOWN = 2413,
-
-        //!
-        RCE_PARADOWNEXTEND = 2414,
-
-        //!
-        RCE_PARAUP = 2415,
-
-        //!
-        RCE_PARAUPEXTEND = 2416,
-
-        //!
-        RCE_POSITIONBEFORE = 2417,
-
-        //!
-        RCE_POSITIONAFTER = 2418,
-
-        //!
-        RCE_COPYRANGE = 2419,
-
-        //!
-        RCE_COPYTEXT = 2420,
-
-        //!
-        RCE_SETHOTSPOTSINGLELINE = 2421,
-
-        //!
-        RCE_SETSELECTIONMODE = 2422,
-
-        //!
-        RCE_GETSELECTIONMODE = 2423,
-
-        //!
-        RCE_GETLINESELSTARTPOSITION = 2424,
-
-        //!
-        RCE_GETLINESELENDPOSITION = 2425,
-
-        //!
-        RCE_LINEDOWNRECTEXTEND = 2426,
-
-        //!
-        RCE_LINEUPRECTEXTEND = 2427,
-
-        //!
-        RCE_CHARLEFTRECTEXTEND = 2428,
-
-        //!
-        RCE_CHARRIGHTRECTEXTEND = 2429,
-
-        //!
-        RCE_HOMERECTEXTEND = 2430,
-
-        //!
-        RCE_VCHOMERECTEXTEND = 2431,
-
-        //!
-        RCE_LINEENDRECTEXTEND = 2432,
-
-        //!
-        RCE_PAGEUPRECTEXTEND = 2433,
-
-        //!
-        RCE_PAGEDOWNRECTEXTEND = 2434,
-
-        //!
-        RCE_STUTTEREDPAGEUP = 2435,
-
-        //!
-        RCE_STUTTEREDPAGEUPEXTEND = 2436,
-
-        //!
-        RCE_STUTTEREDPAGEDOWN = 2437,
-
-        //!
-        RCE_STUTTEREDPAGEDOWNEXTEND = 2438,
-
-        //!
-        RCE_WORDLEFTEND = 2439,
-
-        //!
-        RCE_WORDLEFTENDEXTEND = 2440,
-
-        //!
-        RCE_WORDRIGHTEND = 2441,
-
-        //!
-        RCE_WORDRIGHTENDEXTEND = 2442,
-
-        //!
-        RCE_SETWHITESPACECHARS = 2443,
-
-        //!
-        RCE_SETCHARSDEFAULT = 2444,
-
-        //!
-        RCE_AUTOCGETCURRENT = 2445,
-
-        //!
+        RCE_GetLineVisible = 2228,
+        RCE_SetFoldExpanded = 2229,
+        RCE_GetFoldExpanded = 2230,
+        RCE_ToggleFold = 2231,
+        RCE_EnsureVisible = 2232,
+        RCE_SetFoldFlags = 2233,
+        RCE_EnsureVisibleEnforcePolicy = 2234,
+        RCE_WrapCount = 2235,
+        RCE_GetALlLineVisible = 2236,
+        RCE_FoldLine = 2237,
+        RCE_FoldChildren = 2238,
+        RCE_ExpandChildren = 2239,
+        RCE_SetMarginBackN = 2250,
+        RCE_GetMarginBackN = 2251,
+        RCE_SetMargins = 2252,
+        RCE_GetMargins = 2253,
+        RCE_SetTabIndents = 2260,
+        RCE_GetTabIndents = 2261,
+        RCE_SetBackSpaceUnIndents = 2262,
+        RCE_GetBackSpaceUnIndents = 2263,
+        RCE_SetMouseDWellTime = 2264,
+        RCE_GetMouseDWellTime = 2265,
+        RCE_WordStartPos = 2266,
+        RCE_WordEndPos = 2267,
+        RCE_SetWrapMode = 2268,
+        RCE_GetWrapMode = 2269,
+        RCE_SetLayoutCache = 2272,
+        RCE_GetLayoutCache = 2273,
+        RCE_SetScrollWidth = 2274,
+        RCE_GetScrollWidth = 2275,
+        RCE_TextWidth = 2276,
+        RCE_SetEndAtLastLine = 2277,
+        RCE_GetEndAtLastLine = 2278,
+        RCE_TextHeight = 2279,
+        RCE_SetVerticalScrollBar = 2280,
+        RCE_GetVerticalScrollBar = 2281,
+        RCE_AppendText = 2282,
+        RCE_GetTwoPhaseDraw = 2283,
+        RCE_SetTwoPhaseDraw = 2284,
+        RCE_AutoCSetTypeSeparator = 2285,
+        RCE_AutoCGetTypeSeparator = 2286,
+        RCE_TargetFromSelection = 2287,
+        RCE_LinesJoin = 2288,
+        RCE_LinesSplit = 2289,
+        RCE_SetFoldMarginColor = 2290,
+        RCE_SetFoldMarginHiColor = 2291,
+        RCE_MarkerSetBackSelected = 2292,
+        RCE_MarkerEnableHighlight = 2293,
+        RCE_LineDown = 2300,
+        RCE_LineDownExtend = 2301,
+        RCE_LineUp = 2302,
+        RCE_LineUpExtend = 2303,
+        RCE_CharLeft = 2304,
+        RCE_CharLeftExtend = 2305,
+        RCE_CharRight = 2306,
+        RCE_CharRightExtend = 2307,
+        RCE_WordLeft = 2308,
+        RCE_WordLeftExtend = 2309,
+        RCE_WordRight = 2310,
+        RCE_WordRightExtend = 2311,
+        RCE_Home = 2312,
+        RCE_HomeExtend = 2313,
+        RCE_LineEnd = 2314,
+        RCE_LineEndExtend = 2315,
+        RCE_DocumentStart = 2316,
+        RCE_DocumentStartExtend = 2317,
+        RCE_DocumentEnd = 2318,
+        RCE_DocumentEndExtend = 2319,
+        RCE_PageUp = 2320,
+        RCE_PageUpExtend = 2321,
+        RCE_PageDown = 2322,
+        RCE_PageDownExtend = 2323,
+        RCE_EditToggleOverType = 2324,
+        RCE_Cancel = 2325,
+        RCE_DeleteBack = 2326,
+        RCE_Tab = 2327,
+        RCE_BackTab = 2328,
+        RCE_NewLine = 2329,
+        RCE_FormFeed = 2330,
+        RCE_VChome = 2331,
+        RCE_VChomeExtend = 2332,
+        RCE_ZoomIn = 2333,
+        RCE_ZoomOut = 2334,
+        RCE_DeleteWordLeft = 2335,
+        RCE_DeleteWordRight = 2336,
+        RCE_LineCut = 2337,
+        RCE_LineDelete = 2338,
+        RCE_LineTranspose = 2339,
+        RCE_Lowercase = 2340,
+        RCE_Uppercase = 2341,
+        RCE_LineScrollDown = 2342,
+        RCE_LineScrollUp = 2343,
+        RCE_DeleteBackNotLine = 2344,
+        RCE_HomeDisplay = 2345,
+        RCE_HomeDisplayExtend = 2346,
+        RCE_LineEndDisplay = 2347,
+        RCE_LineEndDisplayExtend = 2348,
+        RCE_MoveCaretInsideView = 2401,
+        RCE_LingLength = 2350,
+        RCE_BraceHighlight = 2351,
+        RCE_BraceBadLight = 2352,
+        RCE_BraceMatch = 2353,
+        RCE_LineReverse = 2354,
+        RCE_GetViewEOL = 2355,
+        RCE_SetViewEOL = 2356,
+        RCE_GetDocPointer = 2357,
+        RCE_SetDocPointer = 2358,
+        RCE_SetModeVentMask = 2359,
+        RCE_GetEdgeColumn = 2360,
+        RCE_SetEdgeColumn = 2361,
+        RCE_GetEdgeMode = 2362,
+        RCE_SetEdgeMode = 2363,
+        RCE_GetEdgeColor = 2364,
+        RCE_SetEdgeColor = 2365,
+        RCE_SearchAnchor = 2366,
+        RCE_SearchNext = 2367,
+        RCE_SearchPrev = 2368,
+        RCE_LinesOnScreen = 2370,
+        RCE_UsePopup = 2371,
+        RCE_SelectionIsRectangle = 2372,
+        RCE_SetZoom = 2373,
+        RCE_GetZoom = 2374,
+        RCE_CreateDocument = 2375,
+
+        RCE_AddRefDocument = 2376,
+        RCE_ReleaseDocument = 2377,
+        RCE_GetModeVentMask = 2378,
+        RCE_SetFocus = 2380,
+        RCE_GetFocus = 2381,
+        RCE_SetStatus = 2382,
+        RCE_GetStatus = 2383,
+        RCE_SetMouseDownCaptures = 2384,
+        RCE_GetMouseDownCapture = 2385,
+        RCE_SetCursor = 2386,
+        RCE_GetCursor = 2387,
+        RCE_SetControlCharSymbol = 2388,
+        RCE_GetControlCharSymbol = 2389,
+        RCE_WordPartLeft = 2390,
+        RCE_WordPartLeftExtend = 2391,
+        RCE_WordPartRight = 2392,
+        RCE_WordPartRightExtend = 2393,
+        RCE_SetVisiblePolicy = 2394,
+        RCE_DelLineLeft = 2395,
+        RCE_DelLineRight = 2396,
+        RCE_SetXOffset = 2397,
+        RCE_GetXOffset = 2398,
+        RCE_ChooseCaretX = 2399,
+        RCE_GrabFocus = 2400,
+        RCE_SetXCaretPolicy = 2402,
+        RCE_SetYCaretPolicy = 2403,
+        RCE_LineDuplicate = 2404,
+        RCE_RegisterImage = 2405,
+        RCE_SetPrintWrapMode = 2406,
+        RCE_GetPrintWrapMode = 2407,
+        RCE_ClearRegisteredImages = 2408,
+        RCE_StyleSetHotSpot = 2409,
+        RCE_SetHotSpotActiveForeground = 2410,
+        RCE_SetHotSpotActiveBackground = 2411,
+        RCE_SetHotSpotActiveUnderline = 2412,
+        RCE_ParagraphDown = 2413,
+        RCE_ParagraphDownExtend = 2414,
+        RCE_ParagraphUp = 2415,
+        RCE_ParagraphUpExtend = 2416,
+        RCE_PositionBefore = 2417,
+        RCE_PositionAfter = 2418,
+        RCE_CopyRange = 2419,
+        RCE_CopyText = 2420,
+        RCE_SetHotSpotSingleLine = 2421,
+        RCE_SetSelectionMode = 2422,
+        RCE_GetSelectionMode = 2423,
+        RCE_GetLineSelectionStartPosition = 2424,
+        RCE_GetLineSelectionEndPosition = 2425,
+        RCE_LineDownRectExtend = 2426,
+        RCE_LineUpRectExtend = 2427,
+        RCE_CharLeftRectExtend = 2428,
+        RCE_CharRightRectExtend = 2429,
+        RCE_HomeRectExtend = 2430,
+        RCE_VChomeRectExtend = 2431,
+        RCE_LineEndRectExtend = 2432,
+        RCE_PageUpRectExtend = 2433,
+        RCE_PageDownRectExtend = 2434,
+        RCE_StutteredPageUp = 2435,
+        RCE_StutteredPageUpExtend = 2436,
+        RCE_StutteredPageDown = 2437,
+        RCE_StutteredPageDownExtend = 2438,
+        RCE_WordLeftEnd = 2439,
+        RCE_WordLeftEndExtend = 2440,
+        RCE_WordRightEnd = 2441,
+        RCE_WordRightEndExtend = 2442,
+        RCE_SetWhiteSpaceChars = 2443,
+        RCE_SetCharsDefault = 2444,
+        RCE_AutoCGetCurrent = 2445,
         RCE_ALLOCATE = 2446,
-
-        //!
-        RCE_HOMEWRAP = 2349,
-
-        //!
-        RCE_HOMEWRAPEXTEND = 2450,
-
-        //!
-        RCE_LINEENDWRAP = 2451,
-
-        //!
-        RCE_LINEENDWRAPEXTEND = 2452,
-
-        //!
-        RCE_VCHOMEWRAP = 2453,
-
-        //!
-        RCE_VCHOMEWRAPEXTEND = 2454,
-
-        //!
-        RCE_LINECOPY = 2455,
-
-        //!
-        RCE_FINDCOLUMN = 2456,
-
-        //!
-        RCE_GETCARETSTICKY = 2457,
-
-        //!
-        RCE_SETCARETSTICKY = 2458,
-
-        //!
-        RCE_TOGGLECARETSTICKY = 2459,
-
-        //!
-        RCE_SETWRAPVISUALFLAGS = 2460,
-
-        //!
-        RCE_GETWRAPVISUALFLAGS = 2461,
-
-        //!
-        RCE_SETWRAPVISUALFLAGSLOCATION = 2462,
-
-        //!
-        RCE_GETWRAPVISUALFLAGSLOCATION = 2463,
-
-        //!
-        RCE_SETWRAPSTARTINDENT = 2464,
-
-        //!
-        RCE_GETWRAPSTARTINDENT = 2465,
-
-        //!
-        RCE_MARKERADDSET = 2466,
-
-        //!
-        RCE_SETPASTECONVERTENDINGS = 2467,
-
-        //!
-        RCE_GETPASTECONVERTENDINGS = 2468,
-
-        //!
-        RCE_SELECTIONDUPLICATE = 2469,
-
-        //!
-        RCE_SETCARETLINEBACKALPHA = 2470,
-
-        //!
-        RCE_GETCARETLINEBACKALPHA = 2471,
-
-        //!
-        RCE_SETWRAPINDENTMODE = 2472,
-
-        //!
-        RCE_GETWRAPINDENTMODE = 2473,
-
-        //!
-        RCE_MARKERSETALPHA = 2476,
-
-        //!
-        RCE_GETSELALPHA = 2477,
-
-        //!
-        RCE_SETSELALPHA = 2478,
-
-        //!
-        RCE_GETSELEOLFILLED = 2479,
-
-        //!
-        RCE_SETSELEOLFILLED = 2480,
-
-        //!
-        RCE_STYLEGETFORE = 2481,
-
-        //!
+        RCE_HomeWrap = 2349,
+        RCE_HomeWrapExtend = 2450,
+        RCE_LineEndWrap = 2451,
+        RCE_LineEndWrapExtend = 2452,
+        RCE_VCHOMEWrap = 2453,
+        RCE_VCHOMEWrapExtend = 2454,
+        RCE_LineCopy = 2455,
+        RCE_FindColumn = 2456,
+        RCE_GetCaretSticky = 2457,
+        RCE_SetCaretSticky = 2458,
+        RCE_ToggleCaretSticky = 2459,
+        RCE_SetWrapVisualFlags = 2460,
+        RCE_GetWrapVisualFlags = 2461,
+        RCE_SetWrapVisualFlagsLocation = 2462,
+        RCE_GetWrapVisualFlagsLocation = 2463,
+        RCE_SetWrapStartIndent = 2464,
+        RCE_GetWrapStartIndent = 2465,
+        RCE_MarkerAddStart = 2466,
+        RCE_SetPasteConvertEndings = 2467,
+        RCE_GetPasteConvertEndings = 2468,
+        RCE_SelectionDuplicate = 2469,
+        RCE_SetCaretLineBackAlpha = 2470,
+        RCE_GetCaretLineBackAlpha = 2471,
+        RCE_SetWrapIndentMode = 2472,
+        RCE_GetWrapIndentMode = 2473,
+        RCE_MarkerSetAlpha = 2476,
+        RCE_GetSelectionAlpha = 2477,
+        RCE_SetSelectionAlpha = 2478,
+        RCE_GetSelectionEOLFilled = 2479,
+        RCE_SetSelectionEOLFilled = 2480,
+        RCE_StyleGetForeground = 2481,
         RCE_STYLEGETBACK = 2482,
-
-        //!
         RCE_STYLEGETBOLD = 2483,
-
-        //!
         RCE_STYLEGETITALIC = 2484,
-
-        //!
         RCE_STYLEGETSIZE = 2485,
-
-        //!
         RCE_STYLEGETFONT = 2486,
-
-        //!
         RCE_STYLEGETEOLFILLED = 2487,
-
-        //!
         RCE_STYLEGETUNDERLINE = 2488,
-
-        //!
         RCE_STYLEGETCASE = 2489,
-
-        //!
         RCE_STYLEGETCHARACTERSET = 2490,
-
-        //!
         RCE_STYLEGETVISIBLE = 2491,
-
-        //!
         RCE_STYLEGETCHANGEABLE = 2492,
-
-        //!
         RCE_STYLEGETHOTSPOT = 2493,
-
-        //!
         RCE_GETHOTSPOTACTIVEFORE = 2494,
-
-        //!
         RCE_GETHOTSPOTACTIVEBACK = 2495,
-
-        //!
         RCE_GETHOTSPOTACTIVEUNDERLINE = 2496,
-
-        //!
         RCE_GETHOTSPOTSINGLELINE = 2497,
-
-        //!
         RCE_BRACEHIGHLIGHTINDICATOR = 2498,
-
-        //!
         RCE_BRACEBADLIGHTINDICATOR = 2499,
-
-        //!
         RCE_SETINDICATORCURRENT = 2500,
-
-        //!
         RCE_GETINDICATORCURRENT = 2501,
-
-        //!
         RCE_SETINDICATORVALUE = 2502,
-
-        //!
         RCE_GETINDICATORVALUE = 2503,
-
-        //!
         RCE_INDICATORFILLRANGE = 2504,
-
-        //!
         RCE_INDICATORCLEARRANGE = 2505,
-
-        //!
         RCE_INDICATORALLONFOR = 2506,
-
-        //!
         RCE_INDICATORVALUEAT = 2507,
-
-        //!
         RCE_INDICATORSTART = 2508,
-
-        //!
         RCE_INDICATOREND = 2509,
-
-        //!
         RCE_INDICSETUNDER = 2510,
-
-        //!
         RCE_INDICGETUNDER = 2511,
-
-        //!
         RCE_SETCARETSTYLE = 2512,
-
-        //!
         RCE_GETCARETSTYLE = 2513,
-
-        //!
         RCE_SETPOSITIONCACHE = 2514,
-
-        //!
         RCE_GETPOSITIONCACHE = 2515,
-
-        //!
         RCE_SETSCROLLWIDTHTRACKING = 2516,
-
-        //!
         RCE_GETSCROLLWIDTHTRACKING = 2517,
-
-        //!
         RCE_DELWORDRIGHTEND = 2518,
-
-        //! This message copies the selection.  If the selection is empty then
-        //! copy the line with the caret.
         RCE_COPYALLOWLINE = 2519,
-
-        //! This message returns a pointer to the document text.  Any
-        //! subsequent message will invalidate the pointer.
         RCE_GETCHARACTERPOINTER = 2520,
-
-        //!
         RCE_INDICSETALPHA = 2523,
-
-        //!
         RCE_INDICGETALPHA = 2524,
-
-        //!
         RCE_SETEXTRAASCENT = 2525,
-
-        //!
         RCE_GETEXTRAASCENT = 2526,
-
-        //!
         RCE_SETEXTRADESCENT = 2527,
-
-        //!
         RCE_GETEXTRADESCENT = 2528,
-
-        //!
         RCE_MARKERSYMBOLDEFINED = 2529,
-
-        //!
         RCE_MARGINSETTEXT = 2530,
-
-        //!
         RCE_MARGINGETTEXT = 2531,
-
-        //!
         RCE_MARGINSETSTYLE = 2532,
-
-        //!
         RCE_MARGINGETSTYLE = 2533,
-
-        //!
         RCE_MARGINSETSTYLES = 2534,
-
-        //!
         RCE_MARGINGETSTYLES = 2535,
-
-        //!
         RCE_MARGINTEXTCLEARALL = 2536,
-
-        //!
         RCE_MARGINSETSTYLEOFFSET = 2537,
-
-        //!
         RCE_MARGINGETSTYLEOFFSET = 2538,
-
-        //!
         RCE_SETMARGINOPTIONS = 2539,
-
-        //!
         RCE_ANNOTATIONSETTEXT = 2540,
-
-        //!
         RCE_ANNOTATIONGETTEXT = 2541,
-
-        //!
         RCE_ANNOTATIONSETSTYLE = 2542,
-
-        //!
         RCE_ANNOTATIONGETSTYLE = 2543,
-
-        //!
         RCE_ANNOTATIONSETSTYLES = 2544,
-
-        //!
         RCE_ANNOTATIONGETSTYLES = 2545,
-
-        //!
         RCE_ANNOTATIONGETLINES = 2546,
-
-        //!
         RCE_ANNOTATIONCLEARALL = 2547,
-
-        //!
         RCE_ANNOTATIONSETVISIBLE = 2548,
-
-        //!
         RCE_ANNOTATIONGETVISIBLE = 2549,
-
-        //!
         RCE_ANNOTATIONSETSTYLEOFFSET = 2550,
-
-        //!
         RCE_ANNOTATIONGETSTYLEOFFSET = 2551,
-
-        //!
         RCE_RELEASEALLEXTENDEDSTYLES = 2552,
-
-        //!
         RCE_ALLOCATEEXTENDEDSTYLES = 2553,
-
-        //!
         RCE_SETEMPTYSELECTION = 2556,
-
-        //!
         RCE_GETMARGINOPTIONS = 2557,
-
-        //!
         RCE_INDICSETOUTLINEALPHA = 2558,
-
-        //!
         RCE_INDICGETOUTLINEALPHA = 2559,
-
-        //!
         RCE_ADDUNDOACTION = 2560,
-
-        //!
         RCE_CHARPOSITIONFROMPOINT = 2561,
-
-        //!
         RCE_CHARPOSITIONFROMPOINTCLOSE = 2562,
-
-        //!
         RCE_SETMULTIPLESELECTION = 2563,
-
-        //!
         RCE_GETMULTIPLESELECTION = 2564,
-
-        //!
         RCE_SETADDITIONALSELECTIONTYPING = 2565,
-
-        //!
         RCE_GETADDITIONALSELECTIONTYPING = 2566,
-
-        //!
         RCE_SETADDITIONALCARETSBLINK = 2567,
-
-        //!
         RCE_GETADDITIONALCARETSBLINK = 2568,
-
-        //!
         RCE_SCROLLRANGE = 2569,
-
-        //!
         RCE_GETSELECTIONS = 2570,
-
-        //!
         RCE_CLEARSELECTIONS = 2571,
-
-        //!
         RCE_SETSELECTION = 2572,
-
-        //!
         RCE_ADDSELECTION = 2573,
-
-        //!
         RCE_SETMAINSELECTION = 2574,
-
-        //!
         RCE_GETMAINSELECTION = 2575,
-
-        //!
         RCE_SETSELECTIONNCARET = 2576,
-
-        //!
         RCE_GETSELECTIONNCARET = 2577,
-
-        //!
         RCE_SETSELECTIONNANCHOR = 2578,
-
-        //!
         RCE_GETSELECTIONNANCHOR = 2579,
-
-        //!
         RCE_SETSELECTIONNCARETVIRTUALSPACE = 2580,
-
-        //!
         RCE_GETSELECTIONNCARETVIRTUALSPACE = 2581,
-
-        //!
         RCE_SETSELECTIONNANCHORVIRTUALSPACE = 2582,
-
-        //!
         RCE_GETSELECTIONNANCHORVIRTUALSPACE = 2583,
-
-        //!
         RCE_SETSELECTIONNSTART = 2584,
-
-        //!
         RCE_GETSELECTIONNSTART = 2585,
 
         //!
