@@ -11,7 +11,7 @@ This is a roadmap of Retoccilus will be developed in future.
     - Implement the basic rendering-pipeline with Vulkan.
     - Implement the basic movement of camera(Rotate, Zoom, Move)
 - Test
-    - Using simple objects to test the scene and object import.
+    - Using simple objects to test the scene and object import.GL
     - Test the different angles of camera.
 - Documentation
     - Add documentation of import 3D object via Sphinx.
