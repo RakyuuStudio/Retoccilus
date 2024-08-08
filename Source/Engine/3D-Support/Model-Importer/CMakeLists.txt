@@ -3,6 +3,7 @@ add_library(Model-Importer STATIC
         src/fbx-importer.cpp
         utils/Types/Mesh.h
         utils/Types/Vertex.h
+        utils/Types/Mesh.cpp
 )
 
 target_include_directories(Model-Importer PRIVATE
