@@ -10,7 +10,8 @@ namespace Retoccilus::Engine::Support3D::Utility {
         bufferInfo.usage = usageFlags;
         bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-        if (vkCreateBuffer(m_vulkanDevice.GetLogicalDevice(), &bufferInfo, nullptr, buffer) != VK_SUCCESS) {
+        if (vkCreateBuffer(m_vulkanDevice.GetLogicalDevice(), &bufferInfo,
+                           nullptr, buffer) != VK_SUCCESS) {
             throw std::runtime_error("Failed to create buffer");
         }
 

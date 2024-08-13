@@ -4,6 +4,7 @@ add_library(Model-Importer STATIC
         utils/Types/Mesh.h
         utils/Types/Vertex.h
         utils/Types/Mesh.cpp
+        include/model-importer-base.h
 )
 
 target_include_directories(Model-Importer PRIVATE

@@ -38,13 +38,13 @@ namespace Retoccilus::Engine::Support3D::Utility {
         void UploadVertexDataToVulkan();
         void UploadIndexDataToVulkan();
 
-        const std::vector<RtVertex>& GetVertices() const { return m_Vertices; }
-        const std::vector<uint32_t>& GetIndices() const { return m_Indices; }
+        [[nodiscard]] const std::vector<RtVertex>& GetVertices() const { return m_Vertices; }
+        [[nodiscard]] const std::vector<uint32_t>& GetIndices() const { return m_Indices; }
 
-        VkBuffer GetVertexBuffer() const { return m_VertexBuffer; }
-        VkDeviceMemory GetVertexBufferMemory() const { return m_VertexBufferMemory; }
-        VkBuffer GetIndexBuffer() const { return m_IndexBuffer; }
-        VkDeviceMemory GetIndexBufferMemory() const { return m_IndexBufferMemory; }
+        [[nodiscard]] VkBuffer GetVertexBuffer() const { return m_VertexBuffer; }
+        [[nodiscard]] VkDeviceMemory GetVertexBufferMemory() const { return m_VertexBufferMemory; }
+        [[nodiscard]] VkBuffer GetIndexBuffer() const { return m_IndexBuffer; }
+        [[nodiscard]] VkDeviceMemory GetIndexBufferMemory() const { return m_IndexBufferMemory; }
 
     private:
         void CreateBuffer(VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags properties,

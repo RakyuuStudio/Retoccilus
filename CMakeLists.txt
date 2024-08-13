@@ -19,10 +19,10 @@ endif()
 
 add_subdirectory(Source/Engine/3D-Support)
 
-set(FBXLIB_LIBRARY "thirdparty_lib/fbxsdk/libfbxsdk.lib")
-set(XML2LIB_LIBRARY "thirdparty_lib/fbxsdk/libxml2.lib")
-set(ALEMBICLIB_LIBRARY "thirdparty_lib/fbxsdk/alembic.lib")
-set(GLFW3LIB_LIBRARY "thirdparty_lib/glfw/glfw3.lib")
+set(FBXLIB_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty_lib/fbxsdk/libfbxsdk.lib")
+set(XML2LIB_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty_lib/fbxsdk/libxml2.lib")
+set(ALEMBICLIB_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty_lib/fbxsdk/alembic.lib")
+set(GLFW3LIB_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty_lib/glfw/glfw3.lib")
 
 include_directories(
 		thirdparty_lib/glfw/include
@@ -31,10 +31,10 @@ include_directories(
 )
 
 add_executable(${PROJECT_NAME} main.cpp
-		Source/Engine/3D-Support/Model-Importer/include/fbx-importer.h
-		Source/Engine/3D-Support/Model-Importer/src/fbx-importer.cpp
-		Source/Engine/3D-Support/PublicAPI/Public3DApi.cpp
-		Source/Engine/3D-Support/PublicAPI/Public3DApi.h
+#		Source/Engine/3D-Support/Model-Importer/include/fbx-importer.h
+#		Source/Engine/3D-Support/Model-Importer/src/fbx-importer.cpp
+#		Source/Engine/3D-Support/PublicAPI/Public3DApi.cpp
+#		Source/Engine/3D-Support/PublicAPI/Public3DApi.h
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
