@@ -17,8 +17,6 @@ if(NOT Qt6_FOUND)
 	message(FATAL_ERROR "> Build: Qt6 Installation wasn't found. Build Failed'")
 endif()
 
-add_subdirectory(Source/Engine/3D-Support)
-
 set(FBXLIB_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty_lib/fbxsdk/libfbxsdk.lib")
 set(XML2LIB_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty_lib/fbxsdk/libxml2.lib")
 set(ALEMBICLIB_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty_lib/fbxsdk/alembic.lib")
@@ -30,11 +28,10 @@ include_directories(
 		thirdparty_lib/fbxsdk/include
 )
 
+add_subdirectory(Source/Engine)
+
 add_executable(${PROJECT_NAME} main.cpp
-#		Source/Engine/3D-Support/Model-Importer/include/fbx-importer.h
-#		Source/Engine/3D-Support/Model-Importer/src/fbx-importer.cpp
-#		Source/Engine/3D-Support/PublicAPI/Public3DApi.cpp
-#		Source/Engine/3D-Support/PublicAPI/Public3DApi.h
+
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
@@ -46,6 +43,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 		${XML2LIB_LIBRARY}
 		${ALEMBICLIB_LIBRARY}
 		${GLFW3LIB_LIBRARY}
+
+		RetoGameEngine
 )
 
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
