@@ -23,6 +23,14 @@ add_library(${LIBRARY_NAME} STATIC
 
         # Utility - [Global]
         3D-Support/Utility/Definition.h
+        3D-Support/Utility/Math/Matrix4x4.inl
+        3D-Support/Utility/Math.h
+        3D-Support/Utility/Scene/RtMetadata.h
+)
+
+include_directories(
+        3D-Support/Model-Importer
+        3D-Support/Utility
 )
 
 target_link_libraries(

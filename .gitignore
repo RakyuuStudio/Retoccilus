@@ -1,6 +1,4 @@
 .vscode/
-CMakePresets.json
-CMakeUserPresets.json
 .vs/
 out/
-thirdparty_lib/
+ThirdParty/
