@@ -4,7 +4,7 @@ project(Retoccilus)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_PREFIX_PATH "E:/QtInstall/6.7.2/llvm-mingw_64") # < Absolute path, make sure to change when you want to build.
+set(CMAKE_PREFIX_PATH "E:/QtInstall/6.7.2/msvc2019_64") # < Absolute path, make sure to change when you want to build.
 
 find_package(Qt6Core CONFIG REQUIRED)
 find_package(Qt6Widgets CONFIG REQUIRED)
@@ -20,15 +20,19 @@ include_directories(
 
 )
 
-add_executable(${PROJECT_NAME} main.cpp
-
+# Target: Retoccilus all
+add_executable(Retoccilus main.cpp
+	# 3D Part
+		Source/Engine3D/ModelImporter/FBX-Importer/fbx-importer.cpp
+		Source/Engine3D/ModelImporter/FBX-Importer/fbx-importer.h
+		Source/Engine3D/ModelImporter/Utility/RetoMIString/RetoMIString.cpp
+		Source/Engine3D/ModelImporter/Utility/RetoMIString/RetoMIString.h
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
 		Qt6::Core
 		Qt6::Widgets
 		Qt6::Gui
-
 )
 
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
