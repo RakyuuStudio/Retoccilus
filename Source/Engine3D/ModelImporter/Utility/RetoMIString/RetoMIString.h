@@ -5,59 +5,16 @@
 #include <string>
 
 namespace Retoccilus::Engine3D::ModelImporter {
+    static const int MAX_SIZE = 1024;
+
     class RetoMIString {
     public:
-        // It should be '\0' when initialize
-        RetoMIString() noexcept : length(0), data(nullptr) {
-            data = new char[1];
-            *data = '\0';
-        }
-
-        explicit RetoMIString(const std::string &str) : length(static_cast<unsigned long>(str.size())), data(nullptr) {
-            data = new char[length + 1];
-            std::memcpy(data, str.c_str(), length);
-            data[length] = '\0';
-        }
-
-        RetoMIString(const RetoMIString &other) : length(other.length), data(nullptr) {
-            if (length > 0) {
-                data = new char[length + 1];
-                std::memcpy(data, other.data, length + 1);
-            } else {
-                data = new char[1];
-                *data = '\0';
-            }
-        }
-
-        RetoMIString& operator=(const RetoMIString &other) {
-            if (this != &other) {
-                delete[] data;
-                length = other.length;
-                if (length > 0) {
-                    data = new char[length + 1];
-                    std::memcpy(data, other.data, length + 1);
-                } else {
-                    data = new char[1];
-                    *data = '\0';
-                }
-            }
-            return *this;
-        }
-
-        ~RetoMIString() {
-            delete[] data;
-        }
-
-        [[nodiscard]] const char* c_str() const {
-            return data;
-        }
-
-        [[nodiscard]] unsigned long size() const {
-            return length;
-        }
+        explicit RetoMIString() noexcept;
+        RetoMIString(const RetoMIString &rms);
+        explicit RetoMIString(const std::string &str);
     private:
-        unsigned long length;
-        char *data;
+        unsigned int _length;
+        char data[MAX_SIZE]; // Max String Size
     };
 }
 
