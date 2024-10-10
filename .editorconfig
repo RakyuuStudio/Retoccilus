@@ -1,0 +1,18 @@
+# EditorConfig is Awesome! https://editorconfig.org
+
+# Copyright (c) 2023-2024 Rakyuu Studio. All right reserved.
+# SPDX-License-Identifier: BSD-3-Clause
+
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{cpp,h,hpp,inl}]
+max_line_length = 180
+indent_style = tab
