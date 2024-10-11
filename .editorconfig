@@ -1,7 +1,7 @@
 # EditorConfig is Awesome! https://editorconfig.org
 
 # Copyright (c) 2023-2024 Rakyuu Studio. All right reserved.
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-License-Identifier: LicenseRef-Apache-2.0-WITH-Retoccilus-Exception
 
 root = true
 
@@ -9,6 +9,8 @@ root = true
 charset = utf-8
 indent_style = space
 indent_size = 4
+# This option is that I pretend you are work on Windows so I choose CRLF.
+# But if you work on macOS or Linux, you should change this option to LF.
 end_of_line = crlf
 insert_final_newline = true
 trim_trailing_whitespace = true

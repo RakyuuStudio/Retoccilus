@@ -9,9 +9,9 @@ namespace Retoccilus::Engine3D::ModelImporter {
     template <typename Tp>
     class RtMIVector2D_Template {
     public:
-        RtMIVector2D_Template () : x(), y();
-        RtMIVector2D_Template (Tp _x, Tp _y) : x(_x), y(_y);
-        explicit RtMIVector2D_Template (Tp _xyz) : x(_xyz), y(_xyz);
+        RtMIVector2D_Template ();
+        RtMIVector2D_Template (Tp _x, Tp _y);
+        explicit RtMIVector2D_Template (Tp _xyz);
         RtMIVector2D_Template(const RtMIVector2D_Template& o) = default;
 
         void setData(Tp _X, Tp _Y);
