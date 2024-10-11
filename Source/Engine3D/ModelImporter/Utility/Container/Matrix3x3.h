@@ -6,23 +6,17 @@
 namespace Retoccilus::Engine3D::ModelImporter {
     const double g_epsilon = 1e-6;
 
-    template<typename Tp>
-    class RtMIMatrix4x4_Template;
+    template <typename Tp> class RtMIMatrix4x4_Template;
 
-    template<typename Tp>
-    class RtMIVector2D_Template;
+    template <typename Tp> class RtMIVector2D_Template;
 
-    template<typename Tp>
-    class RtMIVector3D_Template;
+    template <typename Tp> class RtMIVector3D_Template;
 
-    template<typename Tp>
-    class RtMIMatrix3x3_Template {
+    template <typename Tp> class RtMIMatrix3x3_Template {
     public:
         RtMIMatrix3x3_Template() noexcept;
 
-        RtMIMatrix3x3_Template(Tp _a1, Tp _a2, Tp _a3,
-                               Tp _b1, Tp _b2, Tp _b3,
-                               Tp _c1, Tp _c2, Tp _c3);
+        RtMIMatrix3x3_Template(Tp _a1, Tp _a2, Tp _a3, Tp _b1, Tp _b2, Tp _b3, Tp _c1, Tp _c2, Tp _c3);
 
         explicit RtMIMatrix3x3_Template(const RtMIMatrix4x4_Template<Tp> &bMatrix);
 
@@ -40,8 +34,7 @@ namespace Retoccilus::Engine3D::ModelImporter {
 
         bool equal(const RtMIMatrix3x3_Template<Tp> &m, Tp epsilon = g_epsilon) const;
 
-        template<typename TOther>
-        operator RtMIMatrix3x3_Template<TOther>() const;
+        template <typename TOther> operator RtMIMatrix3x3_Template<TOther>() const;
 
         RtMIMatrix3x3_Template &transpose();
 
@@ -51,7 +44,8 @@ namespace Retoccilus::Engine3D::ModelImporter {
 
         static RtMIMatrix3x3_Template &rotationZ(Tp a, RtMIMatrix3x3_Template &ot);
 
-        static RtMIMatrix3x3_Template &rotation(Tp a, const RtMIVector3D_Template<Tp> &axis, RtMIMatrix3x3_Template &ot);
+        static RtMIMatrix3x3_Template &rotation(Tp a, const RtMIVector3D_Template<Tp> &axis,
+                                                RtMIMatrix3x3_Template &ot);
 
         static RtMIMatrix3x3_Template &translation(const RtMIVector2D_Template<Tp> &v, RtMIMatrix3x3_Template &ot);
 
@@ -66,6 +60,6 @@ namespace Retoccilus::Engine3D::ModelImporter {
     };
 
     using RtMIMatrix3x3 = RtMIMatrix3x3_Template<float>;
-}
+} // namespace Retoccilus::Engine3D::ModelImporter
 
 #endif

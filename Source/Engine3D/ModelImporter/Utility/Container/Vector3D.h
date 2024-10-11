@@ -6,14 +6,11 @@
 namespace Retoccilus::Engine3D::ModelImporter {
     const double g_epsilon = 1e-6;
 
-    template<typename Tp>
-    class RtMIMatrix3x3_Template;
+    template <typename Tp> class RtMIMatrix3x3_Template;
 
-    template<typename Tp>
-    class RtMIMatrix4x4_Template;
+    template <typename Tp> class RtMIMatrix4x4_Template;
 
-    template<typename Tp>
-    class RtMIVector3D_Template {
+    template <typename Tp> class RtMIVector3D_Template {
     public:
         RtMIVector3D_Template() noexcept;
 
@@ -47,8 +44,7 @@ namespace Retoccilus::Engine3D::ModelImporter {
 
         bool equal(const RtMIVector3D_Template &other, Tp epsilon = g_epsilon) const;
 
-        template<typename TOther>
-        operator RtMIVector3D_Template<TOther>() const;
+        template <typename TOther> operator RtMIVector3D_Template<TOther>() const;
 
         void set(Tp pX, Tp pY, Tp pZ);
 
@@ -67,6 +63,6 @@ namespace Retoccilus::Engine3D::ModelImporter {
         Tp y;
         Tp z;
     };
-}
+} // namespace Retoccilus::Engine3D::ModelImporter
 
 #endif
