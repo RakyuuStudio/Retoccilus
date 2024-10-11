@@ -31,14 +31,12 @@ add_executable(Retoccilus main.cpp
         Source/Engine3D/ModelImporter/Utility/Container/Vector2D.h
         Source/Engine3D/ModelImporter/Utility/Container/Vector3D.cpp
         Source/Engine3D/ModelImporter/Utility/Container/Vector3D.h
-        Source/Engine3D/ModelImporter/Utility/Container/Matrix3x3.cpp
+        Source/Engine3D/ModelImporter/Utility/Container/Matrix3x3.inl
         Source/Engine3D/ModelImporter/Utility/Container/Matrix3x3.h
         Source/Engine3D/ModelImporter/Utility/Container/Matrix4x4.cpp
         Source/Engine3D/ModelImporter/Utility/Container/Matrix4x4.h
         Source/Engine3D/ModelImporter/Utility/Container/Quaternion.cpp
         Source/Engine3D/ModelImporter/Utility/Container/Quaternion.h
-        Source/Utility/ExceptionHandler/ExceptionHandler.h
-        Source/Utility/ExceptionHandler/ExceptionWindow.h
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
