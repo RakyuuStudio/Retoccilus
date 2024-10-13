@@ -16,7 +16,7 @@ namespace Retoccilus::Engine3D::ModelImporter {
 
         RtMIVector3D_Template(Tp _x, Tp _y, Tp _z);
 
-        RtMIVector3D_Template(Tp _xyz);
+        explicit RtMIVector3D_Template(Tp _xyz);
 
         RtMIVector3D_Template(const RtMIVector3D_Template &rms) = default;
 

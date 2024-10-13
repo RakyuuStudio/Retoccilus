@@ -33,9 +33,9 @@ add_executable(Retoccilus main.cpp
         Source/Engine3D/ModelImporter/Utility/Container/Vector3D.h
         Source/Engine3D/ModelImporter/Utility/Container/Matrix3x3.inl
         Source/Engine3D/ModelImporter/Utility/Container/Matrix3x3.h
-        Source/Engine3D/ModelImporter/Utility/Container/Matrix4x4.cpp
+		Source/Engine3D/ModelImporter/Utility/Container/Matrix4x4.inl
         Source/Engine3D/ModelImporter/Utility/Container/Matrix4x4.h
-        Source/Engine3D/ModelImporter/Utility/Container/Quaternion.cpp
+        Source/Engine3D/ModelImporter/Utility/Container/Quaternion.inl
         Source/Engine3D/ModelImporter/Utility/Container/Quaternion.h
 )
 

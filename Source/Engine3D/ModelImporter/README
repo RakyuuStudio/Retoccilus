@@ -1,0 +1,8 @@
+The ModelImporter module is based on Assimp Library (Open Asset Import Library).
+
+Assimp Library is licensed under BSD 3-Clause License. See the Original License File in the same path of
+this README.
+
+I modified the code that doing some improvement and cleaning some other code.
+
+Thanks Assimp Team to make this wonderful library!
