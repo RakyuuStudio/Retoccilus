@@ -1,0 +1,2 @@
+#define MAX_COLOR_SET 8
+#define MAX_TEXTURE_COORDINATES 8

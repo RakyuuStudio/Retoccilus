@@ -9,7 +9,7 @@ This is a roadmap of Retoccilus will be developed in future.
     - Support common 3D object format (`.fbx`, `.obj` with `.mtl`, `.glb` (Binary format of GLTF))
     - Support import 3D object into scene.
     - Implement the basic rendering-pipeline with Vulkan.
-    - Implement the basic movement of camera(Rotate, Zoom, Move)
+    - Implement the basic movement of camera(rotate, Zoom, Move)
 - Test
     - Using simple objects to test the scene and object import.GL
     - Test the different angles of camera.

@@ -1,11 +1,25 @@
+// =========== Vector2D.inl ========== Re-Implementation of Assimp Vector2D ============= *- C++ -*
+// // Original by Assimp Team, license under BSD 3-Clause License. Re-Implement by Rakyuu Studio.
+// Copyright (c) 2023-2024 Rakyuu Studio, all rights reserved.
+// SPDX-License-Identifier: LicenseRef-Apache-2.0-WITH-Retoccilus-Exception
+// ================================================================================================
+// //
+
 #include "Vector2D.h"
 
 namespace Retoccilus::Engine3D::ModelImporter {
-    template <typename Tp> RtMIVector2D_Template<Tp>::RtMIVector2D_Template() : x(0), y(0) {}
+    template <typename Tp> RtMIVector2D_Template<Tp>::RtMIVector2D_Template() : x(0), y(0) {
+    }
 
-    template <typename Tp> RtMIVector2D_Template<Tp>::RtMIVector2D_Template(Tp _x, Tp _y) : x(_x), y(_y) {}
+    template <typename Tp>
+    RtMIVector2D_Template<Tp>::RtMIVector2D_Template(Tp _x, Tp _y) : x(_x),
+                                                                     y(_y) {
+    }
 
-    template <typename Tp> RtMIVector2D_Template<Tp>::RtMIVector2D_Template(Tp _xyz) : x(_xyz), y(_xyz) {}
+    template <typename Tp>
+    RtMIVector2D_Template<Tp>::RtMIVector2D_Template(Tp _xyz) : x(_xyz),
+                                                                y(_xyz) {
+    }
 
     template <typename Tp> inline void RtMIVector2D_Template<Tp>::setData(Tp X, Tp Y) {
         x = X;
@@ -18,36 +32,45 @@ namespace Retoccilus::Engine3D::ModelImporter {
         return RtMIVector2D_Template<TOther>(static_cast<TOther>(x), static_cast<TOther>(y));
     }
 
-    template <typename Tp> inline Tp RtMIVector2D_Template<Tp>::squareLength() const { return x * x + y * y; }
+    template <typename Tp> inline Tp RtMIVector2D_Template<Tp>::squareLength() const {
+        return x * x + y * y;
+    }
 
-    template <typename Tp> inline Tp RtMIVector2D_Template<Tp>::length() { return std::sqrt(this->squareLength()); }
+    template <typename Tp> inline Tp RtMIVector2D_Template<Tp>::length() {
+        return std::sqrt(this->squareLength());
+    }
 
-    template <typename Tp> inline RtMIVector2D_Template<Tp> &RtMIVector2D_Template<Tp>::normalize() {
+    template <typename Tp>
+    inline RtMIVector2D_Template<Tp> &RtMIVector2D_Template<Tp>::normalize() {
         *this /= this->length();
         return *this;
     }
 
     template <typename Tp>
-    inline const RtMIVector2D_Template<Tp> &RtMIVector2D_Template<Tp>::operator+=(const RtMIVector2D_Template<Tp> &o) {
+    inline const RtMIVector2D_Template<Tp> &
+    RtMIVector2D_Template<Tp>::operator+=(const RtMIVector2D_Template<Tp> &o) {
         x += o.x;
         y += o.y;
         return *this;
     }
 
     template <typename Tp>
-    inline const RtMIVector2D_Template<Tp> &RtMIVector2D_Template<Tp>::operator-=(const RtMIVector2D_Template<Tp> &o) {
+    inline const RtMIVector2D_Template<Tp> &
+    RtMIVector2D_Template<Tp>::operator-=(const RtMIVector2D_Template<Tp> &o) {
         x -= o.x;
         y -= o.y;
         return *this;
     }
 
-    template <typename Tp> inline const RtMIVector2D_Template<Tp> &RtMIVector2D_Template<Tp>::operator*=(Tp f) {
+    template <typename Tp>
+    inline const RtMIVector2D_Template<Tp> &RtMIVector2D_Template<Tp>::operator*=(Tp f) {
         x *= f;
         y *= f;
         return *this;
     }
 
-    template <typename Tp> inline const RtMIVector2D_Template<Tp> &RtMIVector2D_Template<Tp>::operator/=(Tp f) {
+    template <typename Tp>
+    inline const RtMIVector2D_Template<Tp> &RtMIVector2D_Template<Tp>::operator/=(Tp f) {
         x /= f;
         y /= f;
         return *this;
@@ -63,21 +86,25 @@ namespace Retoccilus::Engine3D::ModelImporter {
     }
 
     template <typename Tp>
-    inline bool RtMIVector2D_Template<Tp>::operator==(const RtMIVector2D_Template<Tp> &other) const {
+    inline bool
+    RtMIVector2D_Template<Tp>::operator==(const RtMIVector2D_Template<Tp> &other) const {
         return x == other.x && y == other.y;
     }
 
     template <typename Tp>
-    inline bool RtMIVector2D_Template<Tp>::operator!=(const RtMIVector2D_Template<Tp> &other) const {
+    inline bool
+    RtMIVector2D_Template<Tp>::operator!=(const RtMIVector2D_Template<Tp> &other) const {
         return x != other.x || y != other.y;
     }
 
     template <typename Tp>
-    inline bool RtMIVector2D_Template<Tp>::equal(const RtMIVector2D_Template<Tp> &other, Tp epsilon) const {
+    inline bool RtMIVector2D_Template<Tp>::equal(const RtMIVector2D_Template<Tp> &other,
+                                                 Tp epsilon) const {
         return (std::abs(x - other.x) <= epsilon && std::abs(y - other.y) <= epsilon);
     }
 
-    template <typename Tp> inline RtMIVector2D_Template<Tp> &RtMIVector2D_Template<Tp>::operator=(Tp f) {
+    template <typename Tp>
+    inline RtMIVector2D_Template<Tp> &RtMIVector2D_Template<Tp>::operator=(Tp f) {
         x = f;
         y = f;
         return *this;
@@ -106,15 +133,18 @@ namespace Retoccilus::Engine3D::ModelImporter {
         return v1.x * v2.x + v1.y * v2.y;
     }
 
-    template <typename Tp> inline RtMIVector2D_Template<Tp> operator*(Tp f, const RtMIVector2D_Template<Tp> &v) {
+    template <typename Tp>
+    inline RtMIVector2D_Template<Tp> operator*(Tp f, const RtMIVector2D_Template<Tp> &v) {
         return RtMIVector2D_Template<Tp>(f * v.x, f * v.y);
     }
 
-    template <typename Tp> inline RtMIVector2D_Template<Tp> operator*(const RtMIVector2D_Template<Tp> &v, Tp f) {
+    template <typename Tp>
+    inline RtMIVector2D_Template<Tp> operator*(const RtMIVector2D_Template<Tp> &v, Tp f) {
         return RtMIVector2D_Template<Tp>(f * v.x, f * v.y);
     }
 
-    template <typename Tp> inline RtMIVector2D_Template<Tp> operator/(const RtMIVector2D_Template<Tp> &v, Tp f) {
+    template <typename Tp>
+    inline RtMIVector2D_Template<Tp> operator/(const RtMIVector2D_Template<Tp> &v, Tp f) {
         return v * (1 / f);
     }
 
@@ -124,7 +154,8 @@ namespace Retoccilus::Engine3D::ModelImporter {
         return RtMIVector2D_Template<Tp>(v.x / v2.x, v.y / v2.y);
     }
 
-    template <typename Tp> inline RtMIVector2D_Template<Tp> operator-(const RtMIVector2D_Template<Tp> &v) {
+    template <typename Tp>
+    inline RtMIVector2D_Template<Tp> operator-(const RtMIVector2D_Template<Tp> &v) {
         return RtMIVector2D_Template<Tp>(-v.x, -v.y);
     }
 } // namespace Retoccilus::Engine3D::ModelImporter

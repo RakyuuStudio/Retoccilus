@@ -10,39 +10,43 @@ find_package(Qt6Core CONFIG REQUIRED)
 find_package(Qt6Widgets CONFIG REQUIRED)
 find_package(Qt6Gui CONFIG REQUIRED)
 
-if(Qt6_FOUND)
-	message(STATUS "> Build: Qt6 Installation found.")
-elseif(NOT Qt6_FOUND)
-	message(FATAL_ERROR "> Build: Qt6 Installation wasn't found. Build Failed'")
-endif()
+file(GLOB ModelImporterModule_Utility_Container
+        "${CMAKE_SOURCE_DIR}/Source/Engine3D/ModelImporter/Utility/Container/*.h"
+        "${CMAKE_SOURCE_DIR}/Source/Engine3D/ModelImporter/Utility/Container/*.inl"
+)
+
+file(GLOB ModelImporterModule_Utility_ModelData
+        "${CMAKE_SOURCE_DIR}/Source/Engine3D/ModelImporter/Utility/ModelData/*.h"
+        "${CMAKE_SOURCE_DIR}/Source/Engine3D/ModelImporter/Utility/ModelData/*.cpp"
+)
+
+file(GLOB ModelImporterModule_Utility_Tools
+        "${CMAKE_SOURCE_DIR}/Source/Engine3D/ModelImporter/Utility/Tools/*.h"
+        "${CMAKE_SOURCE_DIR}/Source/Engine3D/ModelImporter/Utility/Tools/*.cpp"
+)
+
+if (Qt6_FOUND)
+    message(STATUS "> Build: Qt6 Installation found.")
+elseif (NOT Qt6_FOUND)
+    message(FATAL_ERROR "> Build: Qt6 Installation wasn't found. Build Failed'")
+endif ()
 
 include_directories(
-
+        Source/Engine3D
 )
 
 # Target: Retoccilus all
 add_executable(Retoccilus main.cpp
-	# 3D Part
-		Source/Engine3D/ModelImporter/FBX-Importer/fbx-importer.cpp
-		Source/Engine3D/ModelImporter/FBX-Importer/fbx-importer.h
-		Source/Engine3D/ModelImporter/Utility/RetoMIString/RetoMIString.cpp
-		Source/Engine3D/ModelImporter/Utility/RetoMIString/RetoMIString.h
-        Source/Engine3D/ModelImporter/Utility/Container/Vector2D.inl
-        Source/Engine3D/ModelImporter/Utility/Container/Vector2D.h
-        Source/Engine3D/ModelImporter/Utility/Container/Vector3D.inl
-        Source/Engine3D/ModelImporter/Utility/Container/Vector3D.h
-        Source/Engine3D/ModelImporter/Utility/Container/Matrix3x3.inl
-        Source/Engine3D/ModelImporter/Utility/Container/Matrix3x3.h
-		Source/Engine3D/ModelImporter/Utility/Container/Matrix4x4.inl
-        Source/Engine3D/ModelImporter/Utility/Container/Matrix4x4.h
-        Source/Engine3D/ModelImporter/Utility/Container/Quaternion.inl
-        Source/Engine3D/ModelImporter/Utility/Container/Quaternion.h
+        # 3D Part
+        ${ModelImporterModule_Utility_Container}
+        ${ModelImporterModule_Utility_ModelData}
+        ${ModelImporterModule_Utility_Tools}
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-		Qt6::Core
-		Qt6::Widgets
-		Qt6::Gui
+        Qt6::Core
+        Qt6::Widgets
+        Qt6::Gui
 )
 
-remove_definitions(-DQT_NO_CAST_FROM_ASCII)
+remove_definitions(-DQT_NO_CAST_FROM_ASCII) # This is so fucking important, if not it will have lots of errors with QString

@@ -1,5 +1,8 @@
 #include "RetoMIString.h"
 
+// TODO: All the `memcpy_s` may lead to wrong result or runtime error.
+//  Me from the future (or someone from the contributor team) should pay more attention on this.
+
 namespace Retoccilus::Engine3D::ModelImporter {
     /**
      * @brief Default Constructor
@@ -9,12 +12,11 @@ namespace Retoccilus::Engine3D::ModelImporter {
     }
 
     /**
-     * @brief Copied Constructor that accept a ``RetoMIString`` instance.
+     * @brief Copied Constructor that accepts a ``RetoMIString`` instance.
      * @param rms - The parameter that you need to copy
      */
     RetoMIString::RetoMIString(const Retoccilus::Engine3D::ModelImporter::RetoMIString &rms)
-            : _length(rms._length)
-    {
+        : _length(rms._length) {
         if (_length > MAX_SIZE - 1) {
             _length = MAX_SIZE - 1; // Crop the string to fit the buffer size.
         }
@@ -31,7 +33,8 @@ namespace Retoccilus::Engine3D::ModelImporter {
      * @brief Constructor that accept a ``std::string`` instance.
      * @param str - The parameter that you need to copy
      */
-    RetoMIString::RetoMIString(const std::string &str) : _length(static_cast<std::uint32_t>(str.length())) {
+    RetoMIString::RetoMIString(const std::string &str)
+        : _length(static_cast<std::uint32_t>(str.length())) {
         if (_length > MAX_SIZE - 1) {
             _length = MAX_SIZE - 1; // Crop the string to fit the buffer size.
         }
@@ -73,7 +76,8 @@ namespace Retoccilus::Engine3D::ModelImporter {
         data[lth] = '\0'; // Add an ending tag `\0` to keep the string is a valid c-string.
     }
 
-    RetoMIString &RetoMIString::operator=(const Retoccilus::Engine3D::ModelImporter::RetoMIString &rms) {
+    RetoMIString &
+    RetoMIString::operator=(const Retoccilus::Engine3D::ModelImporter::RetoMIString &rms) {
         if (this != &rms) {
             _length = rms._length;
             if (_length > MAX_SIZE - 1) {
@@ -100,14 +104,16 @@ namespace Retoccilus::Engine3D::ModelImporter {
         return *this;
     }
 
-    bool RetoMIString::operator==(const Retoccilus::Engine3D::ModelImporter::RetoMIString &rms) const {
+    bool
+    RetoMIString::operator==(const Retoccilus::Engine3D::ModelImporter::RetoMIString &rms) const {
         if (_length == rms._length) {
             return ::memcmp(data, rms.data, _length) == 0;
         }
         return false;
     }
 
-    bool RetoMIString::operator!=(const Retoccilus::Engine3D::ModelImporter::RetoMIString &rms) const {
+    bool
+    RetoMIString::operator!=(const Retoccilus::Engine3D::ModelImporter::RetoMIString &rms) const {
         return !(*this == rms);
     }
 
@@ -139,4 +145,10 @@ namespace Retoccilus::Engine3D::ModelImporter {
     const char *RetoMIString::c_str() const {
         return data;
     }
-}
+    const std::uint32_t RetoMIString::length() {
+        return _length;
+    }
+    const char *RetoMIString::getData() const {
+        return data;
+    }
+} // namespace Retoccilus::Engine3D::ModelImporter

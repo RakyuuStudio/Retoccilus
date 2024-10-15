@@ -25,11 +25,14 @@ namespace Retoccilus::Engine3D::ModelImporter {
 
         void append(const char *appender);
         void clear();
-        [[nodiscard]] const char* c_str() const;
+        [[nodiscard]] const char *c_str() const;
+        [[nodiscard]] const std::uint32_t length();
+        [[nodiscard]] const char *getData() const;
+
     private:
         std::uint32_t _length;
-        char data[MAX_SIZE]; // Max String Size
-    }; // End of Class: RetoMIString
-}
+        char data[MAX_SIZE];
+    };
+} // namespace Retoccilus::Engine3D::ModelImporter
 
 #endif // RETO_MI_STRING_INCLUDE_H

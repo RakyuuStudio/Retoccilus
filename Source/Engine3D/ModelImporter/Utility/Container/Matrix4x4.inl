@@ -1,3 +1,10 @@
+// =========== Matrix4x4.inl ========== Re-Implementation of Assimp Matrix4x4 =========== *- C++ -*
+// // Original by Assimp Team, license under BSD 3-Clause License. Re-Implement by Rakyuu Studio.
+// Copyright (c) 2023-2024 Rakyuu Studio, all rights reserved.
+// SPDX-License-Identifier: LicenseRef-Apache-2.0-WITH-Retoccilus-Exception
+// ================================================================================================
+// //
+
 #include "Matrix4x4.h"
 #include <cmath>
 #include <limits>
@@ -5,23 +12,57 @@
 namespace Retoccilus::Engine3D::ModelImporter {
     template <typename Tp>
     RtMIMatrix4x4_Template<Tp>::RtMIMatrix4x4_Template() noexcept
-        : a1(1.0f), a2(), a3(), a4(), b1(), b2(1.0f), b3(), b4(), c1(), c2(), c3(1.0f), c4(), d1(), d2(), d3(),
-          d4(1.0f) {}
+        : a1(1.0f),
+          a2(),
+          a3(),
+          a4(),
+          b1(),
+          b2(1.0f),
+          b3(),
+          b4(),
+          c1(),
+          c2(),
+          c3(1.0f),
+          c4(),
+          d1(),
+          d2(),
+          d3(),
+          d4(1.0f) {
+    }
 
     template <typename Tp>
-    RtMIMatrix4x4_Template<Tp>::RtMIMatrix4x4_Template(Tp _a1, Tp _a2, Tp _a3, Tp _a4, Tp _b1, Tp _b2, Tp _b3, Tp _b4,
-                                                       Tp _c1, Tp _c2, Tp _c3, Tp _c4, Tp _d1, Tp _d2, Tp _d3, Tp _d4)
-        : a1(_a1), a2(_a2), a3(_a3), a4(_a4), b1(_b1), b2(_b2), b3(_b3), b4(_b4), c1(_c1), c2(_c2), c3(_c3), c4(_c4),
-          d1(_d1), d2(_d2), d3(_d3), d4(_d4) {}
+    RtMIMatrix4x4_Template<Tp>::RtMIMatrix4x4_Template(Tp _a1, Tp _a2, Tp _a3, Tp _a4, Tp _b1,
+                                                       Tp _b2, Tp _b3, Tp _b4, Tp _c1, Tp _c2,
+                                                       Tp _c3, Tp _c4, Tp _d1, Tp _d2, Tp _d3,
+                                                       Tp _d4)
+        : a1(_a1),
+          a2(_a2),
+          a3(_a3),
+          a4(_a4),
+          b1(_b1),
+          b2(_b2),
+          b3(_b3),
+          b4(_b4),
+          c1(_c1),
+          c2(_c2),
+          c3(_c3),
+          c4(_c4),
+          d1(_d1),
+          d2(_d2),
+          d3(_d3),
+          d4(_d4) {
+    }
 
     template <typename Tp>
     template <typename TOther>
     RtMIMatrix4x4_Template<Tp>::operator RtMIMatrix4x4_Template<TOther>() const {
         return RtMIMatrix4x4_Template<TOther>(
-            static_cast<TOther>(a1), static_cast<TOther>(a2), static_cast<TOther>(a3), static_cast<TOther>(a4),
-            static_cast<TOther>(b1), static_cast<TOther>(b2), static_cast<TOther>(b3), static_cast<TOther>(b4),
-            static_cast<TOther>(c1), static_cast<TOther>(c2), static_cast<TOther>(c3), static_cast<TOther>(c4),
-            static_cast<TOther>(d1), static_cast<TOther>(d2), static_cast<TOther>(d3), static_cast<TOther>(d4));
+            static_cast<TOther>(a1), static_cast<TOther>(a2), static_cast<TOther>(a3),
+            static_cast<TOther>(a4), static_cast<TOther>(b1), static_cast<TOther>(b2),
+            static_cast<TOther>(b3), static_cast<TOther>(b4), static_cast<TOther>(c1),
+            static_cast<TOther>(c2), static_cast<TOther>(c3), static_cast<TOther>(c4),
+            static_cast<TOther>(d1), static_cast<TOther>(d2), static_cast<TOther>(d3),
+            static_cast<TOther>(d4));
     }
 
     template <typename Tp>
@@ -45,9 +86,9 @@ namespace Retoccilus::Engine3D::ModelImporter {
     }
 
     template <typename Tp>
-    inline RtMIMatrix4x4_Template<Tp>::RtMIMatrix4x4_Template(const RtMIVector3D_Template<Tp> &scaling,
-                                                              const RtMIQuaternion_Template<Tp> &rotation,
-                                                              const RtMIVector3D_Template<Tp> &position) {
+    inline RtMIMatrix4x4_Template<Tp>::RtMIMatrix4x4_Template(
+        const RtMIVector3D_Template<Tp> &scaling, const RtMIQuaternion_Template<Tp> &rotation,
+        const RtMIVector3D_Template<Tp> &position) {
         RtMIMatrix3x3_Template<Tp> m = rotation.GetMatrix();
 
         a1 = m.a1 * scaling.x;
@@ -72,43 +113,56 @@ namespace Retoccilus::Engine3D::ModelImporter {
     }
 
     template <typename Tp>
-    inline RtMIMatrix4x4_Template<Tp> &RtMIMatrix4x4_Template<Tp>::operator*=(const RtMIMatrix4x4_Template<Tp> &m) {
-        *this = RtMIMatrix4x4_Template<Tp>(
-            m.a1 * a1 + m.b1 * a2 + m.c1 * a3 + m.d1 * a4, m.a2 * a1 + m.b2 * a2 + m.c2 * a3 + m.d2 * a4,
-            m.a3 * a1 + m.b3 * a2 + m.c3 * a3 + m.d3 * a4, m.a4 * a1 + m.b4 * a2 + m.c4 * a3 + m.d4 * a4,
-            m.a1 * b1 + m.b1 * b2 + m.c1 * b3 + m.d1 * b4, m.a2 * b1 + m.b2 * b2 + m.c2 * b3 + m.d2 * b4,
-            m.a3 * b1 + m.b3 * b2 + m.c3 * b3 + m.d3 * b4, m.a4 * b1 + m.b4 * b2 + m.c4 * b3 + m.d4 * b4,
-            m.a1 * c1 + m.b1 * c2 + m.c1 * c3 + m.d1 * c4, m.a2 * c1 + m.b2 * c2 + m.c2 * c3 + m.d2 * c4,
-            m.a3 * c1 + m.b3 * c2 + m.c3 * c3 + m.d3 * c4, m.a4 * c1 + m.b4 * c2 + m.c4 * c3 + m.d4 * c4,
-            m.a1 * d1 + m.b1 * d2 + m.c1 * d3 + m.d1 * d4, m.a2 * d1 + m.b2 * d2 + m.c2 * d3 + m.d2 * d4,
-            m.a3 * d1 + m.b3 * d2 + m.c3 * d3 + m.d3 * d4, m.a4 * d1 + m.b4 * d2 + m.c4 * d3 + m.d4 * d4);
+    inline RtMIMatrix4x4_Template<Tp> &
+    RtMIMatrix4x4_Template<Tp>::operator*=(const RtMIMatrix4x4_Template<Tp> &m) {
+        *this = RtMIMatrix4x4_Template<Tp>(m.a1 * a1 + m.b1 * a2 + m.c1 * a3 + m.d1 * a4,
+                                           m.a2 * a1 + m.b2 * a2 + m.c2 * a3 + m.d2 * a4,
+                                           m.a3 * a1 + m.b3 * a2 + m.c3 * a3 + m.d3 * a4,
+                                           m.a4 * a1 + m.b4 * a2 + m.c4 * a3 + m.d4 * a4,
+                                           m.a1 * b1 + m.b1 * b2 + m.c1 * b3 + m.d1 * b4,
+                                           m.a2 * b1 + m.b2 * b2 + m.c2 * b3 + m.d2 * b4,
+                                           m.a3 * b1 + m.b3 * b2 + m.c3 * b3 + m.d3 * b4,
+                                           m.a4 * b1 + m.b4 * b2 + m.c4 * b3 + m.d4 * b4,
+                                           m.a1 * c1 + m.b1 * c2 + m.c1 * c3 + m.d1 * c4,
+                                           m.a2 * c1 + m.b2 * c2 + m.c2 * c3 + m.d2 * c4,
+                                           m.a3 * c1 + m.b3 * c2 + m.c3 * c3 + m.d3 * c4,
+                                           m.a4 * c1 + m.b4 * c2 + m.c4 * c3 + m.d4 * c4,
+                                           m.a1 * d1 + m.b1 * d2 + m.c1 * d3 + m.d1 * d4,
+                                           m.a2 * d1 + m.b2 * d2 + m.c2 * d3 + m.d2 * d4,
+                                           m.a3 * d1 + m.b3 * d2 + m.c3 * d3 + m.d3 * d4,
+                                           m.a4 * d1 + m.b4 * d2 + m.c4 * d3 + m.d4 * d4);
         return *this;
     }
 
     template <typename Tp>
-    inline RtMIMatrix4x4_Template<Tp> RtMIMatrix4x4_Template<Tp>::operator*(const Tp &aFloat) const {
-        RtMIMatrix4x4_Template<Tp> temp(a1 * aFloat, a2 * aFloat, a3 * aFloat, a4 * aFloat, b1 * aFloat, b2 * aFloat,
-                                        b3 * aFloat, b4 * aFloat, c1 * aFloat, c2 * aFloat, c3 * aFloat, c4 * aFloat,
+    inline RtMIMatrix4x4_Template<Tp>
+    RtMIMatrix4x4_Template<Tp>::operator*(const Tp &aFloat) const {
+        RtMIMatrix4x4_Template<Tp> temp(a1 * aFloat, a2 * aFloat, a3 * aFloat, a4 * aFloat,
+                                        b1 * aFloat, b2 * aFloat, b3 * aFloat, b4 * aFloat,
+                                        c1 * aFloat, c2 * aFloat, c3 * aFloat, c4 * aFloat,
                                         d1 * aFloat, d2 * aFloat, d3 * aFloat, d4 * aFloat);
         return temp;
     }
 
     template <typename Tp>
-    inline RtMIMatrix4x4_Template<Tp> RtMIMatrix4x4_Template<Tp>::operator+(const RtMIMatrix4x4_Template<Tp> &m) const {
-        RtMIMatrix4x4_Template<Tp> temp(m.a1 + a1, m.a2 + a2, m.a3 + a3, m.a4 + a4, m.b1 + b1, m.b2 + b2, m.b3 + b3,
-                                        m.b4 + b4, m.c1 + c1, m.c2 + c2, m.c3 + c3, m.c4 + c4, m.d1 + d1, m.d2 + d2,
-                                        m.d3 + d3, m.d4 + d4);
+    inline RtMIMatrix4x4_Template<Tp>
+    RtMIMatrix4x4_Template<Tp>::operator+(const RtMIMatrix4x4_Template<Tp> &m) const {
+        RtMIMatrix4x4_Template<Tp> temp(
+            m.a1 + a1, m.a2 + a2, m.a3 + a3, m.a4 + a4, m.b1 + b1, m.b2 + b2, m.b3 + b3, m.b4 + b4,
+            m.c1 + c1, m.c2 + c2, m.c3 + c3, m.c4 + c4, m.d1 + d1, m.d2 + d2, m.d3 + d3, m.d4 + d4);
         return temp;
     }
 
     template <typename Tp>
-    inline RtMIMatrix4x4_Template<Tp> RtMIMatrix4x4_Template<Tp>::operator*(const RtMIMatrix4x4_Template<Tp> &m) const {
+    inline RtMIMatrix4x4_Template<Tp>
+    RtMIMatrix4x4_Template<Tp>::operator*(const RtMIMatrix4x4_Template<Tp> &m) const {
         RtMIMatrix4x4_Template<Tp> temp(*this);
         temp *= m;
         return temp;
     }
 
-    template <typename Tp> inline RtMIMatrix4x4_Template<Tp> &RtMIMatrix4x4_Template<Tp>::transpose() {
+    template <typename Tp>
+    inline RtMIMatrix4x4_Template<Tp> &RtMIMatrix4x4_Template<Tp>::transpose() {
         std::swap((Tp &)b1, (Tp &)a2);
         std::swap((Tp &)c1, (Tp &)a3);
         std::swap((Tp &)c2, (Tp &)b3);
@@ -118,49 +172,68 @@ namespace Retoccilus::Engine3D::ModelImporter {
         return *this;
     }
 
-    template <typename Tp> inline Tp RtMIMatrix4x4_Template<Tp>::Determinant() const {
-        return a1 * b2 * c3 * d4 - a1 * b2 * c4 * d3 + a1 * b3 * c4 * d2 - a1 * b3 * c2 * d4 + a1 * b4 * c2 * d3 -
-               a1 * b4 * c3 * d2 - a2 * b3 * c4 * d1 + a2 * b3 * c1 * d4 - a2 * b4 * c1 * d3 + a2 * b4 * c3 * d1 -
-               a2 * b1 * c3 * d4 + a2 * b1 * c4 * d3 + a3 * b4 * c1 * d2 - a3 * b4 * c2 * d1 + a3 * b1 * c2 * d4 -
-               a3 * b1 * c4 * d2 + a3 * b2 * c4 * d1 - a3 * b2 * c1 * d4 - a4 * b1 * c2 * d3 + a4 * b1 * c3 * d2 -
+    template <typename Tp> inline Tp RtMIMatrix4x4_Template<Tp>::determinant() const {
+        return a1 * b2 * c3 * d4 - a1 * b2 * c4 * d3 + a1 * b3 * c4 * d2 - a1 * b3 * c2 * d4 +
+               a1 * b4 * c2 * d3 - a1 * b4 * c3 * d2 - a2 * b3 * c4 * d1 + a2 * b3 * c1 * d4 -
+               a2 * b4 * c1 * d3 + a2 * b4 * c3 * d1 - a2 * b1 * c3 * d4 + a2 * b1 * c4 * d3 +
+               a3 * b4 * c1 * d2 - a3 * b4 * c2 * d1 + a3 * b1 * c2 * d4 - a3 * b1 * c4 * d2 +
+               a3 * b2 * c4 * d1 - a3 * b2 * c1 * d4 - a4 * b1 * c2 * d3 + a4 * b1 * c3 * d2 -
                a4 * b2 * c3 * d1 + a4 * b2 * c1 * d3 - a4 * b3 * c1 * d2 + a4 * b3 * c2 * d1;
     }
 
-    template <typename Tp> inline RtMIMatrix4x4_Template<Tp> &RtMIMatrix4x4_Template<Tp>::inverse() {
-        const Tp det = Determinant();
+    template <typename Tp>
+    inline RtMIMatrix4x4_Template<Tp> &RtMIMatrix4x4_Template<Tp>::inverse() {
+        const Tp det = this->determinant();
         if (det == static_cast<Tp>(0.0)) {
             const Tp nan = std::numeric_limits<Tp>::quiet_NaN();
-            *this = RtMIMatrix4x4_Template<Tp>(nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan,
-                                               nan, nan);
+            *this = RtMIMatrix4x4_Template<Tp>(nan, nan, nan, nan, nan, nan, nan, nan, nan, nan,
+                                               nan, nan, nan, nan, nan, nan);
 
             return *this;
         }
 
-        const Tp invdet = static_cast<Tp>(1.0) / det;
+        const Tp inversedDeterminant = static_cast<Tp>(1.0) / det;
 
         RtMIMatrix4x4_Template<Tp> res;
-        res.a1 = invdet * (b2 * (c3 * d4 - c4 * d3) + b3 * (c4 * d2 - c2 * d4) + b4 * (c2 * d3 - c3 * d2));
-        res.a2 = -invdet * (a2 * (c3 * d4 - c4 * d3) + a3 * (c4 * d2 - c2 * d4) + a4 * (c2 * d3 - c3 * d2));
-        res.a3 = invdet * (a2 * (b3 * d4 - b4 * d3) + a3 * (b4 * d2 - b2 * d4) + a4 * (b2 * d3 - b3 * d2));
-        res.a4 = -invdet * (a2 * (b3 * c4 - b4 * c3) + a3 * (b4 * c2 - b2 * c4) + a4 * (b2 * c3 - b3 * c2));
-        res.b1 = -invdet * (b1 * (c3 * d4 - c4 * d3) + b3 * (c4 * d1 - c1 * d4) + b4 * (c1 * d3 - c3 * d1));
-        res.b2 = invdet * (a1 * (c3 * d4 - c4 * d3) + a3 * (c4 * d1 - c1 * d4) + a4 * (c1 * d3 - c3 * d1));
-        res.b3 = -invdet * (a1 * (b3 * d4 - b4 * d3) + a3 * (b4 * d1 - b1 * d4) + a4 * (b1 * d3 - b3 * d1));
-        res.b4 = invdet * (a1 * (b3 * c4 - b4 * c3) + a3 * (b4 * c1 - b1 * c4) + a4 * (b1 * c3 - b3 * c1));
-        res.c1 = invdet * (b1 * (c2 * d4 - c4 * d2) + b2 * (c4 * d1 - c1 * d4) + b4 * (c1 * d2 - c2 * d1));
-        res.c2 = -invdet * (a1 * (c2 * d4 - c4 * d2) + a2 * (c4 * d1 - c1 * d4) + a4 * (c1 * d2 - c2 * d1));
-        res.c3 = invdet * (a1 * (b2 * d4 - b4 * d2) + a2 * (b4 * d1 - b1 * d4) + a4 * (b1 * d2 - b2 * d1));
-        res.c4 = -invdet * (a1 * (b2 * c4 - b4 * c2) + a2 * (b4 * c1 - b1 * c4) + a4 * (b1 * c2 - b2 * c1));
-        res.d1 = -invdet * (b1 * (c2 * d3 - c3 * d2) + b2 * (c3 * d1 - c1 * d3) + b3 * (c1 * d2 - c2 * d1));
-        res.d2 = invdet * (a1 * (c2 * d3 - c3 * d2) + a2 * (c3 * d1 - c1 * d3) + a3 * (c1 * d2 - c2 * d1));
-        res.d3 = -invdet * (a1 * (b2 * d3 - b3 * d2) + a2 * (b3 * d1 - b1 * d3) + a3 * (b1 * d2 - b2 * d1));
-        res.d4 = invdet * (a1 * (b2 * c3 - b3 * c2) + a2 * (b3 * c1 - b1 * c3) + a3 * (b1 * c2 - b2 * c1));
-        *this  = res;
+        res.a1 = inversedDeterminant *
+                 (b2 * (c3 * d4 - c4 * d3) + b3 * (c4 * d2 - c2 * d4) + b4 * (c2 * d3 - c3 * d2));
+        res.a2 = -inversedDeterminant *
+                 (a2 * (c3 * d4 - c4 * d3) + a3 * (c4 * d2 - c2 * d4) + a4 * (c2 * d3 - c3 * d2));
+        res.a3 = inversedDeterminant *
+                 (a2 * (b3 * d4 - b4 * d3) + a3 * (b4 * d2 - b2 * d4) + a4 * (b2 * d3 - b3 * d2));
+        res.a4 = -inversedDeterminant *
+                 (a2 * (b3 * c4 - b4 * c3) + a3 * (b4 * c2 - b2 * c4) + a4 * (b2 * c3 - b3 * c2));
+        res.b1 = -inversedDeterminant *
+                 (b1 * (c3 * d4 - c4 * d3) + b3 * (c4 * d1 - c1 * d4) + b4 * (c1 * d3 - c3 * d1));
+        res.b2 = inversedDeterminant *
+                 (a1 * (c3 * d4 - c4 * d3) + a3 * (c4 * d1 - c1 * d4) + a4 * (c1 * d3 - c3 * d1));
+        res.b3 = -inversedDeterminant *
+                 (a1 * (b3 * d4 - b4 * d3) + a3 * (b4 * d1 - b1 * d4) + a4 * (b1 * d3 - b3 * d1));
+        res.b4 = inversedDeterminant *
+                 (a1 * (b3 * c4 - b4 * c3) + a3 * (b4 * c1 - b1 * c4) + a4 * (b1 * c3 - b3 * c1));
+        res.c1 = inversedDeterminant *
+                 (b1 * (c2 * d4 - c4 * d2) + b2 * (c4 * d1 - c1 * d4) + b4 * (c1 * d2 - c2 * d1));
+        res.c2 = -inversedDeterminant *
+                 (a1 * (c2 * d4 - c4 * d2) + a2 * (c4 * d1 - c1 * d4) + a4 * (c1 * d2 - c2 * d1));
+        res.c3 = inversedDeterminant *
+                 (a1 * (b2 * d4 - b4 * d2) + a2 * (b4 * d1 - b1 * d4) + a4 * (b1 * d2 - b2 * d1));
+        res.c4 = -inversedDeterminant *
+                 (a1 * (b2 * c4 - b4 * c2) + a2 * (b4 * c1 - b1 * c4) + a4 * (b1 * c2 - b2 * c1));
+        res.d1 = -inversedDeterminant *
+                 (b1 * (c2 * d3 - c3 * d2) + b2 * (c3 * d1 - c1 * d3) + b3 * (c1 * d2 - c2 * d1));
+        res.d2 = inversedDeterminant *
+                 (a1 * (c2 * d3 - c3 * d2) + a2 * (c3 * d1 - c1 * d3) + a3 * (c1 * d2 - c2 * d1));
+        res.d3 = -inversedDeterminant *
+                 (a1 * (b2 * d3 - b3 * d2) + a2 * (b3 * d1 - b1 * d3) + a3 * (b1 * d2 - b2 * d1));
+        res.d4 = inversedDeterminant *
+                 (a1 * (b2 * c3 - b3 * c2) + a2 * (b3 * c1 - b1 * c3) + a3 * (b1 * c2 - b2 * c1));
+        *this = res;
 
         return *this;
     }
 
-    template <typename Tp> inline Tp *RtMIMatrix4x4_Template<Tp>::operator[](unsigned int p_iIndex) {
+    template <typename Tp>
+    inline Tp *RtMIMatrix4x4_Template<Tp>::operator[](unsigned int p_iIndex) {
         if (p_iIndex > 3) {
             return nullptr;
         }
@@ -179,7 +252,8 @@ namespace Retoccilus::Engine3D::ModelImporter {
         return &a1;
     }
 
-    template <typename Tp> inline const Tp *RtMIMatrix4x4_Template<Tp>::operator[](unsigned int p_iIndex) const {
+    template <typename Tp>
+    inline const Tp *RtMIMatrix4x4_Template<Tp>::operator[](unsigned int p_iIndex) const {
         if (p_iIndex > 3) {
             return nullptr;
         }
@@ -201,61 +275,65 @@ namespace Retoccilus::Engine3D::ModelImporter {
 
     template <typename Tp>
     inline bool RtMIMatrix4x4_Template<Tp>::operator==(const RtMIMatrix4x4_Template<Tp> &m) const {
-        return (a1 == m.a1 && a2 == m.a2 && a3 == m.a3 && a4 == m.a4 && b1 == m.b1 && b2 == m.b2 && b3 == m.b3 &&
-                b4 == m.b4 && c1 == m.c1 && c2 == m.c2 && c3 == m.c3 && c4 == m.c4 && d1 == m.d1 && d2 == m.d2 &&
-                d3 == m.d3 && d4 == m.d4);
+        return (a1 == m.a1 && a2 == m.a2 && a3 == m.a3 && a4 == m.a4 && b1 == m.b1 && b2 == m.b2 &&
+                b3 == m.b3 && b4 == m.b4 && c1 == m.c1 && c2 == m.c2 && c3 == m.c3 && c4 == m.c4 &&
+                d1 == m.d1 && d2 == m.d2 && d3 == m.d3 && d4 == m.d4);
     }
 
     template <typename Tp>
     inline bool RtMIMatrix4x4_Template<Tp>::operator!=(const RtMIMatrix4x4_Template<Tp> &m) const {
-        return !(*this == m);
+        return *this != m;
     }
 
     template <typename Tp>
-    inline bool RtMIMatrix4x4_Template<Tp>::equal(const RtMIMatrix4x4_Template &m, Tp epsilon) const {
-        return std::abs(a1 - m.a1) <= epsilon && std::abs(a2 - m.a2) <= epsilon && std::abs(a3 - m.a3) <= epsilon &&
-               std::abs(a4 - m.a4) <= epsilon && std::abs(b1 - m.b1) <= epsilon && std::abs(b2 - m.b2) <= epsilon &&
-               std::abs(b3 - m.b3) <= epsilon && std::abs(b4 - m.b4) <= epsilon && std::abs(c1 - m.c1) <= epsilon &&
-               std::abs(c2 - m.c2) <= epsilon && std::abs(c3 - m.c3) <= epsilon && std::abs(c4 - m.c4) <= epsilon &&
-               std::abs(d1 - m.d1) <= epsilon && std::abs(d2 - m.d2) <= epsilon && std::abs(d3 - m.d3) <= epsilon &&
-               std::abs(d4 - m.d4) <= epsilon;
+    inline bool RtMIMatrix4x4_Template<Tp>::equal(const RtMIMatrix4x4_Template &m,
+                                                  Tp epsilon) const {
+        return std::abs(a1 - m.a1) <= epsilon && std::abs(a2 - m.a2) <= epsilon &&
+               std::abs(a3 - m.a3) <= epsilon && std::abs(a4 - m.a4) <= epsilon &&
+               std::abs(b1 - m.b1) <= epsilon && std::abs(b2 - m.b2) <= epsilon &&
+               std::abs(b3 - m.b3) <= epsilon && std::abs(b4 - m.b4) <= epsilon &&
+               std::abs(c1 - m.c1) <= epsilon && std::abs(c2 - m.c2) <= epsilon &&
+               std::abs(c3 - m.c3) <= epsilon && std::abs(c4 - m.c4) <= epsilon &&
+               std::abs(d1 - m.d1) <= epsilon && std::abs(d2 - m.d2) <= epsilon &&
+               std::abs(d3 - m.d3) <= epsilon && std::abs(d4 - m.d4) <= epsilon;
     }
 
-#define ASSIMP_MATRIX4_4_DECOMPOSE_PART                                                                                \
-    const RtMIMatrix4x4_Template<Tp> &_this = *this;                                                                   \
-                                                                                                                       \
-    pPosition.x = _this[0][3];                                                                                         \
-    pPosition.y = _this[1][3];                                                                                         \
-    pPosition.z = _this[2][3];                                                                                         \
-                                                                                                                       \
-    RtMIVector3D_Template<Tp> vCols[3] = {RtMIVector3D_Template<Tp>(_this[0][0], _this[1][0], _this[2][0]),            \
-                                          RtMIVector3D_Template<Tp>(_this[0][1], _this[1][1], _this[2][1]),            \
-                                          RtMIVector3D_Template<Tp>(_this[0][2], _this[1][2], _this[2][2])};           \
-                                                                                                                       \
-    pScaling.x = vCols[0].Length();                                                                                    \
-    pScaling.y = vCols[1].Length();                                                                                    \
-    pScaling.z = vCols[2].Length();                                                                                    \
-                                                                                                                       \
-    if (Determinant() < 0)                                                                                             \
-        pScaling = -pScaling;                                                                                          \
-                                                                                                                       \
-    if (pScaling.x)                                                                                                    \
-        vCols[0] /= pScaling.x;                                                                                        \
-    if (pScaling.y)                                                                                                    \
-        vCols[1] /= pScaling.y;                                                                                        \
-    if (pScaling.z)                                                                                                    \
-        vCols[2] /= pScaling.z;                                                                                        \
-                                                                                                                       \
-    do {                                                                                                               \
-    } while (false)
+    //#define R_DECOMPOSE_MATRIX                                                                                             \
+//    const RtMIMatrix4x4_Template<Tp> &_this = *this;                                                                   \
+//                                                                                                                       \
+//    pPosition.x = _this[0][3];                                                                                         \
+//    pPosition.y = _this[1][3];                                                                                         \
+//    pPosition.z = _this[2][3];                                                                                         \
+//                                                                                                                       \
+//    RtMIVector3D_Template<Tp> vCols[3] = {RtMIVector3D_Template<Tp>(_this[0][0], _this[1][0], _this[2][0]),            \
+//                                          RtMIVector3D_Template<Tp>(_this[0][1], _this[1][1], _this[2][1]),            \
+//                                          RtMIVector3D_Template<Tp>(_this[0][2], _this[1][2], _this[2][2])};           \
+//                                                                                                                       \
+//    pScaling.x = vCols[0].Length();                                                                                    \
+//    pScaling.y = vCols[1].Length();                                                                                    \
+//    pScaling.z = vCols[2].Length();                                                                                    \
+//                                                                                                                       \
+//    if (this->determinant() < 0)                                                                                       \
+//        pScaling = -pScaling;                                                                                          \
+//                                                                                                                       \
+//    if (pScaling.x)                                                                                                    \
+//        vCols[0] /= pScaling.x;                                                                                        \
+//    if (pScaling.y)                                                                                                    \
+//        vCols[1] /= pScaling.y;                                                                                        \
+//    if (pScaling.z)                                                                                                    \
+//        vCols[2] /= pScaling.z;                                                                                        \
+//                                                                                                                       \
+//    do {                                                                                                               \
+//    } while (false)
 
     template <typename Tp>
     inline void RtMIMatrix4x4_Template<Tp>::decompose(RtMIVector3D_Template<Tp> &pScaling,
                                                       RtMIQuaternion_Template<Tp> &pRotation,
                                                       RtMIVector3D_Template<Tp> &pPosition) const {
-        ASSIMP_MATRIX4_4_DECOMPOSE_PART;
-        RtMIMatrix3x3_Template<Tp> m(vCols[0].x, vCols[1].x, vCols[2].x, vCols[0].y, vCols[1].y, vCols[2].y, vCols[0].z,
-                                     vCols[1].z, vCols[2].z);
+        decomposeMatrix(pPosition, pScaling);
+
+        RtMIMatrix3x3_Template<Tp> m(vCols[0].x, vCols[1].x, vCols[2].x, vCols[0].y, vCols[1].y,
+                                     vCols[2].y, vCols[0].z, vCols[1].z, vCols[2].z);
         pRotation = RtMIQuaternion_Template<Tp>(m);
     }
 
@@ -263,7 +341,7 @@ namespace Retoccilus::Engine3D::ModelImporter {
     inline void RtMIMatrix4x4_Template<Tp>::decompose(RtMIVector3D_Template<Tp> &pScaling,
                                                       RtMIVector3D_Template<Tp> &pRotation,
                                                       RtMIVector3D_Template<Tp> &pPosition) const {
-        ASSIMP_MATRIX4_4_DECOMPOSE_PART;
+        decomposeMatrix(pPosition, pScaling);
         const Tp epsilon = static_cast<Tp>(std::numeric_limits<Tp>::epsilon());
 
         pRotation.y = std::asin(-vCols[0].z); // D. Angle around oY.
@@ -287,11 +365,12 @@ namespace Retoccilus::Engine3D::ModelImporter {
         }
     }
 
-#undef ASSIMP_MATRIX4_4_DECOMPOSE_PART
+#undef R_DECOMPOSE_MATRIX
 
     template <typename Tp>
     inline void RtMIMatrix4x4_Template<Tp>::decompose(RtMIVector3D_Template<Tp> &pScaling,
-                                                      RtMIVector3D_Template<Tp> &pRotationAxis, Tp &pRotationAngle,
+                                                      RtMIVector3D_Template<Tp> &pRotationAxis,
+                                                      Tp &pRotationAngle,
                                                       RtMIVector3D_Template<Tp> &pPosition) const {
         RtMIQuaternion_Template<Tp> pRotation;
 
@@ -313,8 +392,9 @@ namespace Retoccilus::Engine3D::ModelImporter {
     }
 
     template <typename Tp>
-    inline void RtMIMatrix4x4_Template<Tp>::decomposeWithNoScaling(RtMIQuaternion_Template<Tp> &rotation,
-                                                               RtMIVector3D_Template<Tp> &position) const {
+    inline void
+    RtMIMatrix4x4_Template<Tp>::decomposeWithNoScaling(RtMIQuaternion_Template<Tp> &rotation,
+                                                       RtMIVector3D_Template<Tp> &position) const {
         const RtMIMatrix4x4_Template<Tp> &_this = *this;
 
         position.x = _this[0][3];
@@ -331,7 +411,8 @@ namespace Retoccilus::Engine3D::ModelImporter {
     }
 
     template <typename Tp>
-    inline RtMIMatrix4x4_Template<Tp> &RtMIMatrix4x4_Template<Tp>::fromEulerAnglesXYZ(Tp x, Tp y, Tp z) {
+    inline RtMIMatrix4x4_Template<Tp> &RtMIMatrix4x4_Template<Tp>::fromEulerAnglesXYZ(Tp x, Tp y,
+                                                                                      Tp z) {
         RtMIMatrix4x4_Template<Tp> &_this = *this;
 
         Tp cx = std::cos(x);
@@ -356,17 +437,22 @@ namespace Retoccilus::Engine3D::ModelImporter {
         return *this;
     }
 
-    template <typename Tp> inline bool RtMIMatrix4x4_Template<Tp>::isIdentity(const Tp epsilon) const {
-        return (a2 <= epsilon && a2 >= -epsilon && a3 <= epsilon && a3 >= -epsilon && a4 <= epsilon && a4 >= -epsilon &&
-                b1 <= epsilon && b1 >= -epsilon && b3 <= epsilon && b3 >= -epsilon && b4 <= epsilon && b4 >= -epsilon &&
-                c1 <= epsilon && c1 >= -epsilon && c2 <= epsilon && c2 >= -epsilon && c4 <= epsilon && c4 >= -epsilon &&
-                d1 <= epsilon && d1 >= -epsilon && d2 <= epsilon && d2 >= -epsilon && d3 <= epsilon && d3 >= -epsilon &&
-                a1 <= 1.f + epsilon && a1 >= 1.f - epsilon && b2 <= 1.f + epsilon && b2 >= 1.f - epsilon &&
-                c3 <= 1.f + epsilon && c3 >= 1.f - epsilon && d4 <= 1.f + epsilon && d4 >= 1.f - epsilon);
+    template <typename Tp>
+    inline bool RtMIMatrix4x4_Template<Tp>::isIdentity(const Tp epsilon) const {
+        return (a2 <= epsilon && a2 >= -epsilon && a3 <= epsilon && a3 >= -epsilon &&
+                a4 <= epsilon && a4 >= -epsilon && b1 <= epsilon && b1 >= -epsilon &&
+                b3 <= epsilon && b3 >= -epsilon && b4 <= epsilon && b4 >= -epsilon &&
+                c1 <= epsilon && c1 >= -epsilon && c2 <= epsilon && c2 >= -epsilon &&
+                c4 <= epsilon && c4 >= -epsilon && d1 <= epsilon && d1 >= -epsilon &&
+                d2 <= epsilon && d2 >= -epsilon && d3 <= epsilon && d3 >= -epsilon &&
+                a1 <= 1.f + epsilon && a1 >= 1.f - epsilon && b2 <= 1.f + epsilon &&
+                b2 >= 1.f - epsilon && c3 <= 1.f + epsilon && c3 >= 1.f - epsilon &&
+                d4 <= 1.f + epsilon && d4 >= 1.f - epsilon);
     }
 
     template <typename Tp>
-    inline RtMIMatrix4x4_Template<Tp> &RtMIMatrix4x4_Template<Tp>::rotationX(Tp a, RtMIMatrix4x4_Template &out) {
+    inline RtMIMatrix4x4_Template<Tp> &
+    RtMIMatrix4x4_Template<Tp>::rotationX(Tp a, RtMIMatrix4x4_Template &out) {
         out    = RtMIMatrix4x4_Template<Tp>();
         out.b2 = out.c3 = std::cos(a);
         out.b3          = -(out.c2 = std::sin(a));
@@ -374,7 +460,8 @@ namespace Retoccilus::Engine3D::ModelImporter {
     }
 
     template <typename Tp>
-    inline RtMIMatrix4x4_Template<Tp> &RtMIMatrix4x4_Template<Tp>::rotationY(Tp a, RtMIMatrix4x4_Template &out) {
+    inline RtMIMatrix4x4_Template<Tp> &
+    RtMIMatrix4x4_Template<Tp>::rotationY(Tp a, RtMIMatrix4x4_Template &out) {
         out    = RtMIMatrix4x4_Template<Tp>();
         out.a1 = out.c3 = std::cos(a);
         out.c1          = -(out.a3 = std::sin(a));
@@ -382,7 +469,8 @@ namespace Retoccilus::Engine3D::ModelImporter {
     }
 
     template <typename Tp>
-    inline RtMIMatrix4x4_Template<Tp> &RtMIMatrix4x4_Template<Tp>::rotationZ(Tp a, RtMIMatrix4x4_Template &out) {
+    inline RtMIMatrix4x4_Template<Tp> &
+    RtMIMatrix4x4_Template<Tp>::rotationZ(Tp a, RtMIMatrix4x4_Template &out) {
         out    = RtMIMatrix4x4_Template<Tp>();
         out.a1 = out.b2 = std::cos(a);
         out.a2          = -(out.b1 = std::sin(a));
@@ -390,8 +478,9 @@ namespace Retoccilus::Engine3D::ModelImporter {
     }
 
     template <typename Tp>
-    inline RtMIMatrix4x4_Template<Tp> &RtMIMatrix4x4_Template<Tp>::rotation(Tp a, const RtMIVector3D_Template<Tp> &axis,
-                                                                            RtMIMatrix4x4_Template &out) {
+    inline RtMIMatrix4x4_Template<Tp> &
+    RtMIMatrix4x4_Template<Tp>::rotation(Tp a, const RtMIVector3D_Template<Tp> &axis,
+                                         RtMIMatrix4x4_Template &out) {
         Tp c = std::cos(a), s = std::sin(a), t = 1 - c;
         Tp x = axis.x, y = axis.y, z = axis.z;
 
@@ -412,8 +501,9 @@ namespace Retoccilus::Engine3D::ModelImporter {
     }
 
     template <typename Tp>
-    inline RtMIMatrix4x4_Template<Tp> &RtMIMatrix4x4_Template<Tp>::translation(const RtMIVector3D_Template<Tp> &v,
-                                                                               RtMIMatrix4x4_Template &out) {
+    inline RtMIMatrix4x4_Template<Tp> &
+    RtMIMatrix4x4_Template<Tp>::translation(const RtMIVector3D_Template<Tp> &v,
+                                            RtMIMatrix4x4_Template &out) {
         out    = RtMIMatrix4x4_Template<Tp>();
         out.a4 = v.x;
         out.b4 = v.y;
@@ -422,8 +512,9 @@ namespace Retoccilus::Engine3D::ModelImporter {
     }
 
     template <typename Tp>
-    inline RtMIMatrix4x4_Template<Tp> &RtMIMatrix4x4_Template<Tp>::scaling(const RtMIVector3D_Template<Tp> &v,
-                                                                           RtMIMatrix4x4_Template &out) {
+    inline RtMIMatrix4x4_Template<Tp> &
+    RtMIMatrix4x4_Template<Tp>::scaling(const RtMIVector3D_Template<Tp> &v,
+                                        RtMIMatrix4x4_Template &out) {
         out    = RtMIMatrix4x4_Template<Tp>();
         out.a1 = v.x;
         out.b2 = v.y;
@@ -432,8 +523,10 @@ namespace Retoccilus::Engine3D::ModelImporter {
     }
 
     template <typename Tp>
-    inline RtMIMatrix4x4_Template<Tp> &RtMIMatrix4x4_Template<Tp>::fromMatrixToMatrix(const RtMIVector3D_Template<Tp> &from,
-                                                                                const RtMIVector3D_Template<Tp> &to, RtMIMatrix4x4_Template &mtx) {
+    inline RtMIMatrix4x4_Template<Tp> &
+    RtMIMatrix4x4_Template<Tp>::fromMatrixToMatrix(const RtMIVector3D_Template<Tp> &from,
+                                                   const RtMIVector3D_Template<Tp> &to,
+                                                   RtMIMatrix4x4_Template &mtx) {
         RtMIMatrix3x3_Template<Tp> m3;
         RtMIMatrix3x3_Template<Tp>::FromToMatrix(from, to, m3);
         mtx = RtMIMatrix4x4_Template<Tp>(m3);

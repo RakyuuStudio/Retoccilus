@@ -1,3 +1,10 @@
+// =========== Vector2D.h ============ Re-Implementation of Assimp Vector2D ============= *- C++ -*
+// // Original by Assimp Team, license under BSD 3-Clause License. Re-Implement by Rakyuu Studio.
+// Copyright (c) 2023-2024 Rakyuu Studio, all rights reserved.
+// SPDX-License-Identifier: LicenseRef-Apache-2.0-WITH-Retoccilus-Exception
+// ================================================================================================
+// //
+
 #ifndef VECTOR_2D_INCLUDE_H
 #define VECTOR_2D_INCLUDE_H
 
@@ -40,5 +47,7 @@ namespace Retoccilus::Engine3D::ModelImporter {
 
     using RtMIVector2D = RtMIVector2D_Template<float>;
 } // namespace Retoccilus::Engine3D::ModelImporter
+
+#include "Vector2D.inl"
 
 #endif

@@ -1,8 +1,9 @@
-// =========== Matrix3x3.h ============ Re-Implementation of Assimp Matrix3x3 =========== *- C++ -* //
-// Original by Assimp Team, license under BSD 3-Clause License. Re-Implement by Rakyuu Studio.
+// =========== Matrix3x3.h ============ Re-Implementation of Assimp Matrix3x3 =========== *- C++ -*
+// // Original by Assimp Team, license under BSD 3-Clause License. Re-Implement by Rakyuu Studio.
 // Copyright (c) 2023-2024 Rakyuu Studio, all rights reserved.
 // SPDX-License-Identifier: LicenseRef-Apache-2.0-WITH-Retoccilus-Exception
-// ================================================================================================ //
+// ================================================================================================
+// //
 
 #ifndef MATRIX_3X3_INCLUDE_H
 #define MATRIX_3X3_INCLUDE_H
@@ -13,9 +14,10 @@ namespace Retoccilus::Engine3D::ModelImporter {
     /**
      * @brief A float threshold to compare with 2 float values.
      *
-     * You shouldn't compare two float values by using `==`, `>=`, `>`, `<=`, `<`, `!=`. Instead, using
-     * subtraction operation to compare the absolute result of the subtraction, if the result is equals
-     * (or less than) the threshold you gave (in this case, it's 1e-6 (0.000001)), it will be considered as equal.
+     * You shouldn't compare two float values by using `==`, `>=`, `>`, `<=`, `<`, `!=`. Instead,
+     * using subtraction operation to compare the absolute result of the subtraction, if the result
+     * is equals (or less than) the threshold you gave (in this case, it's 1e-6 (0.000001)), it will
+     * be considered as equal.
      *
      * For example, The absolute difference between two float variables is not less than g_epsilon
      * or equal to the g_epsilon. So in this case, two variables will NOT be considered as equal.
@@ -23,9 +25,9 @@ namespace Retoccilus::Engine3D::ModelImporter {
      * @code
      * double a = 13.001, b = 114.514;
      * if (std::abs(a - b) < g_epsilon) {
-     *     cout << "Equal";
+     *     cout << "equal";
      * } else {
-     *     cout << "Not Equal";
+     *     cout << "Not equal";
      * }
      * @endcode
      */
@@ -57,12 +59,14 @@ namespace Retoccilus::Engine3D::ModelImporter {
     public:
         /**
          * @brief Default constructor that initializes the matrix to empty.
-         * @note This constructor is marked as `noexcept`, which means it will not throw any exception.
+         * @note This constructor is marked as `noexcept`, which means it will not throw any
+         * exception.
          */
         RtMIMatrix3x3_Template() noexcept;
 
         /**
-         * @brief Default Constructor which allows you to initialize the matrix with nine elements (Row by Row).
+         * @brief Default Constructor which allows you to initialize the matrix with nine elements
+         * (Row by Row).
          * @param _a1 - The element that in first row, first column.
          * @param _a2 - The element that in first row, second column.
          * @param _a3 - The element that in first row, third column.
@@ -73,7 +77,8 @@ namespace Retoccilus::Engine3D::ModelImporter {
          * @param _c2 - The element that in third row, second column.
          * @param _c3 - The element that in third row, third column.
          */
-        RtMIMatrix3x3_Template(Tp _a1, Tp _a2, Tp _a3, Tp _b1, Tp _b2, Tp _b3, Tp _c1, Tp _c2, Tp _c3);
+        RtMIMatrix3x3_Template(Tp _a1, Tp _a2, Tp _a3, Tp _b1, Tp _b2, Tp _b3, Tp _c1, Tp _c2,
+                               Tp _c3);
 
         /**
          * @brief Constructor which allows you to initialize the matrix by cutting a 4x4 matrix.
@@ -82,25 +87,28 @@ namespace Retoccilus::Engine3D::ModelImporter {
         explicit RtMIMatrix3x3_Template(const RtMIMatrix4x4_Template<Tp> &bMatrix);
 
         /**
-         * @brief Overload the self-multiplication operator `*=` to multiply the current matrix with another matrix.
+         * @brief Overload the self-multiplication operator `*=` to multiply the current matrix with
+         * another matrix.
          * @param rhs - The right-hand side matrix to multiply with the current matrix.
          * @return Reference to the current matrix after multiplication.
          */
         RtMIMatrix3x3_Template &operator*=(const RtMIMatrix3x3_Template &rhs);
 
         /**
-         * @brief Overload the multiplication operator `*` to multiply the current matrix with another matrix.
+         * @brief Overload the multiplication operator `*` to multiply the current matrix with
+         * another matrix.
          * @param rhs - The right-hand side matrix to multiply with the current matrix.
          * @return A new matrix resulting from the multiplication.
          */
-        RtMIMatrix3x3_Template operator*(const RtMIMatrix3x3_Template& rhs) const;
+        RtMIMatrix3x3_Template operator*(const RtMIMatrix3x3_Template &rhs) const;
 
         /**
-         * @brief Overload the subscript operator `[]` for non-constant access to the matrix elements.
+         * @brief Overload the subscript operator `[]` for non-constant access to the matrix
+         * elements.
          * @param index - The index of the element to access. Indexing is 0-based and row-major.
          * @return Pointer to the element at the given index.
          */
-        Tp* operator[](unsigned int index);
+        Tp *operator[](unsigned int index);
 
         /**
          * @brief Overload the subscript operator `[]` for constant access to the matrix elements.
@@ -159,7 +167,7 @@ namespace Retoccilus::Engine3D::ModelImporter {
         Tp determinant() const;
 
         /**
-         * @brief Rotate the current matrix around the Z-axis.
+         * @brief rotate the current matrix around the Z-axis.
          * @param a - The angle of rotation in radians.
          * @param ot - The output matrix to store the result.
          * @return Reference to the current matrix after rotation.
@@ -167,7 +175,7 @@ namespace Retoccilus::Engine3D::ModelImporter {
         static RtMIMatrix3x3_Template &rotationZ(Tp a, RtMIMatrix3x3_Template &ot);
 
         /**
-         * @brief Rotate the current matrix around an arbitrary axis.
+         * @brief rotate the current matrix around an arbitrary axis.
          * @param a - The angle of rotation in radians.
          * @param axis - The axis of rotation.
          * @param ot - The output matrix to store the result.
@@ -182,7 +190,8 @@ namespace Retoccilus::Engine3D::ModelImporter {
          * @param ot - The output matrix to store the result.
          * @return Reference to the current matrix after translation.
          */
-        static RtMIMatrix3x3_Template &translation(const RtMIVector2D_Template<Tp> &v, RtMIMatrix3x3_Template &ot);
+        static RtMIMatrix3x3_Template &translation(const RtMIVector2D_Template<Tp> &v,
+                                                   RtMIMatrix3x3_Template &ot);
 
         /**
          * @brief Create a matrix that rotates a 3D vector from one direction to another.
@@ -209,5 +218,7 @@ namespace Retoccilus::Engine3D::ModelImporter {
      */
     using RtMIMatrix3x3 = RtMIMatrix3x3_Template<float>;
 } // namespace Retoccilus::Engine3D::ModelImporter
+
+#include "Matrix3x3.inl"
 
 #endif

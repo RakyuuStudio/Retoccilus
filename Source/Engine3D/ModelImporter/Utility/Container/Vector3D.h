@@ -1,3 +1,10 @@
+// =========== Vector3D.h ============ Re-Implementation of Assimp Vector3D ============= *- C++ -*
+// // Original by Assimp Team, license under BSD 3-Clause License. Re-Implement by Rakyuu Studio.
+// Copyright (c) 2023-2024 Rakyuu Studio, all rights reserved.
+// SPDX-License-Identifier: LicenseRef-Apache-2.0-WITH-Retoccilus-Exception
+// ================================================================================================
+// //
+
 #ifndef VECTOR_3D_INCLUDE_H
 #define VECTOR_3D_INCLUDE_H
 
@@ -64,5 +71,7 @@ namespace Retoccilus::Engine3D::ModelImporter {
         Tp z;
     };
 } // namespace Retoccilus::Engine3D::ModelImporter
+
+#include "Vector3D.inl"
 
 #endif
