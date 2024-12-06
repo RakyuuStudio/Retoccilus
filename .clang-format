@@ -1,0 +1,13 @@
+BasedOnStyle: LLVM
+
+AlignConsecutiveAssignments: true
+AccessModifierOffset: -4
+IndentWidth: 4
+NamespaceIndentation: All
+FixNamespaceComments: true
+SortIncludes: CaseSensitive
+ColumnLimit: 100
+BreakBeforeBraces: Attach
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+AllowAllConstructorInitializersOnNextLine: false
+AllowShortFunctionsOnASingleLine: None

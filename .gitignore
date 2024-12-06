@@ -1,0 +1,7 @@
+.vscode/
+.vs
+out/
+ThirdParty/
+.idea/
+.cache
+build/
