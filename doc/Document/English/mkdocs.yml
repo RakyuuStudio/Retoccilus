@@ -1,0 +1,17 @@
+site_name: Retoccilus Documentation
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: light blue
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: light blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+copyright: Copyright &copy; 2023-2025 Rakyuu Studio.

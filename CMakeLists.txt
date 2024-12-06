@@ -16,8 +16,10 @@ macro(find_package_general mode)
     endforeach ()
 endmacro()
 
+
 find_package_general(CONFIG Qt6Core Qt6Widgets Qt6Gui)
 find_package(Vulkan REQUIRED)
+# find_package(QtADS)
 
 if (Qt6_FOUND)
     message(STATUS "Build: Qt6 Installation found.")

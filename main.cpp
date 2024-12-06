@@ -17,6 +17,7 @@
 #include <QDir>
 #include <QDebug>
 
+#include "DockAreaTabBar"
 using namespace Retoccilus::Editor::SceneWidget;
 
 int main(int argc, char *argv[]) {
