@@ -1,0 +1,18 @@
+---
+Language:        Cpp
+# Use 4 spaces per indentation level.
+BasedOnStyle: LLVM
+IndentWidth:     4
+UseTab:          Never
+
+# Braces on the same line as control statements (Linux/GNU style).
+BreakBeforeBraces: Attach
+
+# Align consecutive declarations.
+AlignConsecutiveDeclarations: true
+
+# No column limit to ensure alignment is not broken by wrapping.
+ColumnLimit:     0
+BreakConstructorInitializers: BeforeColon
+FixNamespaceComments: true
+NamespaceIndentation: All
