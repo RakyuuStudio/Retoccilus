@@ -510,4 +510,40 @@ namespace Retoccilus::Core {
         std::cerr << "Validation layer: " << pCallbackData->pMessage << std::endl;
         return VK_FALSE;
     }
+
+    void VulkanWrapper::cleanup() {
+        // 清理同步对象
+        for (size_t i = 0; i < maxFramesInFlight; i++) {
+            if (inFlightFences[i] != VK_NULL_HANDLE)
+                vkDestroyFence(device, inFlightFences[i], nullptr);
+            if (imageAvailableSemaphores[i] != VK_NULL_HANDLE)
+                vkDestroySemaphore(device, imageAvailableSemaphores[i], nullptr);
+            if (renderFinishedSemaphores[i] != VK_NULL_HANDLE)
+                vkDestroySemaphore(device, renderFinishedSemaphores[i], nullptr);
+        }
+
+        // 清理交换链相关资源
+        for (auto imageView : swapChainImageViews) {
+            if (imageView != VK_NULL_HANDLE)
+                vkDestroyImageView(device, imageView, nullptr);
+        }
+
+        if (swapChain != VK_NULL_HANDLE)
+            vkDestroySwapchainKHR(device, swapChain, nullptr);
+        if (device != VK_NULL_HANDLE)
+            vkDestroyDevice(device, nullptr);
+        if (surface != VK_NULL_HANDLE)
+            vkDestroySurfaceKHR(instance, surface, nullptr);
+        
+        if (debugMessenger != VK_NULL_HANDLE) {
+            auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(
+                instance, "vkDestroyDebugUtilsMessengerEXT");
+            if (func) {
+                func(instance, debugMessenger, nullptr);
+            }
+        }
+
+        if (instance != VK_NULL_HANDLE)
+            vkDestroyInstance(instance, nullptr);
+    }
 } // namespace Retoccilus::Core

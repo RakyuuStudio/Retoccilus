@@ -34,7 +34,7 @@ namespace Retoccilus::Core {
 
         void initialize() override { initVulkan(); }
         void render() override { mainLoop(); }
-        void cleanup() override { AbstractRenderLayer::cleanup(); }
+        void cleanup() override;
 
         void initVulkan();
         void mainLoop();
