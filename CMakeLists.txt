@@ -5,6 +5,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(Vulkan REQUIRED)
 # Add VulkanWrapper library
+
+include_directories(ThirdPartyLibraries/stb)
+
 add_subdirectory(Core/VulkanWrapper)
 add_subdirectory(Core/SceneWidget)
 add_subdirectory(ThirdPartyLibraries/glfw)

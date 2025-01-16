@@ -4,7 +4,7 @@ using namespace Retoccilus::Core;
 
 int main() {
     try {
-        VulkanWrapper app(800, 600, "Vulkan Window");
+        VulkanWrapper app(800, 600, "Test");
 
         app.initVulkan();
         app.mainLoop();
